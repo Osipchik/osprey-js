@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "lib": ["es2020"],
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "target": "es2020",
+    "importHelpers": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "stripInternal": true,
+    "pretty": true,
+    "outDir": "build",
+    "noImplicitThis": false,
+    "paths": {
+      "@/*": ["./lib/*"]
+    }
+  },
+  "include": [
+    "lib",
+  ],
+  "exclude": [
+    "build",
+    "node_modules"
+  ]
+}
