@@ -16,7 +16,8 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "rimraf ./build && tsc --project tsconfig.json && tsc-alias -p tsconfig.json"
+    "build": "rimraf ./build && tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
+    "publish": "pnpm build && npm publish"
   },
   "dependencies": {
     "@parisholley/road-runner": "^1.1.8",
