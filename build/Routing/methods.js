@@ -10,4 +10,3 @@ exports.CONNECTS = 'CONNECTS';
 exports.OPTIONS = 'OPTIONS';
 exports.TRACE = 'TRACE';
 exports.PATCH = 'PATCH';
-//# sourceMappingURL=methods.js.map

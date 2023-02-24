@@ -40,4 +40,3 @@ class Server {
 }
 exports.default = Server;
 module.exports = Server;
-//# sourceMappingURL=index.js.map

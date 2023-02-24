@@ -35,4 +35,3 @@ function setThreadPoolSize(threadPoolSize) {
 }
 exports.default = App;
 module.exports = App;
-//# sourceMappingURL=app.js.map

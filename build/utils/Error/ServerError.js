@@ -7,4 +7,3 @@ function ServerError(message, middlewareName) {
     return new Error(message);
 }
 exports.default = ServerError;
-//# sourceMappingURL=ServerError.js.map

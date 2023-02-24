@@ -13,13 +13,11 @@
     "./utils/*.js": "./build/utils/*/index.js",
     "./utils/*": "./build/utils/*/index.js",
     "./Routing/decorators": "./build/Routing/decorators/index.js",
-    "./package.json": "./package.json",
-    "./tsconfig.json": "./tsconfig.json",
-    "./pnpm-lock.yaml": "./pnpm-lock.yaml"
+    "./package.json": "./package.json"
   },
   "scripts": {
     "build": "rimraf ./build && tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
-    "publish": "pnpm build && npm publish"
+    "postversion": "git push && git push --tags"
   },
   "dependencies": {
     "@parisholley/road-runner": "^1.1.8",

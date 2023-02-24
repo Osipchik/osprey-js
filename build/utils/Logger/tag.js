@@ -18,4 +18,3 @@ function Tag(styles) {
 }
 exports.default = Tag;
 module.exports = Tag;
-//# sourceMappingURL=tag.js.map

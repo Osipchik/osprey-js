@@ -8,4 +8,3 @@ function Header(name, value) {
     };
 }
 exports.default = Header;
-//# sourceMappingURL=header.js.map

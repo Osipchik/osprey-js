@@ -49,4 +49,3 @@ function stylize(styles, text) {
 }
 exports.default = stylize;
 module.exports = stylize;
-//# sourceMappingURL=stylize.js.map

@@ -18,4 +18,3 @@ class MetaStore {
 MetaStore.meta = new WeakMap();
 MetaStore.values = new WeakMap();
 exports.default = MetaStore;
-//# sourceMappingURL=metaStore.js.map

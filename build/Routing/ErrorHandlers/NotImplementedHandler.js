@@ -12,4 +12,3 @@ function NotImplementedHandler(request, response) {
 }
 exports.default = NotImplementedHandler;
 module.exports = NotImplementedHandler;
-//# sourceMappingURL=NotImplementedHandler.js.map

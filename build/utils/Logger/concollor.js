@@ -17,4 +17,3 @@ function Concollor(strings, ...values) {
     return result.join('');
 }
 exports.default = Concollor;
-//# sourceMappingURL=concollor.js.map
