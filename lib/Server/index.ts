@@ -47,9 +47,11 @@ class Server {
       Logger.success(`Server is running at http://${this.host}:${this.port}`);
     });
 
-    this.server.on('close', () => {
-      Logger.warn(`Server is closed at http://${this.host}:${this.port}`);
-    });
+    process.on("STOP", function(){
+      this.server.close(() => {
+        Logger.warn(`Server is closed at http://${this.host}:${this.port}`);
+      });
+    })
   }
 }
 

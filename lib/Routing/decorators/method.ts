@@ -76,7 +76,7 @@ function decoratorFabric(
       }
     }
 
-    descriptor.value = asyncHandler(original, meta.header ? handlerWithHeader : handler);
+    descriptor.value = asyncHandler(original, meta?.header ? handlerWithHeader : handler);
 
     MetaStore.addMeta(descriptor, 'meta', {
       path,

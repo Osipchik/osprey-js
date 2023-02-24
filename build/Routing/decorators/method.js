@@ -50,7 +50,7 @@ function decoratorFabric(method, path, statusCode) {
                 response.end(JSON.stringify(result));
             }
         }
-        descriptor.value = asyncHandler(original, meta.header ? handlerWithHeader : handler);
+        descriptor.value = asyncHandler(original, meta?.header ? handlerWithHeader : handler);
         metaStore_1.default.addMeta(descriptor, 'meta', {
             path,
             method,
