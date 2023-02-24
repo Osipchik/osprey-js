@@ -33,10 +33,11 @@ class Server {
         this.server.listen(this.port, () => {
             Logger_1.default.success(`Server is running at http://${this.host}:${this.port}`);
         });
-        this.server.close(() => {
-            Logger_1.default.info(`Server is closed at http://${this.host}:${this.port}`);
+        this.server.on('close', () => {
+            Logger_1.default.warn(`Server is closed at http://${this.host}:${this.port}`);
         });
     }
 }
 exports.default = Server;
 module.exports = Server;
+//# sourceMappingURL=index.js.map

@@ -17,3 +17,4 @@ function Controller(prefix) {
     };
 }
 exports.default = Controller;
+//# sourceMappingURL=controller.js.map

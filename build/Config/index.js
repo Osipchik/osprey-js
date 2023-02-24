@@ -6,3 +6,4 @@ function Config() {
 }
 exports.default = Config;
 module.exports = Config;
+//# sourceMappingURL=index.js.map

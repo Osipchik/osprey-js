@@ -90,3 +90,4 @@ function Head(path, statusCode) {
     return decoratorFabric(methods_1.HEAD, path, statusCode);
 }
 exports.Head = Head;
+//# sourceMappingURL=method.js.map

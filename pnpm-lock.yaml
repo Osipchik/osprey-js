@@ -12,10 +12,10 @@ specifiers:
 dependencies:
   '@parisholley/road-runner': 1.1.8
   dotenv: 16.0.3
+  http-parser-js: 0.5.8
 
 devDependencies:
   '@types/node': 18.14.1
-  http-parser-js: 0.5.8
   rimraf: 4.1.2
   tsc-alias: 1.8.2
   tslib: 2.5.0
@@ -162,7 +162,7 @@ packages:
 
   /http-parser-js/0.5.8:
     resolution: {integrity: sha512-SGeBX54F94Wgu5RH3X5jsDtf4eHyRogWX1XGT3b4HuW3tQPM4AaBzoUji/4AAJNXCEOWZ5O0DgZmJw1947gD5Q==}
-    dev: true
+    dev: false
 
   /ignore/5.2.4:
     resolution: {integrity: sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==}

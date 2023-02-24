@@ -15,3 +15,4 @@ Object.defineProperty(exports, "Options", { enumerable: true, get: function () {
 Object.defineProperty(exports, "Trace", { enumerable: true, get: function () { return method_1.Trace; } });
 const header_1 = tslib_1.__importDefault(require("../../Routing/decorators/header"));
 exports.Header = header_1.default;
+//# sourceMappingURL=index.js.map

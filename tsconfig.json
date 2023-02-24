@@ -10,7 +10,7 @@
     "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": false,
+    "sourceMap": true,
     "strict": true,
     "moduleResolution": "node",
     "stripInternal": true,

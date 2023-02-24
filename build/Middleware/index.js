@@ -21,3 +21,4 @@ Middleware.middlewares = [];
 Middleware.asyncMiddlewares = [];
 exports.default = Middleware;
 module.exports = Middleware;
+//# sourceMappingURL=index.js.map

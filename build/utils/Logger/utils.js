@@ -39,3 +39,4 @@ exports.Data = {
     defaultTitle: 'Data',
 };
 exports.urlRegex = /(https?:\/\/\S+)/gm;
+//# sourceMappingURL=utils.js.map

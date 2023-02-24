@@ -9,3 +9,4 @@ function MethodNotAllowedHandler(request, response) {
 }
 exports.default = MethodNotAllowedHandler;
 module.exports = MethodNotAllowedHandler;
+//# sourceMappingURL=MethodNotAllowedHandler.js.map

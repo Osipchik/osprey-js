@@ -12,3 +12,4 @@ function ServerErrorHandler(request, response, error) {
 }
 exports.default = ServerErrorHandler;
 module.exports = ServerErrorHandler;
+//# sourceMappingURL=ServerErrorHandler.js.map

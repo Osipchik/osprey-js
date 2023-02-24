@@ -21,3 +21,4 @@ Log.patch = _print(utils_1.Patch);
 Log.data = _print(utils_1.Data);
 exports.default = Log;
 module.exports = Log;
+//# sourceMappingURL=index.js.map
