@@ -44,7 +44,11 @@ class Server {
     });
 
     this.server.listen(this.port, () => {
-      Logger(`Server is running at http://${this.host}:${this.port}`);
+      Logger.success(`Server is running at http://${this.host}:${this.port}`);
+    });
+
+    this.server.close(() => {
+      Logger.info(`Server is closed at http://${this.host}:${this.port}`);
     });
   }
 }

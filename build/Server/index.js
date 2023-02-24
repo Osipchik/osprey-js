@@ -31,7 +31,10 @@ class Server {
             }
         });
         this.server.listen(this.port, () => {
-            (0, Logger_1.default)(`Server is running at http://${this.host}:${this.port}`);
+            Logger_1.default.success(`Server is running at http://${this.host}:${this.port}`);
+        });
+        this.server.close(() => {
+            Logger_1.default.info(`Server is closed at http://${this.host}:${this.port}`);
         });
     }
 }

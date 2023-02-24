@@ -2,7 +2,7 @@
   "author": "Tim Osipchik",
   "license": "MIT",
   "name": "osprey-js",
-  "version": "0.0.2.1",
+  "version": "0.0.3",
   "description": "modern fast and lightweight backend framework",
   "files": [
     "build"
@@ -13,7 +13,9 @@
     "./utils/*.js": "./build/utils/*/index.js",
     "./utils/*": "./build/utils/*/index.js",
     "./Routing/decorators": "./build/Routing/decorators/index.js",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./tsconfig.json": "./tsconfig.json",
+    "./pnpm-lock.yaml": "./pnpm-lock.yaml"
   },
   "scripts": {
     "build": "rimraf ./build && tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
