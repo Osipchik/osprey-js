@@ -44,6 +44,7 @@ class Router {
       case GET: Logger.info(pathName, method); break;
       case POST: Logger.warn(pathName, method); break;
       case DELETE: Logger.error(pathName, method); break;
+      case PATCH: Logger.patch(pathName, method); break;
       case PUT: Logger.put(pathName, method); break;
       default: Logger.data(pathName, method);
     }
@@ -65,11 +66,11 @@ class Router {
       return {
         handler: Router.routeHandlers.NotFound,
       };
-    } else {
-      return {
-        handler: Router.routeHandlers.NotImplemented,
-      };
     }
+
+    return {
+      handler: Router.routeHandlers.NotImplemented,
+    };
   }
 }
 

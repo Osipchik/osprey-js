@@ -22,6 +22,9 @@ class Router {
             case methods_1.DELETE:
                 Logger_1.default.error(pathName, method);
                 break;
+            case methods_1.PATCH:
+                Logger_1.default.patch(pathName, method);
+                break;
             case methods_1.PUT:
                 Logger_1.default.put(pathName, method);
                 break;
@@ -42,11 +45,9 @@ class Router {
                 handler: Router.routeHandlers.NotFound,
             };
         }
-        else {
-            return {
-                handler: Router.routeHandlers.NotImplemented,
-            };
-        }
+        return {
+            handler: Router.routeHandlers.NotImplemented,
+        };
     }
 }
 Router.ServerError = ServerErrorHandler_1.default;

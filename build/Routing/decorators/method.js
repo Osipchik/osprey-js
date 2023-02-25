@@ -3,54 +3,41 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Head = exports.Options = exports.Trace = exports.Patch = exports.Delete = exports.Post = exports.Put = exports.Get = void 0;
 const tslib_1 = require("tslib");
 const methods_1 = require("../../Routing/methods");
-const StatusCodes_1 = require("../../utils/StatusCodes");
-const helpers_1 = require("../../utils/helpers");
 const metaStore_1 = tslib_1.__importDefault(require("../../utils/metaStore"));
+const statusCodes_1 = require("../../Response/statusCodes");
 function getStatusCode(method) {
     switch (method) {
-        case methods_1.POST: return StatusCodes_1.StatusCodes.Created;
-        default: return StatusCodes_1.StatusCodes.Ok;
+        case methods_1.POST: return statusCodes_1.StatusCodes.Created;
+        default: return statusCodes_1.StatusCodes.Ok;
     }
 }
-function asyncHandler(original, callBack) {
+function asyncHandler(originalHandler, callBack) {
     return async (request, response, ...args) => {
         const context = {
             request,
             response
         };
-        const result = await original.apply({ ...this, ...context }, args);
+        const result = await originalHandler.apply({ ...this, ...context }, args);
         callBack(response, result);
     };
 }
 function decoratorFabric(method, path, statusCode) {
-    const responseStatusCode = statusCode ?? getStatusCode(method);
+    const responseStatusCode = statusCode || getStatusCode(method);
     return (target, name, descriptor) => {
-        const original = descriptor.value;
+        const originalDescriptorValue = descriptor.value;
         const meta = metaStore_1.default.getMeta(descriptor);
         function handler(response, result) {
-            response.statusCode = result?.statusCode ?? responseStatusCode;
-            if ((0, helpers_1.isPrimitive)(result)) {
-                response.setHeader('Content-Type', 'text/html; charset=UTF-8');
-                response.end(result);
-            }
-            else {
-                response.setHeader('Content-Type', 'application/json');
-                response.end(JSON.stringify(result));
-            }
+            response.statusCode = result.statusCode;
+            response.setHeader('Content-Type', result.contentType);
+            response.end(result.value);
         }
         function handlerWithHeader(response, result) {
-            response.statusCode = result?.statusCode ?? responseStatusCode;
+            response.statusCode = result.statusCode;
+            response.setHeader('Content-Type', result.contentType);
             response.setHeader(meta.header.name, meta.header.value);
-            if ((0, helpers_1.isPrimitive)(result)) {
-                response.setHeader('Content-Type', 'text/html; charset=UTF-8');
-                response.end(result);
-            }
-            else {
-                response.setHeader('Content-Type', 'application/json');
-                response.end(JSON.stringify(result));
-            }
+            response.end(result.value);
         }
-        descriptor.value = asyncHandler(original, meta?.header ? handlerWithHeader : handler);
+        descriptor.value = asyncHandler(originalDescriptorValue, meta?.header ? handlerWithHeader : handler);
         metaStore_1.default.addMeta(descriptor, 'meta', {
             path,
             method,

@@ -4,8 +4,6 @@ const tslib_1 = require("tslib");
 const dotenv = tslib_1.__importStar(require("dotenv"));
 const OS = tslib_1.__importStar(require("os"));
 const Server_1 = tslib_1.__importDefault(require("./Server"));
-// @ts-ignore
-process.binding('http_parser').HTTPParser = require('http-parser-js').HTTPParser;
 dotenv.config();
 const availableLogicalCors = OS.cpus().length;
 class App {

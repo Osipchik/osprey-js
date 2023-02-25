@@ -1,6 +1,6 @@
 import Logger from '@/utils/Logger';
-import { StatusCodes } from '@/utils/StatusCodes';
 import { IncomingMessageType, ServerResponseType } from '@/Routing/types';
+import { StatusCodes } from '@/Response/statusCodes';
 
 function ServerErrorHandler (
   request: IncomingMessageType,

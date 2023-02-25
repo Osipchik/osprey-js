@@ -14,7 +14,7 @@ class MetaStore {
   }
 
   static getMeta(node: any) {
-    return MetaStore.meta.get(node) ?? MetaStore.values.get(node);
+    return MetaStore.meta.get(node) || MetaStore.values.get(node);
   }
 }
 

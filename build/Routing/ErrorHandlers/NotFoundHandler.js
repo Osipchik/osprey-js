@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const StatusCodes_1 = require("../../utils/StatusCodes");
+const statusCodes_1 = require("../../Response/statusCodes");
 function NotFoundHandler(request, response) {
     const message = `The request ${request.method} ${request.url} is not found`;
-    response.statusCode = StatusCodes_1.StatusCodes.NotFound;
+    response.statusCode = statusCodes_1.StatusCodes.NotFound;
     response.statusMessage = message;
     response.end();
 }

@@ -1,4 +1,4 @@
-import { StatusCodes } from '@/utils/StatusCodes';
+import { StatusCodes } from '@/Response/statusCodes';
 import { IncomingMessageType, ServerResponseType } from '@/Routing/types';
 
 function MethodNotAllowedHandler (

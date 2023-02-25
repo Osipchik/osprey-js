@@ -1,4 +1,4 @@
-import { StatusCodes } from '../../utils/StatusCodes';
+import { StatusCodes } from '../../Response/statusCodes';
 export declare function Get(path: string, statusCode?: StatusCodes): MethodDecorator;
 export declare function Put(path: string, statusCode?: StatusCodes): MethodDecorator;
 export declare function Post(path: string, statusCode?: StatusCodes): MethodDecorator;

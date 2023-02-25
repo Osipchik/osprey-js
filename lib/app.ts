@@ -2,9 +2,6 @@ import * as dotenv from 'dotenv';
 import * as OS from 'os';
 import Server from '@/Server';
 
-// @ts-ignore
-process.binding('http_parser').HTTPParser = require('http-parser-js').HTTPParser;
-
 dotenv.config();
 
 const availableLogicalCors = OS.cpus().length;

@@ -12,7 +12,7 @@ class MetaStore {
         MetaStore.values.set(node.value, MetaStore.meta.get(node));
     }
     static getMeta(node) {
-        return MetaStore.meta.get(node) ?? MetaStore.values.get(node);
+        return MetaStore.meta.get(node) || MetaStore.values.get(node);
     }
 }
 MetaStore.meta = new WeakMap();

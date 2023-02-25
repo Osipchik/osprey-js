@@ -14,4 +14,4 @@ export enum StatusCodes {
   MethodNotAllowed = 405,
   InternalServerError = 500,
   NotImplemented = 501,
-}
+};
