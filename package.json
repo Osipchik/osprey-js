@@ -2,9 +2,9 @@
   "author": "Tim Osipchik",
   "license": "MIT",
   "name": "osprey-js",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "modern fast and lightweight backend framework",
-  "files": ["dist", "packages"],
+  "files": ["dist", "packages", "tsconfig.json"],
   "scripts": {
     "build": "rimraf ./dist && tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
     "test": "pnpm build && npm link"
