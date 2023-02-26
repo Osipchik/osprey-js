@@ -1,1 +1,0 @@
-{"version":3,"file":"header.js","sourceRoot":"","sources":["../../../lib/Routing/decorators/header.ts"],"names":[],"mappings":";;;AAAA,0EAA0C;AAE1C,SAAS,MAAM,CACb,IAAY,EACZ,KAAa;IAEb,OAAO,CACL,MAAc,EACd,GAAoB,EACpB,UAAwC,EACxC,EAAE;QACF,mBAAS,CAAC,OAAO,CAAC,UAAU,EAAE,QAAQ,EAAE,EAAE,IAAI,EAAE,KAAK,EAAE,CAAC,CAAC;IAC3D,CAAC,CAAC;AACJ,CAAC;AAED,kBAAe,MAAM,CAAC"}

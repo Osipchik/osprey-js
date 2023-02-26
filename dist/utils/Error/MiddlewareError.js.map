@@ -1,0 +1,1 @@
+{"version":3,"file":"MiddlewareError.js","sourceRoot":"","sources":["../../../packages/utils/Error/MiddlewareError.ts"],"names":[],"mappings":";;;AAAA,oEAAoC;AAEpC,SAAS,eAAe,CACtB,OAAe,EACf,cAAsB;IAEtB,gBAAM,CAAC,KAAK,CAAC,OAAO,EAAE,uBAAuB,cAAc,EAAE,CAAC,CAAC;IAE/D,OAAO,IAAI,KAAK,CAAC,OAAO,CAAC,CAAC;AAC5B,CAAC;AAED,kBAAe,eAAe,CAAC"}

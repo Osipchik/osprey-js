@@ -15,17 +15,18 @@
     "moduleResolution": "node",
     "stripInternal": true,
     "pretty": true,
-    "outDir": "build",
+    "outDir": "dist",
     "noImplicitThis": false,
     "paths": {
-      "@/*": ["./lib/*"]
+      "@/*": ["./packages/*"],
+      "@osprey-js/*": ["./packages/*"],
     }
   },
   "include": [
-    "lib",
+    "packages",
   ],
   "exclude": [
-    "build",
+    "dist",
     "node_modules"
   ]
 }
