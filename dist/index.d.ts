@@ -1,0 +1,11 @@
+type AppPropsType = {
+    threadPoolSize?: number;
+};
+declare class App {
+    private readonly threadPoolSize;
+    constructor(props?: AppPropsType);
+    useControllers(controllers: any[]): void;
+    run(): void;
+}
+
+export { App as default };

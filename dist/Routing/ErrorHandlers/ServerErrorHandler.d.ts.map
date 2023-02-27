@@ -1,0 +1,1 @@
+{"version":3,"file":"ServerErrorHandler.d.ts","sourceRoot":"","sources":["../../../../packages/Routing/ErrorHandlers/ServerErrorHandler.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,mBAAmB,EAAE,kBAAkB,EAAE,MAAM,iBAAiB,CAAC;AAG1E,iBAAS,kBAAkB,CACzB,OAAO,EAAE,mBAAmB,EAC5B,QAAQ,EAAE,kBAAkB,EAC5B,KAAK,EAAE,KAAK,QAQb;AAED,eAAe,kBAAkB,CAAC"}

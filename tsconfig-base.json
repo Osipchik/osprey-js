@@ -6,7 +6,9 @@
     "esModuleInterop": true,
     "importHelpers": true,
     "declaration": true,
+    "declarationMap": true,
     "emitDecoratorMetadata": true,
+    "emitDeclarationOnly": true,
     "experimentalDecorators": true,
     "sourceMap": true,
     "strict": true,
@@ -19,7 +21,6 @@
       "@/*": ["./packages/*"],
       "@osprey-js/*": ["./packages/*"],
     },
-    "types": ["node"]
   },
   "include": [
     "packages/**/*",
