@@ -1,9 +1,2 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const serverConfig = {};
-const routerConfig = {};
-function Config() {
-}
-exports.default = Config;
-module.exports = Config;
+function e(){}module.exports=e;export{e as default};
 //# sourceMappingURL=index.js.map

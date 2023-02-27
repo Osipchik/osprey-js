@@ -2,25 +2,39 @@
   "author": "Tim Osipchik",
   "license": "MIT",
   "name": "osprey-js",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "modern fast and lightweight backend framework",
-  "files": ["dist", "packages", "tsconfig.json"],
+  "main": "dist/cjs/index.ts",
+  "module": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "./dist"
+  ],
   "scripts": {
-    "build": "rimraf ./dist && tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
-    "test": "pnpm build && npm link"
+    "build": "pnpm rollup --bundleConfigAsCjs && pnpm post:build",
+    "post:build": "node ./scripts/frankBuild.js",
+    "rollup": "rm -rf dist && rollup -c"
   },
   "dependencies": {
     "@parisholley/road-runner": "^1.1.8",
     "dotenv": "^16.0.3",
-    "serialize-javascript": "^6.0.1",
-    "sializer": "^0.2.0"
+    "fs-extra": "^11.1.0",
+    "serialize-javascript": "^6.0.1"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-replace": "^5.0.2",
     "@types/node": "^18.14.1",
     "@types/serialize-javascript": "^5.0.2",
-    "rimraf": "^4.1.2",
+    "rollup-plugin-generate-package-json": "^3.2.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.34.1",
     "tsc-alias": "^1.8.2",
-    "tslib": "^2.5.0"
+    "tslib": "^2.5.0",
+    "typescript": "^4.9.5"
   },
   "repository": {
     "type": "git",

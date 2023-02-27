@@ -1,1 +1,1 @@
-{"version":3,"file":"index.js","sourceRoot":"","sources":["../../packages/Config/index.ts"],"names":[],"mappings":";;AAAA,MAAM,YAAY,GAAG,EAAE,CAAC;AACxB,MAAM,YAAY,GAAG,EAAE,CAAC;AAExB,SAAS,MAAM;AAEf,CAAC;AAED,kBAAe,MAAM,CAAC;AACtB,MAAM,CAAC,OAAO,GAAG,MAAM,CAAC"}
+{"version":3,"file":"index.js","sources":["../../packages/Config/index.ts"],"sourcesContent":["const serverConfig = {};\nconst routerConfig = {};\n\nfunction Config() {\n\n}\n\nexport default Config;\nmodule.exports = Config;\n"],"names":["Config","module","exports"],"mappings":"AAGA,SAASA,IAET,CAGAC,OAAOC,QAAUF"}

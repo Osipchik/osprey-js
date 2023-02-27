@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "lib": ["esnext"],
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "stripInternal": true,
+    "pretty": true,
+    "rootDir": "packages",
+    "noImplicitThis": false,
+    "paths": {
+      "@/*": ["./packages/*"],
+      "@osprey-js/*": ["./packages/*"],
+    },
+    "types": ["node"]
+  },
+  "include": [
+    "packages/**/*",
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
+}
