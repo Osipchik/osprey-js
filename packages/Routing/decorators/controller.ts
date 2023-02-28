@@ -1,6 +1,6 @@
-import Router from '@/Routing';
-import { MetaHandlerType } from '@/Routing/types';
-import MetaStore from '@/utils/metaStore';
+import Router from '../../Routing';
+import { MetaHandlerType } from '../../Routing/types';
+import MetaStore from '../../utils/metaStore';
 
 function Controller(prefix: string): ClassDecorator {
   return function (constructor: Function) {

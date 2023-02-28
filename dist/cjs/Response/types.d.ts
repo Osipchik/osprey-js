@@ -1,4 +1,4 @@
-import { IncomingMessageType, ServerResponseType } from '@/Routing/types';
+import { IncomingMessageType, ServerResponseType } from '../Routing/types';
 import type { StatusCodes } from './statusCodes';
 export interface IOptions {
     statusCode?: StatusCodes;

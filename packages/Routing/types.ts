@@ -1,8 +1,8 @@
 import http from 'http';
-import ServerErrorHandler from '@/Routing/ErrorHandlers/ServerErrorHandler';
-import NotFoundHandler from '@/Routing/ErrorHandlers/NotFoundHandler';
-import MethodNotAllowedHandler from '@/Routing/ErrorHandlers/MethodNotAllowedHandler';
-import NotImplementedHandler from '@/Routing/ErrorHandlers/NotImplementedHandler';
+import ServerErrorHandler from '../Routing/ErrorHandlers/ServerErrorHandler';
+import NotFoundHandler from '../Routing/ErrorHandlers/NotFoundHandler';
+import MethodNotAllowedHandler from '../Routing/ErrorHandlers/MethodNotAllowedHandler';
+import NotImplementedHandler from '../Routing/ErrorHandlers/NotImplementedHandler';
 
 export type IncomingMessageType = http.IncomingMessage;
 export type ServerResponseType = http.ServerResponse;

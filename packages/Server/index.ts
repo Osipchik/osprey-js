@@ -1,8 +1,8 @@
 import http from 'http';
-import Router from '@/Routing';
-import Logger from '@/utils/Logger';
-import Middleware from '@/Middleware';
-import { IncomingMessageType, ServerResponseType } from '@/Routing/types';
+import Router from '../Routing';
+import Logger from '../utils/Logger';
+import Middleware from '../Middleware';
+import { IncomingMessageType, ServerResponseType } from '../Routing/types';
 
 class Server {
   private readonly server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>;

@@ -1,2 +1,6 @@
-function e(){}module.exports=e;export{e as default};
+function Config() {
+}
+module.exports = Config;
+
+export { Config as default };
 //# sourceMappingURL=index.js.map

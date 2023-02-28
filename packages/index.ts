@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 import * as OS from 'os';
-import Server from '@/Server';
+import Server from './Server';
 
 dotenv.config();
 

@@ -2,11 +2,10 @@
   "author": "Tim Osipchik",
   "license": "MIT",
   "name": "osprey-js",
-  "version": "0.0.12",
+  "version": "0.0.21",
   "description": "modern fast and lightweight backend framework",
   "main": "./cjs/index.js",
   "module": "./index.js",
-  "typings": "./index.d.ts",
   "dependencies": {
     "@parisholley/road-runner": "^1.1.8",
     "@rollup/plugin-typescript": "^11.0.0",
@@ -31,5 +30,6 @@
     "node",
     "express"
   ],
-  "private": false
+  "private": false,
+  "typings": "./index.d.ts"
 }

@@ -1,4 +1,4 @@
-import Tag, { TagReturnType } from '@/utils/Logger/tag';
+import Tag, { TagReturnType } from '../../utils/Logger/tag';
 
 export interface IDecorator {
   titleTag: TagReturnType;

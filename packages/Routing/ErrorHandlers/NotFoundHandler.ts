@@ -1,5 +1,5 @@
-import { StatusCodes } from '@/Response/statusCodes';
-import { IncomingMessageType, ServerResponseType } from '@/Routing/types';
+import { StatusCodes } from '../../Response/statusCodes';
+import { IncomingMessageType, ServerResponseType } from '../../Routing/types';
 
 function NotFoundHandler (
   request: IncomingMessageType,

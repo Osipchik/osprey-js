@@ -1,2 +1,639 @@
-import e from"@/utils/Logger/concollor";var t,r={},n={};Object.defineProperty(n,"__esModule",{value:!0}),function(e){e[e.STATIC=0]="STATIC",e[e.PARAM=1]="PARAM"}(t||(t={}));const i=":",s="/".charCodeAt(0);class o{constructor(e={}){this.indices=e.indices||"",this.children=e.children||[],this.childrenI=e.childrenI||{},this.path=e.path||"",this.handle=e.handle||null,this.wildChild=e.wildChild||!1,this.type=e.type||t.STATIC,this.param=e.param||"",this.pathLength=this.path.length,this.childrenLength=this.children.length}addRoute(e,t){const r=this.countParams(e);this.isEmpty()?this.insertChild(e,e,t,r):this.onChunk(this,e,e,t,r)}search(e){let t=this;const r={};e:for(;;){const n=e.length;if(n>t.pathLength&&e.slice(0,t.pathLength)===t.path){if(e=e.slice(t.pathLength),t.wildChild){t=t.children[0];let i=0;for(;i<n&&e.charCodeAt(i)!==s;)i++;const o=e.slice(0,i);if(!o||!t.param)return{value:null,params:r};if("!"!==t.param&&(r[t.param]=o),i<n){if(0===t.childrenLength)return{value:null,params:r};e=e.slice(i),t=t.children[0];continue e}return{value:t.handle,params:r}}const i=e.charCodeAt(0);for(let e=0;e<t.indices.length;e++)if(i===t.indices.charCodeAt(e)){t=t.children[e];continue e}}else if(e===t.path)return{value:t.handle,params:r};return{value:null,params:r}}}hasChildren(){return this.children.length>0}insertChild(e,r,n,s){let o=0,l=this;for(let n=0,h=r.length;s>0;n++){if(r[n]!==i)continue;let a=n+1;for(;a<h&&"/"!==r[a];){if(r[a]===i)throw new Error("only one wildcard per path segment is allowed, has: '"+r.slice(n)+"' in path '"+e+"'");a++}if(l.hasChildren())throw new Error("wildcard route '"+r.slice(n,a)+"' conflicts with existing children in path '"+e+"'");if(a-n<2)throw new Error("wildcards must be named with a non-empty name in path '"+e+"'");n>0&&(l.replacePath(r.slice(o,n)),o=n),l=l.replaceChildren({type:t.PARAM}),s--,a<h&&(l.replacePath(r.slice(o,a)),o=a,l=l.replaceChildren())}l.replacePath(r.slice(o)),l.setHandle(n)}setHandle(e){this.handle=e}replaceChildren(e={}){const r=new o(e);return e.type===t.PARAM&&(this.wildChild=!0),this.children=[r],this.childrenLength=1,r}replacePath(e){e[0]===i&&(this.param=e.slice(1)),this.path=e,this.pathLength=e.length}isEmpty(){return!(this.path.length>0||this.children.length>0)}processCharacter(e,r,n,s){const l=r[0];if(this.type===t.PARAM&&"/"===l&&1===this.children.length)return void this.onChunk(this.children[0],e,r,n,s);const h=this.childrenI[l.charCodeAt(0)];if(h)h.onChunk(h,e,r,n,s);else{if(l!==i){const i=new o({type:t.STATIC});return this.children.push(i),this.indices+=l,this.childrenI[l.charCodeAt(0)]=i,this.childrenLength=this.children.length,void i.insertChild(e,r,n,s)}this.insertChild(e,r,n,s)}}processWildcard(e,t,r,n){if(t.length>=this.path.length&&this.path===t.slice(0,this.path.length)&&(this.path.length>=t.length||"/"===t[this.path.length]))return void this.onChunk(this,e,t,r,n);const i=t.split("/")[0],s=e.slice(0,e.indexOf(i))+this.path;throw new Error(`'${i}' in new path '${e}' conflicts with existing wildcard '${this.path}' in existing prefix '${s}'`)}createNode(e,t,r,n,i){const s=r.slice(e);this.wildChild?this.children[0].processWildcard(t,s,n,i-1):this.processCharacter(t,s,n,i)}commonPrefixIndex(e){let t=0;const r=Math.min(e.length,this.path.length);for(;t<r&&this.path[t]===e[t];)t++;return t}split(e,t){if(e<this.path.length){const r=new o({path:this.path.slice(e),wildChild:this.wildChild,childrenI:this.childrenI,children:this.children,handle:this.handle,indices:this.indices});return this.children=[r],this.indices=this.path[e],this.childrenI={[this.indices.charCodeAt(0)]:r},this.childrenLength=1,this.wildChild=!1,this.path=t.slice(0,e),this.pathLength=this.path.length,this.handle=null,!0}return!1}onChunk(e,t,r,n,i){const s=e.commonPrefixIndex(r),o=e.split(s,r);if(s<r.length)e.createNode(s,t,r,n,i);else if(s===r.length){if(!o)throw new Error("Route already defined.");this.handle=n}}countParams(e){let t=0;for(let r=0;r<e.length;r++)e[r]===i&&t++;return t}}n.Node=o,Object.defineProperty(r,"__esModule",{value:!0});const l=n;function h(e,t){if(!t)throw new Error("Path is required.");if(!e)throw new Error("Bucket is required.");if("string"!=typeof e)throw new Error("Bucket should be a string.");if("string"!=typeof t)throw new Error("Path should be a string.")}var a=r.RoadRunner=class{constructor(){this.buckets={}}addRoute(e,t,r){if(h(e,t),"/"!==t[0]&&"*"!==t[0])throw new Error("The first character of a path should be `/` or `*`.");t=t.replace(/\*([A-z0-9]+)?\//g,":!/").replace(/\*$/g,":!"),this.buckets[e]||(this.buckets[e]=new l.Node),this.buckets[e].addRoute(t,r)}findRoute(e,t){if(h(e,t),!this.buckets[e])return null;const r=this.buckets[e].search(t);return null===r.value?null:{value:r.value,params:r.params}}};const d={b:1,f:2,i:3,u:4,l:5,h:6,n:7,c:8,s:9},c=["black","red","green","yellow","blue","magenta","cyan","white","crimson"];function u(e,t){return e?`[${e}m${t}[0m`:t}function p(e,t){for(const r of e.split(","))if(1===r.length)t=u(d[r],t);else{const[e,n]=r.split("/"),i=c.indexOf(e),s=c.indexOf(n);i>-1&&(t=u(30+i,t)),s>-1&&(t=u(40+s,t))}return t}function f(e){return(t,...r)=>{if("string"==typeof t)return p(e,t);const n=[t[0]];let i=1;for(const e of r){const r=t[i++];n.push(String(e),r)}return p(e,n.join(""))}}module.exports=p,module.exports=f;const g={titleTag:f("b,i,red/red"),messageTag:f("red/red"),defaultTitle:"Error"},m={titleTag:f("b,i,yellow/yellow"),messageTag:f("yellow/yellow"),defaultTitle:"Warn"},w={titleTag:f("b,blue"),messageTag:f("blue"),defaultTitle:"Info"},C={titleTag:f("b,green"),messageTag:f("green"),defaultTitle:"Success"},T={titleTag:f("b,cyan"),messageTag:f("cyan"),defaultTitle:"Put"},A={titleTag:f("b,crimson"),messageTag:f("crimson"),defaultTitle:"Patch"},E={titleTag:f("b,magenta"),messageTag:f("magenta"),defaultTitle:"Data"},N=/(https?:\/\/\S+)/gm;function b(t){const r=String(t);console.log(r.replace(N,(t=>e`${t}(u,blue)`)))}function v({titleTag:e,messageTag:t,defaultTitle:r}){return function(n,i){console.log(e(`${i??r}: `)+t(`${n}`))}}var I;function y(e,t){const r=`The request method: ${e.method} is not supported by the server and cannot be handled`;b.error(r,`Error ${I.NotImplemented}`),t.statusCode=I.NotImplemented,t.statusMessage=r,t.end()}function P(e,t,r){b.error("Unexpected Server Error",`Error ${I.InternalServerError}`),b.error(r.message),t.statusCode=I.InternalServerError,t.statusMessage="Internal Server Error",t.end()}function x(e,t){const r=`The request ${e.method} ${e.url} is not allowed`;t.statusCode=I.MethodNotAllowed,t.statusMessage=r,t.end()}function R(e,t){const r=`The request ${e.method} ${e.url} is not found`;t.statusCode=I.NotFound,t.statusMessage=r,t.end()}function S(e){let t=e;for(;t.startsWith("/");)t=t.slice(1);for(;t.endsWith("/");)t=t.slice(0,-1);return"/"+t}function M(e,t){const r=e??"",n=t??"";if(r.includes(":"))throw new Error("cant has semicolon");if(n.includes("*"))throw new Error("cant has semicolon");const i=[],s=n.split("/").reduce(((e,t)=>{if(t.includes(":")){const r=t.slice(1);if(!function(e){if(e.trim()!==e)return!1;try{new Function(e,"var "+e)}catch(e){return!1}return!0}(r))throw new Error(`invalid var name: ${r}`);return i.push(t.slice(1)),e+"/"+t}return e+"/"+t}),""),o=S(r);return{pathName:S(o+S(s)),prefix:o,props:i}}b.error=v(g),b.warn=v(m),b.info=v(w),b.success=v(C),b.put=v(T),b.patch=v(A),b.data=v(E),module.exports=b,function(e){e[e.Ok=200]="Ok",e[e.Created=201]="Created",e[e.Accepted=202]="Accepted",e[e.NonAuthoritativeInformation=203]="NonAuthoritativeInformation",e[e.NoContent=204]="NoContent",e[e.ResetContent=205]="ResetContent",e[e.PartialContent=206]="PartialContent",e[e.MultiStatus=207]="MultiStatus",e[e.AlreadyReported=208]="AlreadyReported",e[e.IMUsed=226]="IMUsed",e[e.BadRequest=400]="BadRequest",e[e.NotFound=404]="NotFound",e[e.MethodNotAllowed=405]="MethodNotAllowed",e[e.InternalServerError=500]="InternalServerError",e[e.NotImplemented=501]="NotImplemented"}(I||(I={})),module.exports=y,module.exports=P,module.exports=x,module.exports=R;class k{static ServerError=P;static NotFound=R;static MethodNotAllowed=x;static NotImplemented=y;static router=new a;static routeHandlers={GET:{},HEAD:{},POST:{},PUT:{},DELETE:{},CONNECTS:{},OPTIONS:{},TRACE:{},PATCH:{},ServerError:k.ServerError,NotFound:k.NotFound,MethodNotAllowed:k.MethodNotAllowed,NotImplemented:k.NotImplemented};static addRoute(e,{method:t,prefix:r,path:n}){const{pathName:i}=M(r,n);switch(t){case"GET":b.info(i,t);break;case"POST":b.warn(i,t);break;case"DELETE":b.error(i,t);break;case"PATCH":b.patch(i,t);break;case"PUT":b.put(i,t);break;default:b.data(i,t)}k.router.addRoute(t,i,e)}getRequestHandler(e){if(e.method){const t=k.router.findRoute(e.method,e.url);return t?{handler:t.value,params:t.params}:{handler:k.routeHandlers.NotFound}}return{handler:k.routeHandlers.NotImplemented}}}module.exports=k;export{k as default};
+var dist = {};
+
+var node = {};
+
+Object.defineProperty(node, "__esModule", { value: true });
+var Type;
+(function (Type) {
+    Type[Type["STATIC"] = 0] = "STATIC";
+    Type[Type["PARAM"] = 1] = "PARAM";
+})(Type || (Type = {}));
+const PARAM = ':';
+const SLASH = '/';
+const SLASH_CODE = SLASH.charCodeAt(0);
+class Node {
+    constructor(config = {}) {
+        this.indices = config.indices || '';
+        this.children = config.children || [];
+        this.childrenI = config.childrenI || {};
+        this.path = config.path || "";
+        this.handle = config.handle || null;
+        this.wildChild = config.wildChild || false;
+        this.type = config.type || Type.STATIC;
+        this.param = config.param || '';
+        this.pathLength = this.path.length;
+        this.childrenLength = this.children.length;
+    }
+    addRoute(fullPath, handle) {
+        const params = this.countParams(fullPath);
+        if (!this.isEmpty()) {
+            this.onChunk(this, fullPath, fullPath, handle, params);
+        }
+        else {
+            this.insertChild(fullPath, fullPath, handle, params);
+        }
+    }
+    search(searchPath) {
+        let n = this;
+        const params = {};
+        walk: while (true) {
+            // referring to length is technically a function call, cache it
+            const searchPathLength = searchPath.length;
+            if (searchPathLength > n.pathLength && searchPath.slice(0, n.pathLength) === n.path) {
+                searchPath = searchPath.slice(n.pathLength);
+                if (n.wildChild) {
+                    n = n.children[0];
+                    let end = 0;
+                    while (end < searchPathLength && searchPath.charCodeAt(end) !== SLASH_CODE) {
+                        end++;
+                    }
+                    const paramValue = searchPath.slice(0, end);
+                    if (!paramValue || !n.param) {
+                        return { value: null, params };
+                    }
+                    if (n.param !== '!') {
+                        params[n.param] = paramValue;
+                    }
+                    // We need to go deeper!
+                    if (end < searchPathLength) {
+                        if (n.childrenLength === 0) {
+                            return { value: null, params };
+                        }
+                        searchPath = searchPath.slice(end);
+                        n = n.children[0];
+                        continue walk;
+                    }
+                    return { value: n.handle, params };
+                }
+                // If n node does not have a wildcard child, look up the next child node and continue to walk down the tree
+                const c = searchPath.charCodeAt(0);
+                for (let i = 0; i < n.indices.length; i++) {
+                    if (c === n.indices.charCodeAt(i)) {
+                        n = n.children[i];
+                        continue walk;
+                    }
+                }
+            }
+            else if (searchPath === n.path) {
+                return { value: n.handle, params };
+            }
+            return { value: null, params };
+        }
+    }
+    hasChildren() {
+        return this.children.length > 0;
+    }
+    insertChild(fullPath, childPath, handle, numParams) {
+        let offset = 0; // Already handled chars of the path
+        let n = this;
+        // Find prefix until first wildcard
+        for (let i = 0, max = childPath.length; numParams > 0; i++) {
+            const c = childPath[i];
+            if (c !== PARAM) {
+                continue;
+            }
+            // Find wildcard end (either '/' or path end)
+            let end = i + 1;
+            while (end < max && childPath[end] !== "/") {
+                if (childPath[end] === PARAM) {
+                    throw new Error("only one wildcard per path segment is allowed, has: '" +
+                        childPath.slice(i) +
+                        "' in path '" +
+                        fullPath +
+                        "'");
+                }
+                else {
+                    end++;
+                }
+            }
+            // Check if this Node existing children which would be unreachable
+            // if we insert the wildcard here
+            if (n.hasChildren()) {
+                throw new Error("wildcard route '" +
+                    childPath.slice(i, end) +
+                    "' conflicts with existing children in path '" +
+                    fullPath +
+                    "'");
+            }
+            // check if the wildcard has a name
+            if (end - i < 2) {
+                throw new Error("wildcards must be named with a non-empty name in path '" +
+                    fullPath +
+                    "'");
+            }
+            // Split path at the beginning of the wildcard
+            if (i > 0) {
+                n.replacePath(childPath.slice(offset, i));
+                offset = i;
+            }
+            n = n.replaceChildren({ type: Type.PARAM });
+            numParams--;
+            if (end < max) {
+                n.replacePath(childPath.slice(offset, end));
+                offset = end;
+                n = n.replaceChildren();
+            }
+        }
+        // insert remaining path part and handle to the leaf
+        n.replacePath(childPath.slice(offset));
+        n.setHandle(handle);
+    }
+    setHandle(newHandle) {
+        this.handle = newHandle;
+    }
+    replaceChildren(config = {}) {
+        const child = new Node(config);
+        if (config.type === Type.PARAM) {
+            this.wildChild = true;
+        }
+        this.children = [child];
+        this.childrenLength = 1;
+        return child;
+    }
+    replacePath(newPath) {
+        if (newPath[0] === PARAM) {
+            this.param = newPath.slice(1);
+        }
+        this.path = newPath;
+        this.pathLength = newPath.length;
+    }
+    isEmpty() {
+        return !(this.path.length > 0 || this.children.length > 0);
+    }
+    processCharacter(fullPath, childPath, handle, numParams) {
+        const c = childPath[0];
+        // Slash after param
+        if (this.type === Type.PARAM && c === "/" && this.children.length === 1) {
+            this.onChunk(this.children[0], fullPath, childPath, handle, numParams);
+            return;
+        }
+        // Check if a child with the next path char exists
+        const existing = this.childrenI[c.charCodeAt(0)];
+        if (existing) {
+            existing.onChunk(existing, fullPath, childPath, handle, numParams);
+            return;
+        }
+        // Otherwise insert it
+        if (c !== PARAM) {
+            const child = new Node({ type: Type.STATIC });
+            this.children.push(child);
+            this.indices += c;
+            this.childrenI[c.charCodeAt(0)] = child;
+            this.childrenLength = this.children.length;
+            child.insertChild(fullPath, childPath, handle, numParams);
+            return;
+        }
+        this.insertChild(fullPath, childPath, handle, numParams);
+    }
+    processWildcard(fullPath, childPath, handle, numParams) {
+        const isMatch = childPath.length >= this.path.length &&
+            this.path === childPath.slice(0, this.path.length) &&
+            (this.path.length >= childPath.length || childPath[this.path.length] === "/");
+        if (isMatch) {
+            this.onChunk(this, fullPath, childPath, handle, numParams);
+            return;
+        }
+        // Wildcard conflict
+        const pathSeg = childPath.split("/")[0];
+        const prefix = fullPath.slice(0, fullPath.indexOf(pathSeg)) + this.path;
+        throw new Error(`'${pathSeg}' in new path '${fullPath}' conflicts with existing wildcard '${this.path}' in existing prefix '${prefix}'`);
+    }
+    createNode(i, fullPath, childPath, handle, numParams) {
+        const nextChildPath = childPath.slice(i);
+        if (this.wildChild) {
+            this.children[0].processWildcard(fullPath, nextChildPath, handle, numParams - 1);
+            return;
+        }
+        this.processCharacter(fullPath, nextChildPath, handle, numParams);
+    }
+    commonPrefixIndex(childPath) {
+        // Find the longest common prefix
+        // This also implies that the common prefix contains no PARAM
+        // since the existing key can't contain those chars.
+        let i = 0;
+        const max = Math.min(childPath.length, this.path.length);
+        while (i < max && this.path[i] === childPath[i]) {
+            i++;
+        }
+        return i;
+    }
+    split(i, childPath) {
+        if (i < this.path.length) {
+            const child = new Node({
+                path: this.path.slice(i),
+                wildChild: this.wildChild,
+                childrenI: this.childrenI,
+                children: this.children,
+                handle: this.handle,
+                indices: this.indices
+            });
+            this.children = [child];
+            this.indices = this.path[i];
+            this.childrenI = { [this.indices.charCodeAt(0)]: child };
+            this.childrenLength = 1;
+            this.wildChild = false;
+            this.path = childPath.slice(0, i);
+            this.pathLength = this.path.length;
+            this.handle = null;
+            return true;
+        }
+        return false;
+    }
+    onChunk(n, fullPath, childPath, fullPathHandle, numParams) {
+        const i = n.commonPrefixIndex(childPath);
+        const split = n.split(i, childPath);
+        // Make new node a child of this node
+        if (i < childPath.length) {
+            n.createNode(i, fullPath, childPath, fullPathHandle, numParams);
+        }
+        else if (i === childPath.length) {
+            // Make node a (in-path leaf)
+            if (!split) {
+                throw new Error('Route already defined.');
+            }
+            this.handle = fullPathHandle;
+        }
+    }
+    countParams(path) {
+        let n = 0;
+        for (let i = 0; i < path.length; i++) {
+            if (path[i] !== PARAM) {
+                continue;
+            }
+            n++;
+        }
+        return n;
+    }
+}
+node.Node = Node;
+
+Object.defineProperty(dist, "__esModule", { value: true });
+const node_1 = node;
+function typeCheck(bucket, path) {
+    if (!path) {
+        throw new Error('Path is required.');
+    }
+    if (!bucket) {
+        throw new Error('Bucket is required.');
+    }
+    // when used outside of typescript, it is possible for user to pass in the wrong parameters
+    if (typeof bucket !== 'string') {
+        throw new Error('Bucket should be a string.');
+    }
+    if (typeof path !== 'string') {
+        throw new Error('Path should be a string.');
+    }
+}
+class RoadRunner {
+    constructor() {
+        this.buckets = {};
+    }
+    addRoute(bucket, path, value) {
+        typeCheck(bucket, path);
+        // only check when building routes for performance, assume user will pass in correct values on lookup
+        if (path[0] !== '/' && path[0] !== '*') {
+            throw new Error('The first character of a path should be `/` or `*`.');
+        }
+        // convert wildcards into params (we suppress them from output later)
+        path = path.replace(/\*([A-z0-9]+)?\//g, ':!/').replace(/\*$/g, ':!');
+        if (!this.buckets[bucket]) {
+            this.buckets[bucket] = new node_1.Node();
+        }
+        this.buckets[bucket].addRoute(path, value);
+    }
+    findRoute(bucket, path) {
+        typeCheck(bucket, path);
+        if (!this.buckets[bucket]) {
+            return null;
+        }
+        const dynamic = this.buckets[bucket].search(path);
+        if (dynamic.value === null) {
+            return null;
+        }
+        return {
+            value: dynamic.value,
+            params: dynamic.params
+        };
+    }
+}
+var RoadRunner_1 = dist.RoadRunner = RoadRunner;
+
+const stylize$1 = require('./stylize');
+
+function Concollor(strings, ...values) {
+  const result = [strings[0]];
+
+  let i = 1;
+  for (const val of values) {
+    const str = strings[i++];
+
+    if (str.startsWith('(')) {
+      const pos = str.indexOf(')');
+      const styles = str.substring(1, pos);
+      const value = stylize$1(styles, val);
+      const rest = str.substring(pos + 1);
+
+      result.push(value, rest);
+    }
+  }
+
+  return result.join('');
+}
+
+const ANSI = {
+    /* 1 */ 'b': 1,
+    /* 2 */ 'f': 2,
+    /* 3 */ 'i': 3,
+    /* 4 */ 'u': 4,
+    /* 5 */ 'l': 5,
+    /* 6 */ 'h': 6,
+    /* 7 */ 'n': 7,
+    /* 8 */ 'c': 8,
+    /* 9 */ 's': 9, // strikethrough
+};
+const COLOR = [
+    /* 1 */ 'black',
+    /* 2 */ 'red',
+    /* 3 */ 'green',
+    /* 4 */ 'yellow',
+    /* 5 */ 'blue',
+    /* 6 */ 'magenta',
+    /* 7 */ 'cyan',
+    /* 8 */ 'white',
+    /* 9 */ 'crimson',
+];
+function esc(style, value) {
+    if (style) {
+        return `\x1b[${style}m${value}\x1b[0m`;
+    }
+    return value;
+}
+function stylize(styles, text) {
+    for (const style of styles.split(',')) {
+        if (style.length === 1) {
+            text = esc(ANSI[style], text);
+        }
+        else {
+            const [fg, bg] = style.split('/');
+            const fgColor = COLOR.indexOf(fg);
+            const bgColor = COLOR.indexOf(bg);
+            if (fgColor > -1) {
+                text = esc(30 + fgColor, text);
+            }
+            if (bgColor > -1) {
+                text = esc(40 + bgColor, text);
+            }
+        }
+    }
+    return text;
+}
+module.exports = stylize;
+
+function Tag(styles) {
+    return (strings, ...values) => {
+        if (typeof strings === 'string') {
+            return stylize(styles, strings);
+        }
+        const result = [strings[0]];
+        let i = 1;
+        for (const val of values) {
+            const str = strings[i++];
+            result.push(String(val), str);
+        }
+        return stylize(styles, result.join(''));
+    };
+}
+module.exports = Tag;
+
+const Error$1 = {
+    titleTag: Tag('b,i,red/red'),
+    messageTag: Tag('red/red'),
+    defaultTitle: 'Error',
+};
+const Warn = {
+    titleTag: Tag('b,i,yellow/yellow'),
+    messageTag: Tag('yellow/yellow'),
+    defaultTitle: 'Warn',
+};
+const Info = {
+    titleTag: Tag('b,blue'),
+    messageTag: Tag('blue'),
+    defaultTitle: 'Info',
+};
+const Success = {
+    titleTag: Tag('b,green'),
+    messageTag: Tag('green'),
+    defaultTitle: 'Success',
+};
+const Put = {
+    titleTag: Tag('b,cyan'),
+    messageTag: Tag('cyan'),
+    defaultTitle: 'Put',
+};
+const Patch = {
+    titleTag: Tag('b,crimson'),
+    messageTag: Tag('crimson'),
+    defaultTitle: 'Patch',
+};
+const Data = {
+    titleTag: Tag('b,magenta'),
+    messageTag: Tag('magenta'),
+    defaultTitle: 'Data',
+};
+const urlRegex = /(https?:\/\/\S+)/gm;
+
+function Log(message) {
+    const text = String(message);
+    console.log(text.replace(urlRegex, (url) => Concollor `${url}(u,blue)`));
+}
+function _print({ titleTag, messageTag, defaultTitle }) {
+    return function (message, title) {
+        console.log(titleTag(`${title ?? defaultTitle}: `) + messageTag(`${message}`));
+    };
+}
+Log.error = _print(Error$1);
+Log.warn = _print(Warn);
+Log.info = _print(Info);
+Log.success = _print(Success);
+Log.put = _print(Put);
+Log.patch = _print(Patch);
+Log.data = _print(Data);
+module.exports = Log;
+
+var StatusCodes;
+(function (StatusCodes) {
+    StatusCodes[StatusCodes["Ok"] = 200] = "Ok";
+    StatusCodes[StatusCodes["Created"] = 201] = "Created";
+    StatusCodes[StatusCodes["Accepted"] = 202] = "Accepted";
+    StatusCodes[StatusCodes["NonAuthoritativeInformation"] = 203] = "NonAuthoritativeInformation";
+    StatusCodes[StatusCodes["NoContent"] = 204] = "NoContent";
+    StatusCodes[StatusCodes["ResetContent"] = 205] = "ResetContent";
+    StatusCodes[StatusCodes["PartialContent"] = 206] = "PartialContent";
+    StatusCodes[StatusCodes["MultiStatus"] = 207] = "MultiStatus";
+    StatusCodes[StatusCodes["AlreadyReported"] = 208] = "AlreadyReported";
+    StatusCodes[StatusCodes["IMUsed"] = 226] = "IMUsed";
+    StatusCodes[StatusCodes["BadRequest"] = 400] = "BadRequest";
+    StatusCodes[StatusCodes["NotFound"] = 404] = "NotFound";
+    StatusCodes[StatusCodes["MethodNotAllowed"] = 405] = "MethodNotAllowed";
+    StatusCodes[StatusCodes["InternalServerError"] = 500] = "InternalServerError";
+    StatusCodes[StatusCodes["NotImplemented"] = 501] = "NotImplemented";
+})(StatusCodes || (StatusCodes = {}));
+
+function NotImplementedHandler(request, response) {
+    const message = `The request method: ${request.method} is not supported by the server and cannot be handled`;
+    Log.error(message, `Error ${StatusCodes.NotImplemented}`);
+    response.statusCode = StatusCodes.NotImplemented;
+    response.statusMessage = message;
+    response.end();
+}
+module.exports = NotImplementedHandler;
+
+function ServerErrorHandler(request, response, error) {
+    Log.error('Unexpected Server Error', `Error ${StatusCodes.InternalServerError}`);
+    Log.error(error.message);
+    response.statusCode = StatusCodes.InternalServerError;
+    response.statusMessage = 'Internal Server Error';
+    response.end();
+}
+module.exports = ServerErrorHandler;
+
+function MethodNotAllowedHandler(request, response) {
+    const message = `The request ${request.method} ${request.url} is not allowed`;
+    response.statusCode = StatusCodes.MethodNotAllowed;
+    response.statusMessage = message;
+    response.end();
+}
+module.exports = MethodNotAllowedHandler;
+
+function NotFoundHandler(request, response) {
+    const message = `The request ${request.method} ${request.url} is not found`;
+    response.statusCode = StatusCodes.NotFound;
+    response.statusMessage = message;
+    response.end();
+}
+module.exports = NotFoundHandler;
+
+function normalizeSlash(value) {
+    let val = value;
+    while (val.startsWith('/')) {
+        val = val.slice(1);
+    }
+    while (val.endsWith('/')) {
+        val = val.slice(0, -1);
+    }
+    return '/' + val;
+}
+function getPath(prefix, pathName) {
+    const routePrefix = prefix ?? '';
+    const routePathName = pathName ?? '';
+    if (routePrefix.includes(':')) {
+        throw new Error('cant has semicolon');
+    }
+    if (routePathName.includes('*')) {
+        throw new Error('cant has semicolon');
+    }
+    const props = [];
+    const normalizedPathName = routePathName.split('/').reduce((acc, character) => {
+        if (character.includes(':')) {
+            const propName = character.slice(1);
+            if (isVarName(propName)) {
+                props.push(character.slice(1));
+            }
+            else {
+                throw new Error(`invalid var name: ${propName}`);
+            }
+            return acc + '/' + character;
+        }
+        return acc + '/' + character;
+    }, '');
+    const normalizedPrefix = normalizeSlash(routePrefix);
+    return {
+        pathName: normalizeSlash(normalizedPrefix + normalizeSlash(normalizedPathName)),
+        prefix: normalizedPrefix,
+        props,
+    };
+}
+function isVarName(name) {
+    if (name.trim() !== name) {
+        return false;
+    }
+    try {
+        new Function(name, 'var ' + name);
+    }
+    catch (_) {
+        return false;
+    }
+    return true;
+}
+
+const GET = 'GET';
+const POST = 'POST';
+const PUT = 'PUT';
+const DELETE = 'DELETE';
+const PATCH = 'PATCH';
+
+class Router {
+    static ServerError = ServerErrorHandler;
+    static NotFound = NotFoundHandler;
+    static MethodNotAllowed = MethodNotAllowedHandler;
+    static NotImplemented = NotImplementedHandler;
+    static router = new RoadRunner_1();
+    static routeHandlers = {
+        GET: {},
+        HEAD: {},
+        POST: {},
+        PUT: {},
+        DELETE: {},
+        CONNECTS: {},
+        OPTIONS: {},
+        TRACE: {},
+        PATCH: {},
+        ServerError: Router.ServerError,
+        NotFound: Router.NotFound,
+        MethodNotAllowed: Router.MethodNotAllowed,
+        NotImplemented: Router.NotImplemented,
+    };
+    static addRoute(handler, { method, prefix, path }) {
+        const { pathName } = getPath(prefix, path);
+        switch (method) {
+            case GET:
+                Log.info(pathName, method);
+                break;
+            case POST:
+                Log.warn(pathName, method);
+                break;
+            case DELETE:
+                Log.error(pathName, method);
+                break;
+            case PATCH:
+                Log.patch(pathName, method);
+                break;
+            case PUT:
+                Log.put(pathName, method);
+                break;
+            default: Log.data(pathName, method);
+        }
+        Router.router.addRoute(method, pathName, handler);
+    }
+    getRequestHandler(request) {
+        if (request.method) {
+            const route = Router.router.findRoute(request.method, request.url);
+            if (route) {
+                return {
+                    handler: route.value,
+                    params: route.params,
+                };
+            }
+            return {
+                handler: Router.routeHandlers.NotFound,
+            };
+        }
+        return {
+            handler: Router.routeHandlers.NotImplemented,
+        };
+    }
+}
+module.exports = Router;
+
+export { Router as default };
 //# sourceMappingURL=index.js.map

@@ -1,8 +1,8 @@
-import { IncomingMessageType, ServerResponseType, methodsTypes } from '@/Routing/types';
-import { DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT, TRACE } from '@/Routing/methods';
-import { StatusCodes } from '@/Response/statusCodes';
-import MetaStore from '@/utils/metaStore';
-import type { IResult, ResponseHandlerType } from '@/Response/types';
+import { IncomingMessageType, ServerResponseType, methodsTypes } from '../../Routing/types';
+import { DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT, TRACE } from '../../Routing/methods';
+import { StatusCodes } from '../../Response/statusCodes';
+import MetaStore from '../../utils/metaStore';
+import type { IResult, ResponseHandlerType } from '../../Response/types';
 
 function asyncHandler(originalHandler: Function, meta: any): (
   request: IncomingMessageType,

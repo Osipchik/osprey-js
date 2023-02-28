@@ -1,2 +1,347 @@
-import t from"crypto";var e=t.randomBytes,n=16,r=function(){for(var t=e(n),r="",o=0;o<n;++o)r+=t[o].toString(16);return r}(),o=new RegExp('(\\\\)?"@__(F|R|D|M|S|A|U|I|B|L)-'+r+'-(\\d+)__@"',"g"),i=/\{\s*\[native code\]\s*\}/g,u=/function.*?\(/,s=/.*?=>.*?/,a=/[<>\/\u2028\u2029]/g,f=["*","async"],c={"<":"\\u003C",">":"\\u003E","/":"\\u002F","\u2028":"\\u2028","\u2029":"\\u2029"};function l(t){return c[t]}var d,p=function t(e,n){n||(n={}),"number"!=typeof n&&"string"!=typeof n||(n={space:n});var c,d=[],p=[],_=[],g=[],h=[],y=[],S=[],N=[],m=[],v=[];return n.ignoreFunction&&"function"==typeof e&&(e=void 0),void 0===e?String(e):(c=n.isJSON&&!n.space?JSON.stringify(e):JSON.stringify(e,n.isJSON?null:function(t,e){if(n.ignoreFunction&&function(t){var e=[];for(var n in t)"function"==typeof t[n]&&e.push(n);for(var r=0;r<e.length;r++)delete t[e[r]]}(e),!e&&void 0!==e&&e!==BigInt(0))return e;var o=this[t],i=typeof o;if("object"===i){if(o instanceof RegExp)return"@__R-"+r+"-"+(p.push(o)-1)+"__@";if(o instanceof Date)return"@__D-"+r+"-"+(_.push(o)-1)+"__@";if(o instanceof Map)return"@__M-"+r+"-"+(g.push(o)-1)+"__@";if(o instanceof Set)return"@__S-"+r+"-"+(h.push(o)-1)+"__@";if(o instanceof Array&&o.filter((function(){return!0})).length!==o.length)return"@__A-"+r+"-"+(y.push(o)-1)+"__@";if(o instanceof URL)return"@__L-"+r+"-"+(v.push(o)-1)+"__@"}return"function"===i?"@__F-"+r+"-"+(d.push(o)-1)+"__@":"undefined"===i?"@__U-"+r+"-"+(S.push(o)-1)+"__@":"number"!==i||isNaN(o)||isFinite(o)?"bigint"===i?"@__B-"+r+"-"+(m.push(o)-1)+"__@":e:"@__I-"+r+"-"+(N.push(o)-1)+"__@"},n.space),"string"!=typeof c?String(c):(!0!==n.unsafe&&(c=c.replace(a,l)),0===d.length&&0===p.length&&0===_.length&&0===g.length&&0===h.length&&0===y.length&&0===S.length&&0===N.length&&0===m.length&&0===v.length?c:c.replace(o,(function(e,r,o,a){return r?e:"D"===o?'new Date("'+_[a].toISOString()+'")':"R"===o?"new RegExp("+t(p[a].source)+', "'+p[a].flags+'")':"M"===o?"new Map("+t(Array.from(g[a].entries()),n)+")":"S"===o?"new Set("+t(Array.from(h[a].values()),n)+")":"A"===o?"Array.prototype.slice.call("+t(Object.assign({length:y[a].length},y[a]),n)+")":"U"===o?"undefined":"I"===o?N[a]:"B"===o?'BigInt("'+m[a]+'")':"L"===o?'new URL("'+v[a].toString()+'")':function(t){var e=t.toString();if(i.test(e))throw new TypeError("Serializing native function: "+t.name);if(u.test(e))return e;if(s.test(e))return e;var n=e.indexOf("("),r=e.substr(0,n).trim().split(" ").filter((function(t){return t.length>0}));return r.filter((function(t){return-1===f.indexOf(t)})).length>0?(r.indexOf("async")>-1?"async ":"")+"function"+(r.join("").indexOf("*")>-1?"*":"")+e.substr(n):e}(d[a])}))))};!function(t){t[t.Ok=200]="Ok",t[t.Created=201]="Created",t[t.Accepted=202]="Accepted",t[t.NonAuthoritativeInformation=203]="NonAuthoritativeInformation",t[t.NoContent=204]="NoContent",t[t.ResetContent=205]="ResetContent",t[t.PartialContent=206]="PartialContent",t[t.MultiStatus=207]="MultiStatus",t[t.AlreadyReported=208]="AlreadyReported",t[t.IMUsed=226]="IMUsed",t[t.BadRequest=400]="BadRequest",t[t.NotFound=404]="NotFound",t[t.MethodNotAllowed=405]="MethodNotAllowed",t[t.InternalServerError=500]="InternalServerError",t[t.NotImplemented=501]="NotImplemented"}(d||(d={}));const _=t=>({statusCode:t,contentType:"application/json",isJSON:!0});function g(t){return(e,n)=>{const r={...n,...t};let o,i=e;return r.isJSON&&(i=p(e,{isJSON:!0}),o="application/json"),o=o?r.contentType:"text/html; charset=UTF-8",(t,e,n)=>{e.statusCode=r.statusCode,e.setHeader("Content-Type",o),e.end(i)}}}const h={Ok:g(_(d.Ok)),Created:g(_(d.Created)),PartialContent:g(_(d.PartialContent)),BadRequest:g(_(d.BadRequest)),NotFound:g(_(d.NotFound)),InternalServerError:g(_(d.NotFound)),NotImplemented:g(_(d.NotImplemented)),Accepted:function(t){return(e,n)=>{const r={...n,...t};let o;return o=o?r.contentType:"text/html; charset=UTF-8",(t,n,i)=>{n.statusCode=r.statusCode,n.setHeader("Content-Type",o),n.end(e)}}}(_(d.Accepted))};export{h as Response};
+import require$$0 from 'crypto';
+
+var randombytes = require$$0.randomBytes;
+
+/*
+Copyright (c) 2014, Yahoo! Inc. All rights reserved.
+Copyrights licensed under the New BSD License.
+See the accompanying LICENSE file for terms.
+*/
+
+var randomBytes = randombytes;
+
+// Generate an internal UID to make the regexp pattern harder to guess.
+var UID_LENGTH          = 16;
+var UID                 = generateUID();
+var PLACE_HOLDER_REGEXP = new RegExp('(\\\\)?"@__(F|R|D|M|S|A|U|I|B|L)-' + UID + '-(\\d+)__@"', 'g');
+
+var IS_NATIVE_CODE_REGEXP = /\{\s*\[native code\]\s*\}/g;
+var IS_PURE_FUNCTION = /function.*?\(/;
+var IS_ARROW_FUNCTION = /.*?=>.*?/;
+var UNSAFE_CHARS_REGEXP   = /[<>\/\u2028\u2029]/g;
+
+var RESERVED_SYMBOLS = ['*', 'async'];
+
+// Mapping of unsafe HTML and invalid JavaScript line terminator chars to their
+// Unicode char counterparts which are safe to use in JavaScript strings.
+var ESCAPED_CHARS = {
+    '<'     : '\\u003C',
+    '>'     : '\\u003E',
+    '/'     : '\\u002F',
+    '\u2028': '\\u2028',
+    '\u2029': '\\u2029'
+};
+
+function escapeUnsafeChars(unsafeChar) {
+    return ESCAPED_CHARS[unsafeChar];
+}
+
+function generateUID() {
+    var bytes = randomBytes(UID_LENGTH);
+    var result = '';
+    for(var i=0; i<UID_LENGTH; ++i) {
+        result += bytes[i].toString(16);
+    }
+    return result;
+}
+
+function deleteFunctions(obj){
+    var functionKeys = [];
+    for (var key in obj) {
+        if (typeof obj[key] === "function") {
+            functionKeys.push(key);
+        }
+    }
+    for (var i = 0; i < functionKeys.length; i++) {
+        delete obj[functionKeys[i]];
+    }
+}
+
+var serializeJavascript = function serialize(obj, options) {
+    options || (options = {});
+
+    // Backwards-compatibility for `space` as the second argument.
+    if (typeof options === 'number' || typeof options === 'string') {
+        options = {space: options};
+    }
+
+    var functions = [];
+    var regexps   = [];
+    var dates     = [];
+    var maps      = [];
+    var sets      = [];
+    var arrays    = [];
+    var undefs    = [];
+    var infinities= [];
+    var bigInts = [];
+    var urls = [];
+
+    // Returns placeholders for functions and regexps (identified by index)
+    // which are later replaced by their string representation.
+    function replacer(key, value) {
+
+        // For nested function
+        if(options.ignoreFunction){
+            deleteFunctions(value);
+        }
+
+        if (!value && value !== undefined && value !== BigInt(0)) {
+            return value;
+        }
+
+        // If the value is an object w/ a toJSON method, toJSON is called before
+        // the replacer runs, so we use this[key] to get the non-toJSONed value.
+        var origValue = this[key];
+        var type = typeof origValue;
+
+        if (type === 'object') {
+            if(origValue instanceof RegExp) {
+                return '@__R-' + UID + '-' + (regexps.push(origValue) - 1) + '__@';
+            }
+
+            if(origValue instanceof Date) {
+                return '@__D-' + UID + '-' + (dates.push(origValue) - 1) + '__@';
+            }
+
+            if(origValue instanceof Map) {
+                return '@__M-' + UID + '-' + (maps.push(origValue) - 1) + '__@';
+            }
+
+            if(origValue instanceof Set) {
+                return '@__S-' + UID + '-' + (sets.push(origValue) - 1) + '__@';
+            }
+
+            if(origValue instanceof Array) {
+                var isSparse = origValue.filter(function(){return true}).length !== origValue.length;
+                if (isSparse) {
+                    return '@__A-' + UID + '-' + (arrays.push(origValue) - 1) + '__@';
+                }
+            }
+
+            if(origValue instanceof URL) {
+                return '@__L-' + UID + '-' + (urls.push(origValue) - 1) + '__@';
+            }
+        }
+
+        if (type === 'function') {
+            return '@__F-' + UID + '-' + (functions.push(origValue) - 1) + '__@';
+        }
+
+        if (type === 'undefined') {
+            return '@__U-' + UID + '-' + (undefs.push(origValue) - 1) + '__@';
+        }
+
+        if (type === 'number' && !isNaN(origValue) && !isFinite(origValue)) {
+            return '@__I-' + UID + '-' + (infinities.push(origValue) - 1) + '__@';
+        }
+
+        if (type === 'bigint') {
+            return '@__B-' + UID + '-' + (bigInts.push(origValue) - 1) + '__@';
+        }
+
+        return value;
+    }
+
+    function serializeFunc(fn) {
+      var serializedFn = fn.toString();
+      if (IS_NATIVE_CODE_REGEXP.test(serializedFn)) {
+          throw new TypeError('Serializing native function: ' + fn.name);
+      }
+
+      // pure functions, example: {key: function() {}}
+      if(IS_PURE_FUNCTION.test(serializedFn)) {
+          return serializedFn;
+      }
+
+      // arrow functions, example: arg1 => arg1+5
+      if(IS_ARROW_FUNCTION.test(serializedFn)) {
+          return serializedFn;
+      }
+
+      var argsStartsAt = serializedFn.indexOf('(');
+      var def = serializedFn.substr(0, argsStartsAt)
+        .trim()
+        .split(' ')
+        .filter(function(val) { return val.length > 0 });
+
+      var nonReservedSymbols = def.filter(function(val) {
+        return RESERVED_SYMBOLS.indexOf(val) === -1
+      });
+
+      // enhanced literal objects, example: {key() {}}
+      if(nonReservedSymbols.length > 0) {
+          return (def.indexOf('async') > -1 ? 'async ' : '') + 'function'
+            + (def.join('').indexOf('*') > -1 ? '*' : '')
+            + serializedFn.substr(argsStartsAt);
+      }
+
+      // arrow functions
+      return serializedFn;
+    }
+
+    // Check if the parameter is function
+    if (options.ignoreFunction && typeof obj === "function") {
+        obj = undefined;
+    }
+    // Protects against `JSON.stringify()` returning `undefined`, by serializing
+    // to the literal string: "undefined".
+    if (obj === undefined) {
+        return String(obj);
+    }
+
+    var str;
+
+    // Creates a JSON string representation of the value.
+    // NOTE: Node 0.12 goes into slow mode with extra JSON.stringify() args.
+    if (options.isJSON && !options.space) {
+        str = JSON.stringify(obj);
+    } else {
+        str = JSON.stringify(obj, options.isJSON ? null : replacer, options.space);
+    }
+
+    // Protects against `JSON.stringify()` returning `undefined`, by serializing
+    // to the literal string: "undefined".
+    if (typeof str !== 'string') {
+        return String(str);
+    }
+
+    // Replace unsafe HTML and invalid JavaScript line terminator chars with
+    // their safe Unicode char counterpart. This _must_ happen before the
+    // regexps and functions are serialized and added back to the string.
+    if (options.unsafe !== true) {
+        str = str.replace(UNSAFE_CHARS_REGEXP, escapeUnsafeChars);
+    }
+
+    if (functions.length === 0 && regexps.length === 0 && dates.length === 0 && maps.length === 0 && sets.length === 0 && arrays.length === 0 && undefs.length === 0 && infinities.length === 0 && bigInts.length === 0 && urls.length === 0) {
+        return str;
+    }
+
+    // Replaces all occurrences of function, regexp, date, map and set placeholders in the
+    // JSON string with their string representations. If the original value can
+    // not be found, then `undefined` is used.
+    return str.replace(PLACE_HOLDER_REGEXP, function (match, backSlash, type, valueIndex) {
+        // The placeholder may not be preceded by a backslash. This is to prevent
+        // replacing things like `"a\"@__R-<UID>-0__@"` and thus outputting
+        // invalid JS.
+        if (backSlash) {
+            return match;
+        }
+
+        if (type === 'D') {
+            return "new Date(\"" + dates[valueIndex].toISOString() + "\")";
+        }
+
+        if (type === 'R') {
+            return "new RegExp(" + serialize(regexps[valueIndex].source) + ", \"" + regexps[valueIndex].flags + "\")";
+        }
+
+        if (type === 'M') {
+            return "new Map(" + serialize(Array.from(maps[valueIndex].entries()), options) + ")";
+        }
+
+        if (type === 'S') {
+            return "new Set(" + serialize(Array.from(sets[valueIndex].values()), options) + ")";
+        }
+
+        if (type === 'A') {
+            return "Array.prototype.slice.call(" + serialize(Object.assign({ length: arrays[valueIndex].length }, arrays[valueIndex]), options) + ")";
+        }
+
+        if (type === 'U') {
+            return 'undefined'
+        }
+
+        if (type === 'I') {
+            return infinities[valueIndex];
+        }
+
+        if (type === 'B') {
+            return "BigInt(\"" + bigInts[valueIndex] + "\")";
+        }
+
+        if (type === 'L') {
+            return "new URL(\"" + urls[valueIndex].toString() + "\")"; 
+        }
+
+        var fn = functions[valueIndex];
+
+        return serializeFunc(fn);
+    });
+};
+
+var StatusCodes;
+(function (StatusCodes) {
+    StatusCodes[StatusCodes["Ok"] = 200] = "Ok";
+    StatusCodes[StatusCodes["Created"] = 201] = "Created";
+    StatusCodes[StatusCodes["Accepted"] = 202] = "Accepted";
+    StatusCodes[StatusCodes["NonAuthoritativeInformation"] = 203] = "NonAuthoritativeInformation";
+    StatusCodes[StatusCodes["NoContent"] = 204] = "NoContent";
+    StatusCodes[StatusCodes["ResetContent"] = 205] = "ResetContent";
+    StatusCodes[StatusCodes["PartialContent"] = 206] = "PartialContent";
+    StatusCodes[StatusCodes["MultiStatus"] = 207] = "MultiStatus";
+    StatusCodes[StatusCodes["AlreadyReported"] = 208] = "AlreadyReported";
+    StatusCodes[StatusCodes["IMUsed"] = 226] = "IMUsed";
+    StatusCodes[StatusCodes["BadRequest"] = 400] = "BadRequest";
+    StatusCodes[StatusCodes["NotFound"] = 404] = "NotFound";
+    StatusCodes[StatusCodes["MethodNotAllowed"] = 405] = "MethodNotAllowed";
+    StatusCodes[StatusCodes["InternalServerError"] = 500] = "InternalServerError";
+    StatusCodes[StatusCodes["NotImplemented"] = 501] = "NotImplemented";
+})(StatusCodes || (StatusCodes = {}));
+
+const defaultOptions = (statusCode) => ({
+    statusCode,
+    contentType: 'application/json',
+    isJSON: true,
+});
+function resultResponseFabric(defaultOptions) {
+    return (result, options) => {
+        const currentOptions = { ...options, ...defaultOptions };
+        let contentType;
+        let stringifiedResult = result;
+        if (currentOptions.isJSON) {
+            stringifiedResult = serializeJavascript(result, { isJSON: true });
+            contentType = 'application/json';
+        }
+        if (!contentType) {
+            contentType = 'text/html; charset=UTF-8';
+        }
+        else {
+            contentType = currentOptions.contentType;
+        }
+        return (request, response, meta) => {
+            response.statusCode = currentOptions.statusCode;
+            response.setHeader('Content-Type', contentType);
+            response.end(stringifiedResult);
+        };
+    };
+}
+function textResponseFabric(defaultOptions) {
+    return (message, options) => {
+        const currentOptions = { ...options, ...defaultOptions };
+        let contentType;
+        if (!contentType) {
+            contentType = 'text/html; charset=UTF-8';
+        }
+        else {
+            contentType = currentOptions.contentType;
+        }
+        return (request, response, meta) => {
+            response.statusCode = currentOptions.statusCode;
+            response.setHeader('Content-Type', contentType);
+            response.end(message);
+        };
+    };
+}
+const Response = {
+    Ok: resultResponseFabric(defaultOptions(StatusCodes.Ok)),
+    Created: resultResponseFabric(defaultOptions(StatusCodes.Created)),
+    PartialContent: resultResponseFabric(defaultOptions(StatusCodes.PartialContent)),
+    BadRequest: resultResponseFabric(defaultOptions(StatusCodes.BadRequest)),
+    NotFound: resultResponseFabric(defaultOptions(StatusCodes.NotFound)),
+    InternalServerError: resultResponseFabric(defaultOptions(StatusCodes.NotFound)),
+    NotImplemented: resultResponseFabric(defaultOptions(StatusCodes.NotImplemented)),
+    Accepted: textResponseFabric(defaultOptions(StatusCodes.Accepted)),
+};
+
+export { Response };
 //# sourceMappingURL=index.js.map

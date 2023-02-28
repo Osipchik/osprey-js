@@ -3,14 +3,12 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import replace from '@rollup/plugin-replace';
-import { terser } from 'rollup-plugin-terser';
+// import terser from '@rollup/plugin-terser';
 const packageJson = require('./package.json');
 import { getFolders } from './scripts/buildUtils.js';
 import generatePackageJson from 'rollup-plugin-generate-package-json';
 import json from '@rollup/plugin-json';
 import dts from 'rollup-plugin-dts';
-
-// console.log(dts.default);
 
 const plugins = [
   json(),
@@ -21,11 +19,10 @@ const plugins = [
     preventAssignment: true,
   }),
   commonjs(),
-  typescript({
-    tsconfig: './tsconfig.json',
-  }),
-  terser(),
+  typescript(),
+  // terser(),
 ];
+
 const subfolderPlugins = (folderName) => [
   ...plugins,
   generatePackageJson({
@@ -83,7 +80,6 @@ export default [
     input: './packages/index.ts',
     output: [{ file: 'dist/index.d.ts', format: 'es' }],
     plugins: [
-      json(),
       dts.default(),
     ],
   }

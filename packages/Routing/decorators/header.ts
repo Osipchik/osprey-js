@@ -1,4 +1,4 @@
-import MetaStore from '@/utils/metaStore';
+import MetaStore from '../../utils/metaStore';
 
 function Header(
   name: string,

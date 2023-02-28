@@ -1,4 +1,4 @@
-import Concollor from '@/utils/Logger/concollor';
+import Concollor from '../../utils/Logger/concollor';
 import { IDecorator, Info, urlRegex, Warn, Error, Success, Data, Put, Patch } from '@/utils/Logger/utils';
 
 type printType = (message: string, title?: string) => void;

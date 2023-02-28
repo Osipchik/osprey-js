@@ -1,6 +1,6 @@
-import MiddlewareError from '@/utils/Error/MiddlewareError';
-import { PreHandler, PreHandlerAsync } from '@/Middleware/type';
-import { IncomingMessageType, ServerResponseType } from '@/Routing/types';
+import MiddlewareError from '../utils/Error/MiddlewareError';
+import { PreHandler, PreHandlerAsync } from '..//Middleware/type';
+import { IncomingMessageType, ServerResponseType } from '../Routing/types';
 
 class Middleware {
   static readonly middlewares: PreHandler[] = [];

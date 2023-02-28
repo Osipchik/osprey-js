@@ -1,4 +1,4 @@
-import { IncomingMessageType, ServerResponseType } from '@/Routing/types';
+import { IncomingMessageType, ServerResponseType } from '../Routing/types';
 
 export type PreHandler = (
   request: IncomingMessageType,

@@ -1,5 +1,5 @@
 import serialize from 'serialize-javascript';
-import { IncomingMessageType, ServerResponseType } from '@/Routing/types';
+import { IncomingMessageType, ServerResponseType } from '../Routing/types';
 import { StatusCodes } from './statusCodes';
 import { IOptions, ResponseHandlerType } from './types';
 
