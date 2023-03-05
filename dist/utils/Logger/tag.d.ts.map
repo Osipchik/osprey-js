@@ -1,1 +1,0 @@
-{"version":3,"file":"tag.d.ts","sourceRoot":"","sources":["../../../../packages/utils/Logger/tag.ts"],"names":[],"mappings":"AAEA,MAAM,MAAM,aAAa,GAAG,CAAC,OAAO,EAAE,MAAM,GAAG,MAAM,EAAE,EAAE,GAAG,MAAM,EAAE,OAAO,EAAE,KAAK,MAAM,CAAC;AAEzF,iBAAS,GAAG,CAAC,MAAM,EAAE,MAAM,GAAG,aAAa,CAgB1C;AAED,eAAe,GAAG,CAAC"}

@@ -2,7 +2,7 @@ import { IncomingMessageType, ServerResponseType, methodsTypes } from '../../Rou
 import { DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT, TRACE } from '../../Routing/methods';
 import { StatusCodes } from '../../Response/statusCodes';
 import MetaStore from '../../utils/metaStore';
-import type { IResult, ResponseHandlerType } from '../../Response/types';
+import type { ResponseHandlerType } from '../../Response/types';
 
 function asyncHandler(originalHandler: Function, meta: any): (
   request: IncomingMessageType,
@@ -25,7 +25,7 @@ function asyncHandler(originalHandler: Function, meta: any): (
 
 function decoratorFabric(
   method: methodsTypes,
-  path: string,
+  path?: string,
   statusCode?: StatusCodes,
 ): MethodDecorator {
   return (
@@ -39,7 +39,7 @@ function decoratorFabric(
     descriptor.value = asyncHandler(originalDescriptorValue, meta);
 
     MetaStore.addMeta(descriptor, 'meta', {
-      path,
+      path: path || '',
       method,
     })
 
@@ -47,34 +47,34 @@ function decoratorFabric(
   };
 }
 
-export function Get(path: string, statusCode?: StatusCodes) {
+export function Get(path?: string, statusCode?: StatusCodes) {
   return decoratorFabric(GET, path, statusCode);
 }
 
-export function Put(path: string, statusCode?: StatusCodes) {
+export function Put(path?: string, statusCode?: StatusCodes) {
   return decoratorFabric(PUT, path, statusCode);
 }
 
-export function Post(path: string, statusCode?: StatusCodes) {
+export function Post(path?: string, statusCode?: StatusCodes) {
   return decoratorFabric(POST, path, statusCode);
 }
 
-export function Delete(path: string, statusCode?: StatusCodes) {
+export function Delete(path?: string, statusCode?: StatusCodes) {
   return decoratorFabric(DELETE, path, statusCode);
 }
 
-export function Patch(path: string, statusCode?: StatusCodes) {
+export function Patch(path?: string, statusCode?: StatusCodes) {
   return decoratorFabric(PATCH, path, statusCode);
 }
 
-export function Trace(path: string, statusCode?: StatusCodes) {
+export function Trace(path?: string, statusCode?: StatusCodes) {
   return decoratorFabric(TRACE, path, statusCode);
 }
 
-export function Options(path: string, statusCode?: StatusCodes) {
+export function Options(path?: string, statusCode?: StatusCodes) {
   return decoratorFabric(OPTIONS, path, statusCode);
 }
 
-export function Head(path: string, statusCode?: StatusCodes) {
+export function Head(path?: string, statusCode?: StatusCodes) {
   return decoratorFabric(HEAD, path, statusCode);
 }

@@ -1,0 +1,1 @@
+{"version":3,"file":"MethodNotAllowedHandler.d.ts","sourceRoot":"","sources":["../../../packages/Routing/ErrorHandlers/MethodNotAllowedHandler.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,mBAAmB,EAAE,kBAAkB,EAAE,MAAM,qBAAqB,CAAC;AAE9E,iBAAS,uBAAuB,CAC9B,OAAO,EAAE,mBAAmB,EAC5B,QAAQ,EAAE,kBAAkB,QAO7B;AAED,eAAe,uBAAuB,CAAC"}

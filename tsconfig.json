@@ -1,8 +1,38 @@
 {
-  "extends": "./tsconfig-base.json",
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "ts-node": {
+    "files": true,
+    "swc": true
+  },
   "compilerOptions": {
-    "module": "esnext",
-    "outDir": "dist/mjs",
-    "target": "esnext"
-  }
+    "target": "esnext",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "build",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    "moduleResolution": "node",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "noImplicitThis": false,
+    "removeComments": false,
+    "noEmitOnError": true,
+    "rootDir": "./packages",
+    "paths": {
+      "@/*": ["./packages/*"],
+    },
+  },
+  "include": [
+    "packages",
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
 }

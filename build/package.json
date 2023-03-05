@@ -1,0 +1,30 @@
+{
+  "author": "Tim Osipchik",
+  "license": "MIT",
+  "name": "osprey-js",
+  "version": "0.0.26",
+  "description": "modern fast and lightweight backend framework",
+  "main": "./index.js",
+  "module": "./index.js",
+  "dependencies": {
+    "@parisholley/road-runner": "^1.1.8",
+    "dotenv": "^16.0.3",
+    "serialize-javascript": "^6.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Osipchik/osprey-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Osipchik/Lark/issues"
+  },
+  "homepage": "https://github.com/Osipchik/Lark#readme",
+  "keywords": [
+    "api",
+    "backend",
+    "js",
+    "rest",
+    "node",
+    "express"
+  ]
+}

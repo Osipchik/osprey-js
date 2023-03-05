@@ -83,7 +83,7 @@ interface IResponse {
   Accepted: ResponseTextFunctionType;
 }
 
-export const Response: IResponse = {
+const Response: IResponse = {
   Ok: resultResponseFabric(defaultOptions(StatusCodes.Ok)),
   Created: resultResponseFabric(defaultOptions(StatusCodes.Created)),
   PartialContent: resultResponseFabric(defaultOptions(StatusCodes.PartialContent)),
@@ -94,3 +94,5 @@ export const Response: IResponse = {
 
   Accepted: textResponseFabric(defaultOptions(StatusCodes.Accepted)),
 };
+
+export { Response };

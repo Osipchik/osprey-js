@@ -1,7 +1,0 @@
-{
-  "name": "osprey-js/Server",
-  "private": true,
-  "main": "../cjs/index.js",
-  "module": "./index.js",
-  "types": "./index.d.ts"
-}
