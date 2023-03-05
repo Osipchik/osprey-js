@@ -1,23 +1,2 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.StatusCodes = void 0;
-var StatusCodes;
-(function (StatusCodes) {
-    StatusCodes[StatusCodes["Ok"] = 200] = "Ok";
-    StatusCodes[StatusCodes["Created"] = 201] = "Created";
-    StatusCodes[StatusCodes["Accepted"] = 202] = "Accepted";
-    StatusCodes[StatusCodes["NonAuthoritativeInformation"] = 203] = "NonAuthoritativeInformation";
-    StatusCodes[StatusCodes["NoContent"] = 204] = "NoContent";
-    StatusCodes[StatusCodes["ResetContent"] = 205] = "ResetContent";
-    StatusCodes[StatusCodes["PartialContent"] = 206] = "PartialContent";
-    StatusCodes[StatusCodes["MultiStatus"] = 207] = "MultiStatus";
-    StatusCodes[StatusCodes["AlreadyReported"] = 208] = "AlreadyReported";
-    StatusCodes[StatusCodes["IMUsed"] = 226] = "IMUsed";
-    StatusCodes[StatusCodes["BadRequest"] = 400] = "BadRequest";
-    StatusCodes[StatusCodes["NotFound"] = 404] = "NotFound";
-    StatusCodes[StatusCodes["MethodNotAllowed"] = 405] = "MethodNotAllowed";
-    StatusCodes[StatusCodes["InternalServerError"] = 500] = "InternalServerError";
-    StatusCodes[StatusCodes["NotImplemented"] = 501] = "NotImplemented";
-})(StatusCodes = exports.StatusCodes || (exports.StatusCodes = {}));
-;
+"use strict";var m=Object.defineProperty;var I=Object.getOwnPropertyDescriptor;var M=Object.getOwnPropertyNames;var R=Object.prototype.hasOwnProperty;var c=(l,r)=>{for(var N in r)m(l,N,{get:r[N],enumerable:!0})},h=(l,r,N,p)=>{if(r&&typeof r=="object"||typeof r=="function")for(let i of M(r))!R.call(l,i)&&i!==N&&m(l,i,{get:()=>r[i],enumerable:!(p=I(r,i))||p.enumerable});return l};var v=l=>h(m({},"__esModule",{value:!0}),l);var f={};c(f,{StatusCodes:()=>A});module.exports=v(f);var A=(n=>(n[n.Ok=200]="Ok",n[n.Created=201]="Created",n[n.Accepted=202]="Accepted",n[n.NonAuthoritativeInformation=203]="NonAuthoritativeInformation",n[n.NoContent=204]="NoContent",n[n.ResetContent=205]="ResetContent",n[n.PartialContent=206]="PartialContent",n[n.MultiStatus=207]="MultiStatus",n[n.AlreadyReported=208]="AlreadyReported",n[n.IMUsed=226]="IMUsed",n[n.BadRequest=400]="BadRequest",n[n.NotFound=404]="NotFound",n[n.MethodNotAllowed=405]="MethodNotAllowed",n[n.InternalServerError=500]="InternalServerError",n[n.NotImplemented=501]="NotImplemented",n))(A||{});0&&(module.exports={StatusCodes});
 //# sourceMappingURL=statusCodes.js.map

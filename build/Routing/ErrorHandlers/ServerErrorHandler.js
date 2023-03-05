@@ -1,17 +1,2 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const Logger_1 = __importDefault(require("../../utils/Logger"));
-const statusCodes_1 = require("../../Response/statusCodes");
-function ServerErrorHandler(request, response, error) {
-    Logger_1.default.error('Unexpected Server Error', `Error ${statusCodes_1.StatusCodes.InternalServerError}`);
-    Logger_1.default.error(error.message);
-    response.statusCode = statusCodes_1.StatusCodes.InternalServerError;
-    response.statusMessage = 'Internal Server Error';
-    response.end();
-}
-exports.default = ServerErrorHandler;
-module.exports = ServerErrorHandler;
+"use strict";var s=Object.defineProperty;var k=Object.getOwnPropertyDescriptor;var q=Object.getOwnPropertyNames;var z=Object.prototype.hasOwnProperty;var i=(e,r)=>s(e,"name",{value:r,configurable:!0});var j=(e,r)=>()=>(e&&(r=e(e=0)),r);var I=(e,r)=>{for(var t in r)s(e,t,{get:r[t],enumerable:!0})},U=(e,r,t,a)=>{if(r&&typeof r=="object"||typeof r=="function")for(let o of q(r))!z.call(e,o)&&o!==t&&s(e,o,{get:()=>r[o],enumerable:!(a=k(r,o))||a.enumerable});return e};var x=e=>U(s({},"__esModule",{value:!0}),e);var v={};I(v,{default:()=>f});function T(e,r){return e?`\x1B[${e}m${r}\x1B[0m`:r}function d(e,r){for(let t of e.split(","))if(t.length===1)r=T(B[t],r);else{let[a,o]=t.split("/"),l=b.indexOf(a),c=b.indexOf(o);l>-1&&(r=T(30+l,r)),c>-1&&(r=T(40+c,r))}return r}var B,b,f,m=j(()=>{"use strict";B={b:1,f:2,i:3,u:4,l:5,h:6,n:7,c:8,s:9},b=["black","red","green","yellow","blue","magenta","cyan","white","crimson"];i(T,"esc");i(d,"stylize");f=d;module.exports=d});var _={};I(_,{default:()=>H});module.exports=x(_);var F=(m(),x(v));function u(e,...r){let t=[e[0]],a=1;for(let o of r){let l=e[a++];if(l.startsWith("(")){let c=l.indexOf(")"),O=l.substring(1,c),$=F(O,o),W=l.substring(c+1);t.push($,W)}}return t.join("")}i(u,"Concollor");m();function h(e){return(r,...t)=>{if(typeof r=="string")return f(e,r);let a=[r[0]],o=1;for(let l of t){let c=r[o++];a.push(String(l),c)}return f(e,a.join(""))}}i(h,"Tag");var n=h;module.exports=h;var D={titleTag:n("b,i,red/red"),messageTag:n("red/red"),defaultTitle:"Error"},R={titleTag:n("b,i,yellow/yellow"),messageTag:n("yellow/yellow"),defaultTitle:"Warn"},E={titleTag:n("b,blue"),messageTag:n("blue"),defaultTitle:"Info"},w={titleTag:n("b,green"),messageTag:n("green"),defaultTitle:"Success"},L={titleTag:n("b,cyan"),messageTag:n("cyan"),defaultTitle:"Put"},P={titleTag:n("b,crimson"),messageTag:n("crimson"),defaultTitle:"Patch"},A={titleTag:n("b,magenta"),messageTag:n("magenta"),defaultTitle:"Data"},M=/(https?:\/\/\S+)/gm;function g(e){let r=String(e);console.log(r.replace(M,t=>u`${t}(u,blue)`))}i(g,"Log");function p({titleTag:e,messageTag:r,defaultTitle:t}){return function(a,o){console.log(e(`${o??t}: `)+r(`${a}`))}}i(p,"_print");g.error=p(D);g.warn=p(R);g.info=p(E);g.success=p(w);g.put=p(L);g.patch=p(P);g.data=p(A);var y=g;module.exports=g;function N(e,r,t){y.error("Unexpected Server Error",`Error ${500}`),y.error(t.message),r.statusCode=500,r.statusMessage="Internal Server Error",r.end()}i(N,"ServerErrorHandler");var H=N;module.exports=N;0&&(module.exports={});
 //# sourceMappingURL=ServerErrorHandler.js.map

@@ -1,5 +1,2 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-;
-;
+"use strict";var n=Object.defineProperty;var r=Object.getOwnPropertyDescriptor;var a=Object.getOwnPropertyNames;var i=Object.prototype.hasOwnProperty;var u=(s,e,p,o)=>{if(e&&typeof e=="object"||typeof e=="function")for(let t of a(e))!i.call(s,t)&&t!==p&&n(s,t,{get:()=>e[t],enumerable:!(o=r(e,t))||o.enumerable});return s};var y=s=>u(n({},"__esModule",{value:!0}),s);var d={};module.exports=y(d);
 //# sourceMappingURL=types.js.map

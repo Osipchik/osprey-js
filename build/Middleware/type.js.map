@@ -1,1 +1,7 @@
-{"version":3,"file":"type.js","sourceRoot":"","sources":["../../packages/Middleware/type.ts"],"names":[],"mappings":""}
+{
+  "version": 3,
+  "sources": ["../../packages/Middleware/type.ts"],
+  "sourcesContent": ["import { IncomingMessageType, ServerResponseType } from '../Routing/types';\n\nexport type PreHandler = (\n  request: IncomingMessageType,\n  response: ServerResponseType,\n  next: (args?: unknown) => void,\n) => void;\n\nexport type PreHandlerAsync = (\n  request: IncomingMessageType,\n  response: ServerResponseType,\n  next: (args?: unknown) => void,\n) => Promise<void>;\n"],
+  "mappings": "+WAAA,IAAAA,EAAA,kBAAAC,EAAAD",
+  "names": ["type_exports", "__toCommonJS"]
+}

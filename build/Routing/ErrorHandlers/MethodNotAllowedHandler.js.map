@@ -1,1 +1,7 @@
-{"version":3,"file":"MethodNotAllowedHandler.js","sourceRoot":"","sources":["../../../packages/Routing/ErrorHandlers/MethodNotAllowedHandler.ts"],"names":[],"mappings":";;AAAA,4DAAyD;AAGzD,SAAS,uBAAuB,CAC9B,OAA4B,EAC5B,QAA4B;IAE5B,MAAM,OAAO,GAAG,eAAe,OAAO,CAAC,MAAM,IAAI,OAAO,CAAC,GAAG,iBAAiB,CAAC;IAE9E,QAAQ,CAAC,UAAU,GAAG,yBAAW,CAAC,gBAAgB,CAAC;IACnD,QAAQ,CAAC,aAAa,GAAG,OAAO,CAAC;IACjC,QAAQ,CAAC,GAAG,EAAE,CAAC;AACjB,CAAC;AAED,kBAAe,uBAAuB,CAAC;AACvC,MAAM,CAAC,OAAO,GAAG,uBAAuB,CAAC"}
+{
+  "version": 3,
+  "sources": ["../../../packages/Routing/ErrorHandlers/MethodNotAllowedHandler.ts"],
+  "sourcesContent": ["import { StatusCodes } from '../../Response/statusCodes';\nimport { IncomingMessageType, ServerResponseType } from '../../Routing/types';\n\nfunction MethodNotAllowedHandler (\n  request: IncomingMessageType,\n  response: ServerResponseType,\n) {\n  const message = `The request ${request.method} ${request.url} is not allowed`;\n\n  response.statusCode = StatusCodes.MethodNotAllowed;\n  response.statusMessage = message;\n  response.end();\n}\n\nexport default MethodNotAllowedHandler;\nmodule.exports = MethodNotAllowedHandler;\n"],
+  "mappings": "4dAAA,IAAAA,EAAA,GAAAC,EAAAD,EAAA,aAAAE,IAAA,eAAAC,EAAAH,GAGA,SAASI,EACPC,EACAC,EACA,CACA,IAAMC,EAAU,eAAeF,EAAQ,UAAUA,EAAQ,qBAEzDC,EAAS,WAAa,IACtBA,EAAS,cAAgBC,EACzBD,EAAS,IAAI,CACf,CATSE,EAAAJ,EAAA,2BAWT,IAAOK,EAAQL,EACf,OAAO,QAAUA",
+  "names": ["MethodNotAllowedHandler_exports", "__export", "MethodNotAllowedHandler_default", "__toCommonJS", "MethodNotAllowedHandler", "request", "response", "message", "__name", "MethodNotAllowedHandler_default"]
+}

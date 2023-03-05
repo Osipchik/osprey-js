@@ -1,12 +1,2 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const statusCodes_1 = require("../../Response/statusCodes");
-function NotFoundHandler(request, response) {
-    const message = `The request ${request.method} ${request.url} is not found`;
-    response.statusCode = statusCodes_1.StatusCodes.NotFound;
-    response.statusMessage = message;
-    response.end();
-}
-exports.default = NotFoundHandler;
-module.exports = NotFoundHandler;
+"use strict";var p=Object.defineProperty;var N=Object.getOwnPropertyDescriptor;var c=Object.getOwnPropertyNames;var f=Object.prototype.hasOwnProperty;var l=(r,n)=>p(r,"name",{value:n,configurable:!0});var g=(r,n)=>{for(var e in n)p(r,e,{get:n[e],enumerable:!0})},I=(r,n,e,i)=>{if(n&&typeof n=="object"||typeof n=="function")for(let m of c(n))!f.call(r,m)&&m!==e&&p(r,m,{get:()=>n[m],enumerable:!(i=N(n,m))||i.enumerable});return r};var M=r=>I(p({},"__esModule",{value:!0}),r);var R={};g(R,{default:()=>y});module.exports=M(R);function o(r,n){let e=`The request ${r.method} ${r.url} is not found`;n.statusCode=404,n.statusMessage=e,n.end()}l(o,"NotFoundHandler");var y=o;module.exports=o;0&&(module.exports={});
 //# sourceMappingURL=NotFoundHandler.js.map

@@ -95,4 +95,4 @@ const Response: IResponse = {
   Accepted: textResponseFabric(defaultOptions(StatusCodes.Accepted)),
 };
 
-export { Response };
+export default Response;

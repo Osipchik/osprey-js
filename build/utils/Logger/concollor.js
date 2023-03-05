@@ -1,20 +1,2 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const stylize = require('./stylize');
-function Concollor(strings, ...values) {
-    const result = [strings[0]];
-    let i = 1;
-    for (const val of values) {
-        const str = strings[i++];
-        if (str.startsWith('(')) {
-            const pos = str.indexOf(')');
-            const styles = str.substring(1, pos);
-            const value = stylize(styles, val);
-            const rest = str.substring(pos + 1);
-            result.push(value, rest);
-        }
-    }
-    return result.join('');
-}
-exports.default = Concollor;
+"use strict";var l=Object.defineProperty;var C=Object.getOwnPropertyDescriptor;var w=Object.getOwnPropertyNames;var x=Object.prototype.hasOwnProperty;var c=(s,n)=>l(s,"name",{value:n,configurable:!0});var z=(s,n)=>()=>(s&&(n=s(s=0)),n);var u=(s,n)=>{for(var t in n)l(s,t,{get:n[t],enumerable:!0})},A=(s,n,t,e)=>{if(n&&typeof n=="object"||typeof n=="function")for(let o of w(n))!x.call(s,o)&&o!==t&&l(s,o,{get:()=>n[o],enumerable:!(e=C(n,o))||e.enumerable});return s};var g=s=>A(l({},"__esModule",{value:!0}),s);var p={};u(p,{default:()=>$});function f(s,n){return s?`\x1B[${s}m${n}\x1B[0m`:n}function b(s,n){for(let t of s.split(","))if(t.length===1)n=f(S[t],n);else{let[e,o]=t.split("/"),r=a.indexOf(e),i=a.indexOf(o);r>-1&&(n=f(30+r,n)),i>-1&&(n=f(40+i,n))}return n}var S,a,$,y=z(()=>{"use strict";S={b:1,f:2,i:3,u:4,l:5,h:6,n:7,c:8,s:9},a=["black","red","green","yellow","blue","magenta","cyan","white","crimson"];c(f,"esc");c(b,"stylize");$=b;module.exports=b});var k={};u(k,{default:()=>d});module.exports=g(k);var j=(y(),g(p));function d(s,...n){let t=[s[0]],e=1;for(let o of n){let r=s[e++];if(r.startsWith("(")){let i=r.indexOf(")"),m=r.substring(1,i),h=j(m,o),O=r.substring(i+1);t.push(h,O)}}return t.join("")}c(d,"Concollor");0&&(module.exports={});
 //# sourceMappingURL=concollor.js.map

@@ -1,17 +1,2 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const Logger_1 = __importDefault(require("../../utils/Logger"));
-const statusCodes_1 = require("../../Response/statusCodes");
-function NotImplementedHandler(request, response) {
-    const message = `The request method: ${request.method} is not supported by the server and cannot be handled`;
-    Logger_1.default.error(message, `Error ${statusCodes_1.StatusCodes.NotImplemented}`);
-    response.statusCode = statusCodes_1.StatusCodes.NotImplemented;
-    response.statusMessage = message;
-    response.end();
-}
-exports.default = NotImplementedHandler;
-module.exports = NotImplementedHandler;
+"use strict";var s=Object.defineProperty;var k=Object.getOwnPropertyDescriptor;var q=Object.getOwnPropertyNames;var z=Object.prototype.hasOwnProperty;var i=(r,e)=>s(r,"name",{value:e,configurable:!0});var j=(r,e)=>()=>(r&&(e=r(r=0)),e);var y=(r,e)=>{for(var t in e)s(r,t,{get:e[t],enumerable:!0})},B=(r,e,t,l)=>{if(e&&typeof e=="object"||typeof e=="function")for(let o of q(e))!z.call(r,o)&&o!==t&&s(r,o,{get:()=>e[o],enumerable:!(l=k(e,o))||l.enumerable});return r};var I=r=>B(s({},"__esModule",{value:!0}),r);var x={};y(x,{default:()=>f});function m(r,e){return r?`\x1B[${r}m${e}\x1B[0m`:e}function b(r,e){for(let t of r.split(","))if(t.length===1)e=m(F[t],e);else{let[l,o]=t.split("/"),a=d.indexOf(l),c=d.indexOf(o);a>-1&&(e=m(30+a,e)),c>-1&&(e=m(40+c,e))}return e}var F,d,f,T=j(()=>{"use strict";F={b:1,f:2,i:3,u:4,l:5,h:6,n:7,c:8,s:9},d=["black","red","green","yellow","blue","magenta","cyan","white","crimson"];i(m,"esc");i(b,"stylize");f=b;module.exports=b});var _={};y(_,{default:()=>U});module.exports=I(_);var H=(T(),I(x));function u(r,...e){let t=[r[0]],l=1;for(let o of e){let a=r[l++];if(a.startsWith("(")){let c=a.indexOf(")"),O=a.substring(1,c),E=H(O,o),W=a.substring(c+1);t.push(E,W)}}return t.join("")}i(u,"Concollor");T();function h(r){return(e,...t)=>{if(typeof e=="string")return f(r,e);let l=[e[0]],o=1;for(let a of t){let c=e[o++];l.push(String(a),c)}return f(r,l.join(""))}}i(h,"Tag");var n=h;module.exports=h;var D={titleTag:n("b,i,red/red"),messageTag:n("red/red"),defaultTitle:"Error"},R={titleTag:n("b,i,yellow/yellow"),messageTag:n("yellow/yellow"),defaultTitle:"Warn"},v={titleTag:n("b,blue"),messageTag:n("blue"),defaultTitle:"Info"},w={titleTag:n("b,green"),messageTag:n("green"),defaultTitle:"Success"},N={titleTag:n("b,cyan"),messageTag:n("cyan"),defaultTitle:"Put"},L={titleTag:n("b,crimson"),messageTag:n("crimson"),defaultTitle:"Patch"},P={titleTag:n("b,magenta"),messageTag:n("magenta"),defaultTitle:"Data"},$=/(https?:\/\/\S+)/gm;function g(r){let e=String(r);console.log(e.replace($,t=>u`${t}(u,blue)`))}i(g,"Log");function p({titleTag:r,messageTag:e,defaultTitle:t}){return function(l,o){console.log(r(`${o??t}: `)+e(`${l}`))}}i(p,"_print");g.error=p(D);g.warn=p(R);g.info=p(v);g.success=p(w);g.put=p(N);g.patch=p(L);g.data=p(P);var A=g;module.exports=g;function M(r,e){let t=`The request method: ${r.method} is not supported by the server and cannot be handled`;A.error(t,`Error ${501}`),e.statusCode=501,e.statusMessage=t,e.end()}i(M,"NotImplementedHandler");var U=M;module.exports=M;0&&(module.exports={});
 //# sourceMappingURL=NotImplementedHandler.js.map

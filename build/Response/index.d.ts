@@ -12,5 +12,5 @@ interface IResponse {
     Accepted: ResponseTextFunctionType;
 }
 declare const Response: IResponse;
-export { Response };
+export default Response;
 //# sourceMappingURL=index.d.ts.map
