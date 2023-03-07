@@ -30,16 +30,26 @@ class Server {
       this.middleware.runMiddlewaresSync(request, response);
 
       const { handler, params } = this.router.getRequestHandler(request);
-      handler(request, response, params);
+      handler(request, response, params)?.catch((error: any) => Router.errorHandlers.ServerError(request, response, error));
     } catch (error: any) {
-      Router.routeHandlers.ServerError(request, response, error);
+      Router.errorHandlers.ServerError(request, response, error);
     }
   }
 
   run(): void {
     this.server.on('error', (error: any) => {
-      if (error.code === 'EACCES') {
-        Logger.error(`No access to port: ${this.port}`, 'EACCES');
+      switch(error.code) {
+        case 'EACCES': {
+          Logger.error(`No access to port: ${this.port}`, 'EACCES');
+          break;
+        }
+        case 'ELIFECYCLE': {
+          Logger.error(error.message, 'ELIFECYCLE');
+          break;
+        }
+        default: {
+          Logger.error(error.message, 'EACCES');
+        }
       }
     });
 
@@ -48,6 +58,8 @@ class Server {
     });
 
     this.server.on('close', this.onServerClose);
+
+    process.on('SIGINT', this.onServerClose);
   }
 
   private onServerClose() {

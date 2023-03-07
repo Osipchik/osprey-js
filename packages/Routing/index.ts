@@ -5,36 +5,23 @@ import MethodNotAllowedHandler from '../Routing/ErrorHandlers/MethodNotAllowedHa
 import NotFoundHandler from '../Routing/ErrorHandlers/NotFoundHandler';
 import {
   RequestHandlerType,
-  IRoute,
   HandlerMetaType,
   IncomingMessageType,
   RouteValueType,
+  IErrorRouter,
 } from '../Routing/types';
 import { getPath } from '../utils/helpers';
 import Logger from '../utils/Logger';
 import { DELETE, GET, PATCH, POST, PUT } from '../Routing/methods';
 
 class Router {
-  static ServerError = ServerErrorHandler;
-  static NotFound = NotFoundHandler;
-  static MethodNotAllowed = MethodNotAllowedHandler;
-  static NotImplemented = NotImplementedHandler;
   static readonly router = new RoadRunner();
 
-  static readonly routeHandlers: IRoute = {
-    GET: {},
-    HEAD: {},
-    POST: {},
-    PUT: {},
-    DELETE: {},
-    CONNECTS: {},
-    OPTIONS: {},
-    TRACE: {},
-    PATCH: {},
-    ServerError: Router.ServerError,
-    NotFound: Router.NotFound,
-    MethodNotAllowed: Router.MethodNotAllowed,
-    NotImplemented: Router.NotImplemented,
+  static readonly errorHandlers: IErrorRouter = {
+    ServerError: ServerErrorHandler,
+    NotFound: NotFoundHandler,
+    MethodNotAllowed: MethodNotAllowedHandler,
+    NotImplemented: NotImplementedHandler,
   };
 
   static addRoute(handler: RequestHandlerType, { method, prefix, path }: HandlerMetaType): void {
@@ -64,12 +51,12 @@ class Router {
       }
 
       return {
-        handler: Router.routeHandlers.NotFound,
+        handler: Router.errorHandlers.NotFound,
       };
     }
 
     return {
-      handler: Router.routeHandlers.NotImplemented,
+      handler: Router.errorHandlers.NotImplemented,
     };
   }
 }

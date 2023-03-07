@@ -25,22 +25,33 @@ class Server {
         try {
             this.middleware.runMiddlewaresSync(request, response);
             const { handler, params } = this.router.getRequestHandler(request);
-            handler(request, response, params);
+            handler(request, response, params)?.catch((error) => Routing_1.default.errorHandlers.ServerError(request, response, error));
         }
         catch (error) {
-            Routing_1.default.routeHandlers.ServerError(request, response, error);
+            Routing_1.default.errorHandlers.ServerError(request, response, error);
         }
     }
     run() {
         this.server.on('error', (error) => {
-            if (error.code === 'EACCES') {
-                Logger_1.default.error(`No access to port: ${this.port}`, 'EACCES');
+            switch (error.code) {
+                case 'EACCES': {
+                    Logger_1.default.error(`No access to port: ${this.port}`, 'EACCES');
+                    break;
+                }
+                case 'ELIFECYCLE': {
+                    Logger_1.default.error(error.message, 'ELIFECYCLE');
+                    break;
+                }
+                default: {
+                    Logger_1.default.error(error.message, 'EACCES');
+                }
             }
         });
         this.server.listen(this.port, () => {
             Logger_1.default.success(`Server is running at http://${this.host}:${this.port}`);
         });
         this.server.on('close', this.onServerClose);
+        process.on('SIGINT', this.onServerClose);
     }
     onServerClose() {
         Logger_1.default.warn(`Server is closed at http://${this.host}:${this.port}`);

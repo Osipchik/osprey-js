@@ -7,9 +7,10 @@ function NotFoundHandler (
 ) {
   const message = `The request ${request.method} ${request.url} is not found`;
 
+  response.setHeader('Content-Type', 'text/html; charset=UTF-8');
   response.statusCode = StatusCodes.NotFound;
   response.statusMessage = message;
-  response.end();
+  response.end(message);
 }
 
 export default NotFoundHandler;

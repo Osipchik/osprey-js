@@ -12,25 +12,12 @@ const helpers_1 = require("../utils/helpers");
 const Logger_1 = __importDefault(require("../utils/Logger"));
 const methods_1 = require("../Routing/methods");
 class Router {
-    static ServerError = ServerErrorHandler_1.default;
-    static NotFound = NotFoundHandler_1.default;
-    static MethodNotAllowed = MethodNotAllowedHandler_1.default;
-    static NotImplemented = NotImplementedHandler_1.default;
     static router = new road_runner_1.RoadRunner();
-    static routeHandlers = {
-        GET: {},
-        HEAD: {},
-        POST: {},
-        PUT: {},
-        DELETE: {},
-        CONNECTS: {},
-        OPTIONS: {},
-        TRACE: {},
-        PATCH: {},
-        ServerError: Router.ServerError,
-        NotFound: Router.NotFound,
-        MethodNotAllowed: Router.MethodNotAllowed,
-        NotImplemented: Router.NotImplemented,
+    static errorHandlers = {
+        ServerError: ServerErrorHandler_1.default,
+        NotFound: NotFoundHandler_1.default,
+        MethodNotAllowed: MethodNotAllowedHandler_1.default,
+        NotImplemented: NotImplementedHandler_1.default,
     };
     static addRoute(handler, { method, prefix, path }) {
         const { pathName } = (0, helpers_1.getPath)(prefix, path);
@@ -64,11 +51,11 @@ class Router {
                 };
             }
             return {
-                handler: Router.routeHandlers.NotFound,
+                handler: Router.errorHandlers.NotFound,
             };
         }
         return {
-            handler: Router.routeHandlers.NotImplemented,
+            handler: Router.errorHandlers.NotImplemented,
         };
     }
 }

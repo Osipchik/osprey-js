@@ -7,12 +7,12 @@ function ServerErrorHandler (
   response: ServerResponseType,
   error: Error,
 ) {
-  Logger.error('Unexpected Server Error', `Error ${StatusCodes.InternalServerError}`);
-  Logger.error(error.message);
+  Logger.error(error.message, `Error ${StatusCodes.InternalServerError}`);
+  Logger.data(error.stack || '');
 
   response.statusCode = StatusCodes.InternalServerError;
   response.statusMessage = 'Internal Server Error';
-  response.end();
+  response.end('500: Internal Server Error');
 }
 
 export default ServerErrorHandler;

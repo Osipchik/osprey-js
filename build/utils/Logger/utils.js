@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.urlRegex = exports.Data = exports.Patch = exports.Put = exports.Success = exports.Info = exports.Warn = exports.Error = void 0;
 const tag_1 = __importDefault(require("../../utils/Logger/tag"));
 exports.Error = {
-    titleTag: (0, tag_1.default)('b,i,red/red'),
-    messageTag: (0, tag_1.default)('red/red'),
+    titleTag: (0, tag_1.default)('b,i,red'),
+    messageTag: (0, tag_1.default)('red'),
     defaultTitle: 'Error',
 };
 exports.Warn = {

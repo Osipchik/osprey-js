@@ -7,8 +7,8 @@ export interface IDecorator {
 }
 
 export const Error: IDecorator = {
-  titleTag: Tag('b,i,red/red'),
-  messageTag: Tag('red/red'),
+  titleTag: Tag('b,i,red'),
+  messageTag: Tag('red'),
   defaultTitle: 'Error',
 };
 
