@@ -7,6 +7,7 @@ declare class Server {
     constructor();
     private requestListener;
     run(): void;
+    private onServerClose;
 }
 export default Server;
 //# sourceMappingURL=index.d.ts.map

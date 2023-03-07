@@ -1,2 +1,13 @@
-"use strict";var c=Object.defineProperty;var n=Object.getOwnPropertyDescriptor;var p=Object.getOwnPropertyNames;var r=Object.prototype.hasOwnProperty;var s=(t,o)=>{for(var E in o)c(t,E,{get:o[E],enumerable:!0})},x=(t,o,E,e)=>{if(o&&typeof o=="object"||typeof o=="function")for(let T of p(o))!r.call(t,T)&&T!==E&&c(t,T,{get:()=>o[T],enumerable:!(e=n(o,T))||e.enumerable});return t};var C=t=>x(c({},"__esModule",{value:!0}),t);var L={};s(L,{CONNECTS:()=>D,DELETE:()=>S,GET:()=>O,HEAD:()=>P,OPTIONS:()=>H,PATCH:()=>I,POST:()=>A,PUT:()=>N,TRACE:()=>G});module.exports=C(L);var O="GET",P="HEAD",A="POST",N="PUT",S="DELETE",D="CONNECTS",H="OPTIONS",G="TRACE",I="PATCH";0&&(module.exports={CONNECTS,DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT,TRACE});
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PATCH = exports.TRACE = exports.OPTIONS = exports.CONNECTS = exports.DELETE = exports.PUT = exports.POST = exports.HEAD = exports.GET = void 0;
+exports.GET = 'GET';
+exports.HEAD = 'HEAD';
+exports.POST = 'POST';
+exports.PUT = 'PUT';
+exports.DELETE = 'DELETE';
+exports.CONNECTS = 'CONNECTS';
+exports.OPTIONS = 'OPTIONS';
+exports.TRACE = 'TRACE';
+exports.PATCH = 'PATCH';
 //# sourceMappingURL=methods.js.map

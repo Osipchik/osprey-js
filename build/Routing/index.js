@@ -1,2 +1,77 @@
-"use strict";var de=Object.create;var x=Object.defineProperty;var ue=Object.getOwnPropertyDescriptor;var ge=Object.getOwnPropertyNames;var fe=Object.getPrototypeOf,me=Object.prototype.hasOwnProperty;var Te=(r,e,t)=>e in r?x(r,e,{enumerable:!0,configurable:!0,writable:!0,value:t}):r[e]=t;var l=(r,e)=>x(r,"name",{value:e,configurable:!0});var ye=(r,e)=>()=>(r&&(e=r(r=0)),e);var O=(r,e)=>()=>(e||r((e={exports:{}}).exports,e),e.exports),S=(r,e)=>{for(var t in e)x(r,t,{get:e[t],enumerable:!0})},D=(r,e,t,n)=>{if(e&&typeof e=="object"||typeof e=="function")for(let s of ge(e))!me.call(r,s)&&s!==t&&x(r,s,{get:()=>e[s],enumerable:!(n=ue(e,s))||n.enumerable});return r};var we=(r,e,t)=>(t=r!=null?de(fe(r)):{},D(e||!r||!r.__esModule?x(t,"default",{value:r,enumerable:!0}):t,r)),$=r=>D(x({},"__esModule",{value:!0}),r);var T=(r,e,t)=>(Te(r,typeof e!="symbol"?e+"":e,t),t);var k=O(N=>{"use strict";Object.defineProperty(N,"__esModule",{value:!0});var y;(function(r){r[r.STATIC=0]="STATIC",r[r.PARAM=1]="PARAM"})(y||(y={}));var E=":",xe="/",Ie=xe.charCodeAt(0),m=class{constructor(e={}){this.indices=e.indices||"",this.children=e.children||[],this.childrenI=e.childrenI||{},this.path=e.path||"",this.handle=e.handle||null,this.wildChild=e.wildChild||!1,this.type=e.type||y.STATIC,this.param=e.param||"",this.pathLength=this.path.length,this.childrenLength=this.children.length}addRoute(e,t){let n=this.countParams(e);this.isEmpty()?this.insertChild(e,e,t,n):this.onChunk(this,e,e,t,n)}search(e){let t=this,n={};e:for(;;){let s=e.length;if(s>t.pathLength&&e.slice(0,t.pathLength)===t.path){if(e=e.slice(t.pathLength),t.wildChild){t=t.children[0];let i=0;for(;i<s&&e.charCodeAt(i)!==Ie;)i++;let a=e.slice(0,i);if(!a||!t.param)return{value:null,params:n};if(t.param!=="!"&&(n[t.param]=a),i<s){if(t.childrenLength===0)return{value:null,params:n};e=e.slice(i),t=t.children[0];continue e}return{value:t.handle,params:n}}let o=e.charCodeAt(0);for(let i=0;i<t.indices.length;i++)if(o===t.indices.charCodeAt(i)){t=t.children[i];continue e}}else if(e===t.path)return{value:t.handle,params:n};return{value:null,params:n}}}hasChildren(){return this.children.length>0}insertChild(e,t,n,s){let o=0,i=this;for(let a=0,d=t.length;s>0;a++){if(t[a]!==E)continue;let g=a+1;for(;g<d&&t[g]!=="/";){if(t[g]===E)throw new Error("only one wildcard per path segment is allowed, has: '"+t.slice(a)+"' in path '"+e+"'");g++}if(i.hasChildren())throw new Error("wildcard route '"+t.slice(a,g)+"' conflicts with existing children in path '"+e+"'");if(g-a<2)throw new Error("wildcards must be named with a non-empty name in path '"+e+"'");a>0&&(i.replacePath(t.slice(o,a)),o=a),i=i.replaceChildren({type:y.PARAM}),s--,g<d&&(i.replacePath(t.slice(o,g)),o=g,i=i.replaceChildren())}i.replacePath(t.slice(o)),i.setHandle(n)}setHandle(e){this.handle=e}replaceChildren(e={}){let t=new m(e);return e.type===y.PARAM&&(this.wildChild=!0),this.children=[t],this.childrenLength=1,t}replacePath(e){e[0]===E&&(this.param=e.slice(1)),this.path=e,this.pathLength=e.length}isEmpty(){return!(this.path.length>0||this.children.length>0)}processCharacter(e,t,n,s){let o=t[0];if(this.type===y.PARAM&&o==="/"&&this.children.length===1){this.onChunk(this.children[0],e,t,n,s);return}let i=this.childrenI[o.charCodeAt(0)];if(i){i.onChunk(i,e,t,n,s);return}if(o!==E){let a=new m({type:y.STATIC});this.children.push(a),this.indices+=o,this.childrenI[o.charCodeAt(0)]=a,this.childrenLength=this.children.length,a.insertChild(e,t,n,s);return}this.insertChild(e,t,n,s)}processWildcard(e,t,n,s){if(t.length>=this.path.length&&this.path===t.slice(0,this.path.length)&&(this.path.length>=t.length||t[this.path.length]==="/")){this.onChunk(this,e,t,n,s);return}let i=t.split("/")[0],a=e.slice(0,e.indexOf(i))+this.path;throw new Error(`'${i}' in new path '${e}' conflicts with existing wildcard '${this.path}' in existing prefix '${a}'`)}createNode(e,t,n,s,o){let i=n.slice(e);if(this.wildChild){this.children[0].processWildcard(t,i,s,o-1);return}this.processCharacter(t,i,s,o)}commonPrefixIndex(e){let t=0,n=Math.min(e.length,this.path.length);for(;t<n&&this.path[t]===e[t];)t++;return t}split(e,t){if(e<this.path.length){let n=new m({path:this.path.slice(e),wildChild:this.wildChild,childrenI:this.childrenI,children:this.children,handle:this.handle,indices:this.indices});return this.children=[n],this.indices=this.path[e],this.childrenI={[this.indices.charCodeAt(0)]:n},this.childrenLength=1,this.wildChild=!1,this.path=t.slice(0,e),this.pathLength=this.path.length,this.handle=null,!0}return!1}onChunk(e,t,n,s,o){let i=e.commonPrefixIndex(n),a=e.split(i,n);if(i<n.length)e.createNode(i,t,n,s,o);else if(i===n.length){if(!a)throw new Error("Route already defined.");this.handle=s}}countParams(e){let t=0;for(let n=0;n<e.length;n++)e[n]===E&&t++;return t}};l(m,"Node");N.Node=m});var F=O(C=>{"use strict";Object.defineProperty(C,"__esModule",{value:!0});var Ee=k();function q(r,e){if(!e)throw new Error("Path is required.");if(!r)throw new Error("Bucket is required.");if(typeof r!="string")throw new Error("Bucket should be a string.");if(typeof e!="string")throw new Error("Path should be a string.")}l(q,"typeCheck");var A=class{constructor(){this.buckets={}}addRoute(e,t,n){if(q(e,t),t[0]!=="/"&&t[0]!=="*")throw new Error("The first character of a path should be `/` or `*`.");t=t.replace(/\*([A-z0-9]+)?\//g,":!/").replace(/\*$/g,":!"),this.buckets[e]||(this.buckets[e]=new Ee.Node),this.buckets[e].addRoute(t,n)}findRoute(e,t){if(q(e,t),!this.buckets[e])return null;let n=this.buckets[e].search(t);return n.value===null?null:{value:n.value,params:n.params}}};l(A,"RoadRunner");C.RoadRunner=A});var j={};S(j,{default:()=>v});function M(r,e){return r?`\x1B[${r}m${e}\x1B[0m`:e}function W(r,e){for(let t of r.split(","))if(t.length===1)e=M(Ae[t],e);else{let[n,s]=t.split("/"),o=z.indexOf(n),i=z.indexOf(s);o>-1&&(e=M(30+o,e)),i>-1&&(e=M(40+i,e))}return e}var Ae,z,v,b=ye(()=>{"use strict";Ae={b:1,f:2,i:3,u:4,l:5,h:6,n:7,c:8,s:9},z=["black","red","green","yellow","blue","magenta","cyan","white","crimson"];l(M,"esc");l(W,"stylize");v=W;module.exports=W});var Me={};S(Me,{default:()=>Ce});module.exports=$(Me);var he=we(F(),1);var ve=(b(),$(j));function R(r,...e){let t=[r[0]],n=1;for(let s of e){let o=r[n++];if(o.startsWith("(")){let i=o.indexOf(")"),a=o.substring(1,i),d=ve(a,s),I=o.substring(i+1);t.push(d,I)}}return t.join("")}l(R,"Concollor");b();function U(r){return(e,...t)=>{if(typeof e=="string")return v(r,e);let n=[e[0]],s=1;for(let o of t){let i=e[s++];n.push(String(o),i)}return v(r,n.join(""))}}l(U,"Tag");var c=U;module.exports=U;var G={titleTag:c("b,i,red/red"),messageTag:c("red/red"),defaultTitle:"Error"},V={titleTag:c("b,i,yellow/yellow"),messageTag:c("yellow/yellow"),defaultTitle:"Warn"},B={titleTag:c("b,blue"),messageTag:c("blue"),defaultTitle:"Info"},P={titleTag:c("b,green"),messageTag:c("green"),defaultTitle:"Success"},J={titleTag:c("b,cyan"),messageTag:c("cyan"),defaultTitle:"Put"},K={titleTag:c("b,crimson"),messageTag:c("crimson"),defaultTitle:"Patch"},Q={titleTag:c("b,magenta"),messageTag:c("magenta"),defaultTitle:"Data"},X=/(https?:\/\/\S+)/gm;function f(r){let e=String(r);console.log(e.replace(X,t=>R`${t}(u,blue)`))}l(f,"Log");function w({titleTag:r,messageTag:e,defaultTitle:t}){return function(n,s){console.log(r(`${s??t}: `)+e(`${n}`))}}l(w,"_print");f.error=w(G);f.warn=w(V);f.info=w(B);f.success=w(P);f.put=w(J);f.patch=w(K);f.data=w(Q);var p=f;module.exports=f;function Y(r,e){let t=`The request method: ${r.method} is not supported by the server and cannot be handled`;p.error(t,`Error ${501}`),e.statusCode=501,e.statusMessage=t,e.end()}l(Y,"NotImplementedHandler");var Z=Y;module.exports=Y;function _(r,e,t){p.error("Unexpected Server Error",`Error ${500}`),p.error(t.message),e.statusCode=500,e.statusMessage="Internal Server Error",e.end()}l(_,"ServerErrorHandler");var ee=_;module.exports=_;function te(r,e){let t=`The request ${r.method} ${r.url} is not allowed`;e.statusCode=405,e.statusMessage=t,e.end()}l(te,"MethodNotAllowedHandler");var re=te;module.exports=te;function ne(r,e){let t=`The request ${r.method} ${r.url} is not found`;e.statusCode=404,e.statusMessage=t,e.end()}l(ne,"NotFoundHandler");var ie=ne;module.exports=ne;function H(r){let e=r;for(;e.startsWith("/");)e=e.slice(1);for(;e.endsWith("/");)e=e.slice(0,-1);return"/"+e}l(H,"normalizeSlash");function oe(r,e){let t=r??"",n=e??"";if(t.includes(":"))throw new Error("cant has semicolon");if(n.includes("*"))throw new Error("cant has semicolon");let s=[],o=n.split("/").reduce((a,d)=>{if(d.includes(":")){let I=d.slice(1);if(Ne(I))s.push(d.slice(1));else throw new Error(`invalid var name: ${I}`);return a+"/"+d}return a+"/"+d},""),i=H(t);return{pathName:H(i+H(o)),prefix:i,props:s}}l(oe,"getPath");function Ne(r){if(r.trim()!==r)return!1;try{new Function(r,"var "+r)}catch{return!1}return!0}l(Ne,"isVarName");var se="GET";var le="POST",ae="PUT",ce="DELETE";var pe="PATCH";var u=class{static addRoute(e,{method:t,prefix:n,path:s}){let{pathName:o}=oe(n,s);switch(t){case se:p.info(o,t);break;case le:p.warn(o,t);break;case ce:p.error(o,t);break;case pe:p.patch(o,t);break;case ae:p.put(o,t);break;default:p.data(o,t)}u.router.addRoute(t,o,e)}getRequestHandler(e){if(e.method){let t=u.router.findRoute(e.method,e.url);return t?{handler:t.value,params:t.params}:{handler:u.routeHandlers.NotFound}}return{handler:u.routeHandlers.NotImplemented}}},h=u;l(h,"Router"),T(h,"ServerError",ee),T(h,"NotFound",ie),T(h,"MethodNotAllowed",re),T(h,"NotImplemented",Z),T(h,"router",new he.RoadRunner),T(h,"routeHandlers",{GET:{},HEAD:{},POST:{},PUT:{},DELETE:{},CONNECTS:{},OPTIONS:{},TRACE:{},PATCH:{},ServerError:u.ServerError,NotFound:u.NotFound,MethodNotAllowed:u.MethodNotAllowed,NotImplemented:u.NotImplemented});var Ce=h;module.exports=h;0&&(module.exports={});
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const road_runner_1 = require("@parisholley/road-runner");
+const NotImplementedHandler_1 = __importDefault(require("../Routing/ErrorHandlers/NotImplementedHandler"));
+const ServerErrorHandler_1 = __importDefault(require("../Routing/ErrorHandlers/ServerErrorHandler"));
+const MethodNotAllowedHandler_1 = __importDefault(require("../Routing/ErrorHandlers/MethodNotAllowedHandler"));
+const NotFoundHandler_1 = __importDefault(require("../Routing/ErrorHandlers/NotFoundHandler"));
+const helpers_1 = require("../utils/helpers");
+const Logger_1 = __importDefault(require("../utils/Logger"));
+const methods_1 = require("../Routing/methods");
+class Router {
+    static ServerError = ServerErrorHandler_1.default;
+    static NotFound = NotFoundHandler_1.default;
+    static MethodNotAllowed = MethodNotAllowedHandler_1.default;
+    static NotImplemented = NotImplementedHandler_1.default;
+    static router = new road_runner_1.RoadRunner();
+    static routeHandlers = {
+        GET: {},
+        HEAD: {},
+        POST: {},
+        PUT: {},
+        DELETE: {},
+        CONNECTS: {},
+        OPTIONS: {},
+        TRACE: {},
+        PATCH: {},
+        ServerError: Router.ServerError,
+        NotFound: Router.NotFound,
+        MethodNotAllowed: Router.MethodNotAllowed,
+        NotImplemented: Router.NotImplemented,
+    };
+    static addRoute(handler, { method, prefix, path }) {
+        const { pathName } = (0, helpers_1.getPath)(prefix, path);
+        switch (method) {
+            case methods_1.GET:
+                Logger_1.default.info(pathName, method);
+                break;
+            case methods_1.POST:
+                Logger_1.default.warn(pathName, method);
+                break;
+            case methods_1.DELETE:
+                Logger_1.default.error(pathName, method);
+                break;
+            case methods_1.PATCH:
+                Logger_1.default.patch(pathName, method);
+                break;
+            case methods_1.PUT:
+                Logger_1.default.put(pathName, method);
+                break;
+            default: Logger_1.default.data(pathName, method);
+        }
+        Router.router.addRoute(method, pathName, handler);
+    }
+    getRequestHandler(request) {
+        if (request.method) {
+            const route = Router.router.findRoute(request.method, request.url);
+            if (route) {
+                return {
+                    handler: route.value,
+                    params: route.params,
+                };
+            }
+            return {
+                handler: Router.routeHandlers.NotFound,
+            };
+        }
+        return {
+            handler: Router.routeHandlers.NotImplemented,
+        };
+    }
+}
+exports.default = Router;
+module.exports = Router;
 //# sourceMappingURL=index.js.map

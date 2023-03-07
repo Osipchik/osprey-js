@@ -1,2 +1,26 @@
-"use strict";var u=Object.defineProperty;var z=Object.getOwnPropertyDescriptor;var j=Object.getOwnPropertyNames;var q=Object.prototype.hasOwnProperty;var N=(r,e,t)=>e in r?u(r,e,{enumerable:!0,configurable:!0,writable:!0,value:t}):r[e]=t;var n=(r,e)=>u(r,"name",{value:e,configurable:!0});var B=(r,e)=>()=>(r&&(e=r(r=0)),e);var b=(r,e)=>{for(var t in e)u(r,t,{get:e[t],enumerable:!0})},F=(r,e,t,a)=>{if(e&&typeof e=="object"||typeof e=="function")for(let o of j(e))!q.call(r,o)&&o!==t&&u(r,o,{get:()=>e[o],enumerable:!(a=z(e,o))||a.enumerable});return r};var w=r=>F(u({},"__esModule",{value:!0}),r);var T=(r,e,t)=>(N(r,typeof e!="symbol"?e+"":e,t),t);var D={};b(D,{default:()=>f});function m(r,e){return r?`\x1B[${r}m${e}\x1B[0m`:e}function h(r,e){for(let t of r.split(","))if(t.length===1)e=m(G[t],e);else{let[a,o]=t.split("/"),i=I.indexOf(a),c=I.indexOf(o);i>-1&&(e=m(30+i,e)),c>-1&&(e=m(40+c,e))}return e}var G,I,f,y=B(()=>{"use strict";G={b:1,f:2,i:3,u:4,l:5,h:6,n:7,c:8,s:9},I=["black","red","green","yellow","blue","magenta","cyan","white","crimson"];n(m,"esc");n(h,"stylize");f=h;module.exports=h});var U={};b(U,{default:()=>Q});module.exports=w(U);var J=(y(),w(D));function x(r,...e){let t=[r[0]],a=1;for(let o of e){let i=r[a++];if(i.startsWith("(")){let c=i.indexOf(")"),M=i.substring(1,c),W=J(M,o),k=i.substring(c+1);t.push(W,k)}}return t.join("")}n(x,"Concollor");y();function P(r){return(e,...t)=>{if(typeof e=="string")return f(r,e);let a=[e[0]],o=1;for(let i of t){let c=e[o++];a.push(String(i),c)}return f(r,a.join(""))}}n(P,"Tag");var s=P;module.exports=P;var S={titleTag:s("b,i,red/red"),messageTag:s("red/red"),defaultTitle:"Error"},v={titleTag:s("b,i,yellow/yellow"),messageTag:s("yellow/yellow"),defaultTitle:"Warn"},R={titleTag:s("b,blue"),messageTag:s("blue"),defaultTitle:"Info"},E={titleTag:s("b,green"),messageTag:s("green"),defaultTitle:"Success"},L={titleTag:s("b,cyan"),messageTag:s("cyan"),defaultTitle:"Put"},$={titleTag:s("b,crimson"),messageTag:s("crimson"),defaultTitle:"Patch"},C={titleTag:s("b,magenta"),messageTag:s("magenta"),defaultTitle:"Data"},H=/(https?:\/\/\S+)/gm;function l(r){let e=String(r);console.log(e.replace(H,t=>x`${t}(u,blue)`))}n(l,"Log");function g({titleTag:r,messageTag:e,defaultTitle:t}){return function(a,o){console.log(r(`${o??t}: `)+e(`${a}`))}}n(g,"_print");l.error=g(S);l.warn=g(v);l.info=g(R);l.success=g(E);l.put=g(L);l.patch=g($);l.data=g(C);var O=l;module.exports=l;function K(r,e){return O.error(r,`Middleware Error in ${e}`),new Error(r)}n(K,"MiddlewareError");var A=K;var d=class{runMiddlewaresSync(e,t){let a=n(o=>{if(o instanceof Error)throw A(o.message,"Middleware")},"next");for(let o of d.middlewares)o(e,t,a)}static use(e){d.middlewares.push(e)}},p=d;n(p,"Middleware"),T(p,"middlewares",[]),T(p,"asyncMiddlewares",[]);var Q=p;module.exports=p;0&&(module.exports={});
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const MiddlewareError_1 = __importDefault(require("../utils/Error/MiddlewareError"));
+class Middleware {
+    static middlewares = [];
+    static asyncMiddlewares = [];
+    runMiddlewaresSync(request, response) {
+        const next = (error) => {
+            if (error instanceof Error) {
+                throw (0, MiddlewareError_1.default)(error.message, 'Middleware');
+            }
+        };
+        for (const middleware of Middleware.middlewares) {
+            middleware(request, response, next);
+        }
+    }
+    static use(preHandler) {
+        Middleware.middlewares.push(preHandler);
+    }
+}
+exports.default = Middleware;
+module.exports = Middleware;
 //# sourceMappingURL=index.js.map

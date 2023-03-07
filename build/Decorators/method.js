@@ -1,2 +1,63 @@
-"use strict";var c=Object.defineProperty;var v=Object.getOwnPropertyDescriptor;var O=Object.getOwnPropertyNames;var R=Object.prototype.hasOwnProperty;var D=(e,t,s)=>t in e?c(e,t,{enumerable:!0,configurable:!0,writable:!0,value:s}):e[t]=s;var n=(e,t)=>c(e,"name",{value:t,configurable:!0});var H=(e,t)=>{for(var s in t)c(e,s,{get:t[s],enumerable:!0})},h=(e,t,s,r)=>{if(t&&typeof t=="object"||typeof t=="function")for(let o of O(t))!R.call(e,o)&&o!==s&&c(e,o,{get:()=>t[o],enumerable:!(r=v(t,o))||r.enumerable});return e};var A=e=>h(c({},"__esModule",{value:!0}),e);var T=(e,t,s)=>(D(e,typeof t!="symbol"?t+"":t,s),s);var k={};H(k,{Delete:()=>G,Get:()=>N,Head:()=>U,Options:()=>L,Patch:()=>b,Post:()=>w,Put:()=>I,Trace:()=>F});module.exports=A(k);var y="GET",C="HEAD",E="POST",l="PUT",x="DELETE";var d="OPTIONS",S="TRACE",f="PATCH";var a=class{static addMeta(t,s,r){if(a.meta.has(t)){let o=a.meta.get(t);o[s]=r}else a.meta.set(t,{[s]:r});a.values.set(t.value,a.meta.get(t))}static getMeta(t){return a.meta.get(t)||a.values.get(t)}},i=a;n(i,"MetaStore"),T(i,"meta",new WeakMap),T(i,"values",new WeakMap);var m=i;function M(e,t){return async(s,r,...o)=>{let u={request:s,response:r};(await e.apply({...this,...u},o))(s,r,t)}}n(M,"asyncHandler");function p(e,t,s){return(r,o,u)=>{let g=u.value,P=m.getMeta(u);return u.value=M(g,P),m.addMeta(u,"meta",{path:t||"",method:e}),u}}n(p,"decoratorFabric");function N(e,t){return p(y,e,t)}n(N,"Get");function I(e,t){return p(l,e,t)}n(I,"Put");function w(e,t){return p(E,e,t)}n(w,"Post");function G(e,t){return p(x,e,t)}n(G,"Delete");function b(e,t){return p(f,e,t)}n(b,"Patch");function F(e,t){return p(S,e,t)}n(F,"Trace");function L(e,t){return p(d,e,t)}n(L,"Options");function U(e,t){return p(C,e,t)}n(U,"Head");0&&(module.exports={Delete,Get,Head,Options,Patch,Post,Put,Trace});
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Head = exports.Options = exports.Trace = exports.Patch = exports.Delete = exports.Post = exports.Put = exports.Get = void 0;
+const methods_1 = require("../Routing/methods");
+const metaStore_1 = __importDefault(require("../utils/metaStore"));
+function asyncHandler(originalHandler, meta) {
+    return async (request, response, ...args) => {
+        const context = {
+            request,
+            response
+        };
+        const handleResponse = await originalHandler.apply({ ...this, ...context }, args);
+        handleResponse(request, response, meta);
+    };
+}
+function decoratorFabric(method, path, statusCode) {
+    return (target, name, descriptor) => {
+        const originalDescriptorValue = descriptor.value;
+        const meta = metaStore_1.default.getMeta(descriptor);
+        descriptor.value = asyncHandler(originalDescriptorValue, meta);
+        metaStore_1.default.addMeta(descriptor, 'meta', {
+            path: path || '',
+            method,
+        });
+        return descriptor;
+    };
+}
+function Get(path, statusCode) {
+    return decoratorFabric(methods_1.GET, path, statusCode);
+}
+exports.Get = Get;
+function Put(path, statusCode) {
+    return decoratorFabric(methods_1.PUT, path, statusCode);
+}
+exports.Put = Put;
+function Post(path, statusCode) {
+    return decoratorFabric(methods_1.POST, path, statusCode);
+}
+exports.Post = Post;
+function Delete(path, statusCode) {
+    return decoratorFabric(methods_1.DELETE, path, statusCode);
+}
+exports.Delete = Delete;
+function Patch(path, statusCode) {
+    return decoratorFabric(methods_1.PATCH, path, statusCode);
+}
+exports.Patch = Patch;
+function Trace(path, statusCode) {
+    return decoratorFabric(methods_1.TRACE, path, statusCode);
+}
+exports.Trace = Trace;
+function Options(path, statusCode) {
+    return decoratorFabric(methods_1.OPTIONS, path, statusCode);
+}
+exports.Options = Options;
+function Head(path, statusCode) {
+    return decoratorFabric(methods_1.HEAD, path, statusCode);
+}
+exports.Head = Head;
 //# sourceMappingURL=method.js.map

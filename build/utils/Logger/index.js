@@ -1,2 +1,26 @@
-"use strict";var u=Object.defineProperty;var z=Object.getOwnPropertyDescriptor;var E=Object.getOwnPropertyNames;var j=Object.prototype.hasOwnProperty;var a=(e,t)=>u(e,"name",{value:t,configurable:!0});var k=(e,t)=>()=>(e&&(t=e(e=0)),t);var y=(e,t)=>{for(var r in t)u(e,r,{get:t[r],enumerable:!0})},A=(e,t,r,s)=>{if(t&&typeof t=="object"||typeof t=="function")for(let n of E(t))!j.call(e,n)&&n!==r&&u(e,n,{get:()=>t[n],enumerable:!(s=z(t,n))||s.enumerable});return e};var d=e=>A(u({},"__esModule",{value:!0}),e);var I={};y(I,{default:()=>p});function f(e,t){return e?`\x1B[${e}m${t}\x1B[0m`:t}function x(e,t){for(let r of e.split(","))if(r.length===1)t=f(q[r],t);else{let[s,n]=r.split("/"),i=b.indexOf(s),l=b.indexOf(n);i>-1&&(t=f(30+i,t)),l>-1&&(t=f(40+l,t))}return t}var q,b,p,T=k(()=>{"use strict";q={b:1,f:2,i:3,u:4,l:5,h:6,n:7,c:8,s:9},b=["black","red","green","yellow","blue","magenta","cyan","white","crimson"];a(f,"esc");a(x,"stylize");p=x;module.exports=x});var B={};y(B,{default:()=>_});module.exports=d(B);var N=(T(),d(I));function m(e,...t){let r=[e[0]],s=1;for(let n of t){let i=e[s++];if(i.startsWith("(")){let l=i.indexOf(")"),O=i.substring(1,l),$=N(O,n),W=i.substring(l+1);r.push($,W)}}return r.join("")}a(m,"Concollor");T();function D(e){return(t,...r)=>{if(typeof t=="string")return p(e,t);let s=[t[0]],n=1;for(let i of r){let l=t[n++];s.push(String(i),l)}return p(e,s.join(""))}}a(D,"Tag");var o=D;module.exports=D;var h={titleTag:o("b,i,red/red"),messageTag:o("red/red"),defaultTitle:"Error"},w={titleTag:o("b,i,yellow/yellow"),messageTag:o("yellow/yellow"),defaultTitle:"Warn"},R={titleTag:o("b,blue"),messageTag:o("blue"),defaultTitle:"Info"},S={titleTag:o("b,green"),messageTag:o("green"),defaultTitle:"Success"},L={titleTag:o("b,cyan"),messageTag:o("cyan"),defaultTitle:"Put"},v={titleTag:o("b,crimson"),messageTag:o("crimson"),defaultTitle:"Patch"},P={titleTag:o("b,magenta"),messageTag:o("magenta"),defaultTitle:"Data"},C=/(https?:\/\/\S+)/gm;function g(e){let t=String(e);console.log(t.replace(C,r=>m`${r}(u,blue)`))}a(g,"Log");function c({titleTag:e,messageTag:t,defaultTitle:r}){return function(s,n){console.log(e(`${n??r}: `)+t(`${s}`))}}a(c,"_print");g.error=c(h);g.warn=c(w);g.info=c(R);g.success=c(S);g.put=c(L);g.patch=c(v);g.data=c(P);var _=g;module.exports=g;0&&(module.exports={});
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const concollor_1 = __importDefault(require("../../utils/Logger/concollor"));
+const utils_1 = require("./utils");
+function Log(message) {
+    const text = String(message);
+    console.log(text.replace(utils_1.urlRegex, (url) => (0, concollor_1.default) `${url}(u,blue)`));
+}
+function _print({ titleTag, messageTag, defaultTitle }) {
+    return function (message, title) {
+        console.log(titleTag(`${title ?? defaultTitle}: `) + messageTag(`${message}`));
+    };
+}
+Log.error = _print(utils_1.Error);
+Log.warn = _print(utils_1.Warn);
+Log.info = _print(utils_1.Info);
+Log.success = _print(utils_1.Success);
+Log.put = _print(utils_1.Put);
+Log.patch = _print(utils_1.Patch);
+Log.data = _print(utils_1.Data);
+exports.default = Log;
+module.exports = Log;
 //# sourceMappingURL=index.js.map

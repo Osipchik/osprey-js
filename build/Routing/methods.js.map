@@ -1,7 +1,1 @@
-{
-  "version": 3,
-  "sources": ["../../packages/Routing/methods.ts"],
-  "sourcesContent": ["export const GET = 'GET';\nexport const HEAD = 'HEAD';\nexport const POST = 'POST';\nexport const PUT = 'PUT';\nexport const DELETE = 'DELETE';\nexport const CONNECTS = 'CONNECTS';\nexport const OPTIONS = 'OPTIONS';\nexport const TRACE = 'TRACE';\nexport const PATCH = 'PATCH';\n"],
-  "mappings": "yaAAA,IAAAA,EAAA,GAAAC,EAAAD,EAAA,cAAAE,EAAA,WAAAC,EAAA,QAAAC,EAAA,SAAAC,EAAA,YAAAC,EAAA,UAAAC,EAAA,SAAAC,EAAA,QAAAC,EAAA,UAAAC,IAAA,eAAAC,EAAAX,GAAO,IAAMI,EAAM,MACNC,EAAO,OACPG,EAAO,OACPC,EAAM,MACNN,EAAS,SACTD,EAAW,WACXI,EAAU,UACVI,EAAQ,QACRH,EAAQ",
-  "names": ["methods_exports", "__export", "CONNECTS", "DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT", "TRACE", "__toCommonJS"]
-}
+{"version":3,"file":"methods.js","sourceRoot":"","sources":["../../packages/Routing/methods.ts"],"names":[],"mappings":";;;AAAa,QAAA,GAAG,GAAG,KAAK,CAAC;AACZ,QAAA,IAAI,GAAG,MAAM,CAAC;AACd,QAAA,IAAI,GAAG,MAAM,CAAC;AACd,QAAA,GAAG,GAAG,KAAK,CAAC;AACZ,QAAA,MAAM,GAAG,QAAQ,CAAC;AAClB,QAAA,QAAQ,GAAG,UAAU,CAAC;AACtB,QAAA,OAAO,GAAG,SAAS,CAAC;AACpB,QAAA,KAAK,GAAG,OAAO,CAAC;AAChB,QAAA,KAAK,GAAG,OAAO,CAAC"}

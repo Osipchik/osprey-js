@@ -1,2 +1,83 @@
-"use strict";var a=Object.defineProperty;var m=Object.getOwnPropertyDescriptor;var x=Object.getOwnPropertyNames;var y=Object.prototype.hasOwnProperty;var i=(t,r)=>a(t,"name",{value:r,configurable:!0});var P=(t,r)=>{for(var e in r)a(t,e,{get:r[e],enumerable:!0})},d=(t,r,e,s)=>{if(r&&typeof r=="object"||typeof r=="function")for(let n of x(r))!y.call(t,n)&&n!==e&&a(t,n,{get:()=>r[n],enumerable:!(s=m(r,n))||s.enumerable});return t};var w=t=>d(a({},"__esModule",{value:!0}),t);var E={};P(E,{addSlash:()=>u,getPath:()=>j,isPrimitive:()=>v,isPromise:()=>z,isVarName:()=>h,normalizePath:()=>N,normalizeSlash:()=>p});module.exports=w(E);function N({prefix:t,path:r,property:e,query:s}){return[u(t),u(r)].join("")}i(N,"normalizePath");function u(t){if(t){let r=t.replace("/","");return r.length?"/"+r:""}return""}i(u,"addSlash");function v(t){return!(t instanceof Object)}i(v,"isPrimitive");function z(t){return typeof t=="object"&&typeof t.then=="function"}i(z,"isPromise");function p(t){let r=t;for(;r.startsWith("/");)r=r.slice(1);for(;r.endsWith("/");)r=r.slice(0,-1);return"/"+r}i(p,"normalizeSlash");function j(t,r){let e=t??"",s=r??"";if(e.includes(":"))throw new Error("cant has semicolon");if(s.includes("*"))throw new Error("cant has semicolon");let n=[],g=s.split("/").reduce((l,o)=>{if(o.includes(":")){let f=o.slice(1);if(h(f))n.push(o.slice(1));else throw new Error(`invalid var name: ${f}`);return l+"/"+o}return l+"/"+o},""),c=p(e);return{pathName:p(c+p(g)),prefix:c,props:n}}i(j,"getPath");function h(t){if(t.trim()!==t)return!1;try{new Function(t,"var "+t)}catch{return!1}return!0}i(h,"isVarName");0&&(module.exports={addSlash,getPath,isPrimitive,isPromise,isVarName,normalizePath,normalizeSlash});
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isVarName = exports.getPath = exports.normalizeSlash = exports.isPromise = exports.isPrimitive = exports.addSlash = exports.normalizePath = void 0;
+function normalizePath({ prefix, path, property, query }) {
+    const pathname = [
+        addSlash(prefix),
+        addSlash(path),
+    ].join('');
+    return pathname;
+}
+exports.normalizePath = normalizePath;
+function addSlash(param) {
+    if (param) {
+        const cleanParam = param.replace('/', '');
+        return cleanParam.length ? '/' + cleanParam : '';
+    }
+    return '';
+}
+exports.addSlash = addSlash;
+function isPrimitive(value) {
+    return !(value instanceof Object);
+}
+exports.isPrimitive = isPrimitive;
+function isPromise(value) {
+    return typeof value === 'object' && typeof value.then === 'function';
+}
+exports.isPromise = isPromise;
+function normalizeSlash(value) {
+    let val = value;
+    while (val.startsWith('/')) {
+        val = val.slice(1);
+    }
+    while (val.endsWith('/')) {
+        val = val.slice(0, -1);
+    }
+    return '/' + val;
+}
+exports.normalizeSlash = normalizeSlash;
+function getPath(prefix, pathName) {
+    const routePrefix = prefix ?? '';
+    const routePathName = pathName ?? '';
+    if (routePrefix.includes(':')) {
+        throw new Error('cant has semicolon');
+    }
+    if (routePathName.includes('*')) {
+        throw new Error('cant has semicolon');
+    }
+    const props = [];
+    const normalizedPathName = routePathName.split('/').reduce((acc, character) => {
+        if (character.includes(':')) {
+            const propName = character.slice(1);
+            if (isVarName(propName)) {
+                props.push(character.slice(1));
+            }
+            else {
+                throw new Error(`invalid var name: ${propName}`);
+            }
+            return acc + '/' + character;
+        }
+        return acc + '/' + character;
+    }, '');
+    const normalizedPrefix = normalizeSlash(routePrefix);
+    return {
+        pathName: normalizeSlash(normalizedPrefix + normalizeSlash(normalizedPathName)),
+        prefix: normalizedPrefix,
+        props,
+    };
+}
+exports.getPath = getPath;
+function isVarName(name) {
+    if (name.trim() !== name) {
+        return false;
+    }
+    try {
+        new Function(name, 'var ' + name);
+    }
+    catch (_) {
+        return false;
+    }
+    return true;
+}
+exports.isVarName = isVarName;
 //# sourceMappingURL=helpers.js.map

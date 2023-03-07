@@ -1,2 +1,23 @@
-"use strict";var u=Object.defineProperty;var m=Object.getOwnPropertyDescriptor;var b=Object.getOwnPropertyNames;var y=Object.prototype.hasOwnProperty;var i=(r,n)=>u(r,"name",{value:n,configurable:!0});var d=(r,n)=>{for(var t in n)u(r,t,{get:n[t],enumerable:!0})},T=(r,n,t,e)=>{if(n&&typeof n=="object"||typeof n=="function")for(let o of b(n))!y.call(r,o)&&o!==t&&u(r,o,{get:()=>n[o],enumerable:!(e=m(n,o))||e.enumerable});return r};var h=r=>T(u({},"__esModule",{value:!0}),r);var x={};d(x,{default:()=>w});module.exports=h(x);var O={b:1,f:2,i:3,u:4,l:5,h:6,n:7,c:8,s:9},c=["black","red","green","yellow","blue","magenta","cyan","white","crimson"];function g(r,n){return r?`\x1B[${r}m${n}\x1B[0m`:n}i(g,"esc");function p(r,n){for(let t of r.split(","))if(t.length===1)n=g(O[t],n);else{let[e,o]=t.split("/"),s=c.indexOf(e),f=c.indexOf(o);s>-1&&(n=g(30+s,n)),f>-1&&(n=g(40+f,n))}return n}i(p,"stylize");var l=p;module.exports=p;function a(r){return(n,...t)=>{if(typeof n=="string")return l(r,n);let e=[n[0]],o=1;for(let s of t){let f=n[o++];e.push(String(s),f)}return l(r,e.join(""))}}i(a,"Tag");var w=a;module.exports=a;0&&(module.exports={});
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const stylize_1 = __importDefault(require("./stylize"));
+function Tag(styles) {
+    return (strings, ...values) => {
+        if (typeof strings === 'string') {
+            return (0, stylize_1.default)(styles, strings);
+        }
+        const result = [strings[0]];
+        let i = 1;
+        for (const val of values) {
+            const str = strings[i++];
+            result.push(String(val), str);
+        }
+        return (0, stylize_1.default)(styles, result.join(''));
+    };
+}
+exports.default = Tag;
+module.exports = Tag;
 //# sourceMappingURL=tag.js.map

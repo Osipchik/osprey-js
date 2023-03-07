@@ -1,2 +1,9 @@
-"use strict";var r=Object.defineProperty;var u=Object.getOwnPropertyDescriptor;var c=Object.getOwnPropertyNames;var g=Object.prototype.hasOwnProperty;var i=(e,o)=>r(e,"name",{value:o,configurable:!0});var C=(e,o)=>{for(var t in o)r(e,t,{get:o[t],enumerable:!0})},d=(e,o,t,f)=>{if(o&&typeof o=="object"||typeof o=="function")for(let n of c(o))!g.call(e,n)&&n!==t&&r(e,n,{get:()=>o[n],enumerable:!(f=u(o,n))||f.enumerable});return e};var l=e=>d(r({},"__esModule",{value:!0}),e);var x={};C(x,{default:()=>p});module.exports=l(x);function s(){}i(s,"Config");var p=s;module.exports=s;0&&(module.exports={});
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const serverConfig = {};
+const routerConfig = {};
+function Config() {
+}
+exports.default = Config;
+module.exports = Config;
 //# sourceMappingURL=index.js.map

@@ -13,8 +13,8 @@ export const Error: IDecorator = {
 };
 
 export const Warn: IDecorator = {
-  titleTag: Tag('b,i,yellow/yellow'),
-  messageTag: Tag('yellow/yellow'),
+  titleTag: Tag('b,i,yellow'),
+  messageTag: Tag('yellow'),
   defaultTitle: 'Warn',
 };
 

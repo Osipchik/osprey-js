@@ -2,15 +2,15 @@
   "author": "Tim Osipchik",
   "license": "MIT",
   "name": "osprey-js",
-  "version": "0.0.28",
+  "version": "0.0.34",
   "type": "module",
   "description": "modern fast and lightweight backend framework",
-  "main": "dist/cjs/index.js",
-  "module": "dist/es/index.js",
+  "main": "./index.js",
+  "module": "./index.js",
   "scripts": {
     "clear": "rm -rf build/*",
     "build:tsc": "pnpm clear &&  tsc",
-    "build": "pnpm clear && tsc && node ./esbuild.config.js"
+    "build": "pnpm clear && tsc && node ./esbuild.js"
   },
   "dependencies": {
     "@parisholley/road-runner": "^1.1.8",

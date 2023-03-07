@@ -1,2 +1,12 @@
-"use strict";var m=Object.defineProperty;var M=Object.getOwnPropertyDescriptor;var N=Object.getOwnPropertyNames;var c=Object.prototype.hasOwnProperty;var i=(n,e)=>m(n,"name",{value:e,configurable:!0});var g=(n,e)=>{for(var r in e)m(n,r,{get:e[r],enumerable:!0})},h=(n,e,r,p)=>{if(e&&typeof e=="object"||typeof e=="function")for(let l of N(e))!c.call(n,l)&&l!==r&&m(n,l,{get:()=>e[l],enumerable:!(p=M(e,l))||p.enumerable});return n};var A=n=>h(m({},"__esModule",{value:!0}),n);var f={};g(f,{default:()=>I});module.exports=A(f);function o(n,e){let r=`The request ${n.method} ${n.url} is not allowed`;e.statusCode=405,e.statusMessage=r,e.end()}i(o,"MethodNotAllowedHandler");var I=o;module.exports=o;0&&(module.exports={});
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const statusCodes_1 = require("../../Response/statusCodes");
+function MethodNotAllowedHandler(request, response) {
+    const message = `The request ${request.method} ${request.url} is not allowed`;
+    response.statusCode = statusCodes_1.StatusCodes.MethodNotAllowed;
+    response.statusMessage = message;
+    response.end();
+}
+exports.default = MethodNotAllowedHandler;
+module.exports = MethodNotAllowedHandler;
 //# sourceMappingURL=MethodNotAllowedHandler.js.map

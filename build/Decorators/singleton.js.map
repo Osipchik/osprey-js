@@ -1,0 +1,1 @@
+{"version":3,"file":"singleton.js","sourceRoot":"","sources":["../../packages/Decorators/singleton.ts"],"names":[],"mappings":";;AAAA,SAAwB,SAAS,CAAwC,GAAM;IAC7E,IAAI,QAAW,CAAC;IAEhB,OAAO;QACL,YAAY,GAAG,IAAW;YACxB,IAAI,QAAQ,EAAE;gBACZ,OAAO,QAAQ,CAAC;aACjB;YAED,QAAQ,GAAG,IAAI,GAAG,CAAC,GAAG,IAAI,CAAC,CAAC;YAE5B,OAAO,QAAQ,CAAC;QAClB,CAAC;KACG,CAAC;AACT,CAAC;AAdD,4BAcC"}

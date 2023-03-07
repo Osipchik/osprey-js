@@ -1,2 +1,21 @@
-"use strict";var g=Object.defineProperty;var v=Object.getOwnPropertyDescriptor;var p=Object.getOwnPropertyNames;var n=Object.prototype.hasOwnProperty;var r=(t,a,e)=>a in t?g(t,a,{enumerable:!0,configurable:!0,writable:!0,value:e}):t[a]=e;var u=(t,a)=>g(t,"name",{value:a,configurable:!0});var f=(t,a)=>{for(var e in a)g(t,e,{get:a[e],enumerable:!0})},w=(t,a,e,c)=>{if(a&&typeof a=="object"||typeof a=="function")for(let i of p(a))!n.call(t,i)&&i!==e&&g(t,i,{get:()=>a[i],enumerable:!(c=v(a,i))||c.enumerable});return t};var y=t=>w(g({},"__esModule",{value:!0}),t);var m=(t,a,e)=>(r(t,typeof a!="symbol"?a+"":a,e),e);var h={};f(h,{default:()=>W});module.exports=y(h);var s=class{static addMeta(a,e,c){if(s.meta.has(a)){let i=s.meta.get(a);i[e]=c}else s.meta.set(a,{[e]:c});s.values.set(a.value,s.meta.get(a))}static getMeta(a){return s.meta.get(a)||s.values.get(a)}},l=s;u(l,"MetaStore"),m(l,"meta",new WeakMap),m(l,"values",new WeakMap);var W=l;0&&(module.exports={});
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class MetaStore {
+    static meta = new WeakMap();
+    static values = new WeakMap();
+    static addMeta(node, key, data) {
+        if (MetaStore.meta.has(node)) {
+            const root = MetaStore.meta.get(node);
+            root[key] = data;
+        }
+        else {
+            MetaStore.meta.set(node, { [key]: data });
+        }
+        MetaStore.values.set(node.value, MetaStore.meta.get(node));
+    }
+    static getMeta(node) {
+        return MetaStore.meta.get(node) || MetaStore.values.get(node);
+    }
+}
+exports.default = MetaStore;
 //# sourceMappingURL=metaStore.js.map

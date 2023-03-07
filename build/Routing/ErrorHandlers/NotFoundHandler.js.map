@@ -1,7 +1,1 @@
-{
-  "version": 3,
-  "sources": ["../../../packages/Routing/ErrorHandlers/NotFoundHandler.ts"],
-  "sourcesContent": ["import { StatusCodes } from '../../Response/statusCodes';\nimport { IncomingMessageType, ServerResponseType } from '../../Routing/types';\n\nfunction NotFoundHandler (\n  request: IncomingMessageType,\n  response: ServerResponseType,\n) {\n  const message = `The request ${request.method} ${request.url} is not found`;\n\n  response.statusCode = StatusCodes.NotFound;\n  response.statusMessage = message;\n  response.end();\n}\n\nexport default NotFoundHandler;\nmodule.exports = NotFoundHandler;\n"],
-  "mappings": "4dAAA,IAAAA,EAAA,GAAAC,EAAAD,EAAA,aAAAE,IAAA,eAAAC,EAAAH,GAGA,SAASI,EACPC,EACAC,EACA,CACA,IAAMC,EAAU,eAAeF,EAAQ,UAAUA,EAAQ,mBAEzDC,EAAS,WAAa,IACtBA,EAAS,cAAgBC,EACzBD,EAAS,IAAI,CACf,CATSE,EAAAJ,EAAA,mBAWT,IAAOK,EAAQL,EACf,OAAO,QAAUA",
-  "names": ["NotFoundHandler_exports", "__export", "NotFoundHandler_default", "__toCommonJS", "NotFoundHandler", "request", "response", "message", "__name", "NotFoundHandler_default"]
-}
+{"version":3,"file":"NotFoundHandler.js","sourceRoot":"","sources":["../../../packages/Routing/ErrorHandlers/NotFoundHandler.ts"],"names":[],"mappings":";;AAAA,4DAAyD;AAGzD,SAAS,eAAe,CACtB,OAA4B,EAC5B,QAA4B;IAE5B,MAAM,OAAO,GAAG,eAAe,OAAO,CAAC,MAAM,IAAI,OAAO,CAAC,GAAG,eAAe,CAAC;IAE5E,QAAQ,CAAC,UAAU,GAAG,yBAAW,CAAC,QAAQ,CAAC;IAC3C,QAAQ,CAAC,aAAa,GAAG,OAAO,CAAC;IACjC,QAAQ,CAAC,GAAG,EAAE,CAAC;AACjB,CAAC;AAED,kBAAe,eAAe,CAAC;AAC/B,MAAM,CAAC,OAAO,GAAG,eAAe,CAAC"}

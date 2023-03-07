@@ -1,7 +1,1 @@
-{
-  "version": 3,
-  "sources": ["../../packages/Response/types.ts"],
-  "sourcesContent": ["import { IncomingMessageType, ServerResponseType } from '../Routing/types';\nimport type { StatusCodes } from './statusCodes';\n\nexport interface IOptions {\n  statusCode?: StatusCodes,\n  contentType?: string,\n  isJSON?: boolean,\n};\n\nexport interface IResult {\n  value: unknown,\n  statusCode: StatusCodes,\n  contentType: string,\n};\n\nexport type ResponseHandlerType = (\n  request: IncomingMessageType,\n  response: ServerResponseType,\n  meta: any,\n) => void;\n"],
-  "mappings": "+WAAA,IAAAA,EAAA,kBAAAC,EAAAD",
-  "names": ["types_exports", "__toCommonJS"]
-}
+{"version":3,"file":"types.js","sourceRoot":"","sources":["../../packages/Response/types.ts"],"names":[],"mappings":";;AAOC,CAAC;AAMD,CAAC"}
