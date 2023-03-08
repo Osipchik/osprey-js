@@ -1,15 +1,21 @@
 import MetaStore from '../utils/metaStore';
 
+/**
+ * Decorator to add header parameter into response.
+ *
+ * @param {string} name - The key of the property
+ * @param {string} value - The value of the property
+ */
 function Header(
-  name: string,
+  key: string,
   value: string,
 ): MethodDecorator {
   return (
-    target: object,
-    key: string | symbol,
+    _target: object,
+    _key: string | symbol,
     descriptor: TypedPropertyDescriptor<any>,
   ) => {
-    MetaStore.addMeta(descriptor, 'header', { name, value });
+    MetaStore.addMeta(descriptor, 'header', { key, value });
   };
 }
 

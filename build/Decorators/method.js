@@ -7,9 +7,9 @@ exports.Head = exports.Options = exports.Trace = exports.Patch = exports.Delete 
 const methods_1 = require("../Routing/methods");
 const metaStore_1 = __importDefault(require("../utils/metaStore"));
 function asyncHandler(originalHandler, meta) {
-    return (classContext) => async (request, response, ...args) => {
+    return (props) => async (request, response, ...args) => {
         const context = {
-            ...classContext,
+            ...props,
             request,
             response
         };
@@ -18,7 +18,7 @@ function asyncHandler(originalHandler, meta) {
     };
 }
 function decoratorFabric(method, path) {
-    return (target, name, descriptor) => {
+    return (_target, _name, descriptor) => {
         const originalDescriptorValue = descriptor.value;
         const meta = metaStore_1.default.getMeta(descriptor);
         descriptor.value = asyncHandler(originalDescriptorValue, meta);
@@ -29,34 +29,74 @@ function decoratorFabric(method, path) {
         return descriptor;
     };
 }
+/**
+ * Routes HTTP GET requests to the specified path.
+ *
+ * @param {string} path - Specified path.
+ */
 function Get(path) {
     return decoratorFabric(methods_1.GET, path);
 }
 exports.Get = Get;
+/**
+ * Routes HTTP Put requests to the specified path.
+ *
+ * @param {string} path - Specified path.
+ */
 function Put(path) {
     return decoratorFabric(methods_1.PUT, path);
 }
 exports.Put = Put;
+/**
+ * Routes HTTP Post requests to the specified path.
+ *
+ * @param {string} path - Specified path.
+ */
 function Post(path) {
     return decoratorFabric(methods_1.POST, path);
 }
 exports.Post = Post;
+/**
+ * Routes HTTP Delete requests to the specified path.
+ *
+ * @param {string} path - Specified path.
+ */
 function Delete(path) {
     return decoratorFabric(methods_1.DELETE, path);
 }
 exports.Delete = Delete;
+/**
+ * Routes HTTP Patch requests to the specified path.
+ *
+ * @param {string} path - Specified path.
+ */
 function Patch(path) {
     return decoratorFabric(methods_1.PATCH, path);
 }
 exports.Patch = Patch;
+/**
+ * Routes HTTP Trace requests to the specified path.
+ *
+ * @param {string} path - Specified path.
+ */
 function Trace(path) {
     return decoratorFabric(methods_1.TRACE, path);
 }
 exports.Trace = Trace;
+/**
+ * Routes HTTP Options requests to the specified path.
+ *
+ * @param {string} path - Specified path.
+ */
 function Options(path) {
     return decoratorFabric(methods_1.OPTIONS, path);
 }
 exports.Options = Options;
+/**
+ * Routes HTTP Head requests to the specified path.
+ *
+ * @param {string} path - Specified path.
+ */
 function Head(path) {
     return decoratorFabric(methods_1.HEAD, path);
 }

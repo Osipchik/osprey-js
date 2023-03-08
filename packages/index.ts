@@ -3,7 +3,7 @@ import * as OS from 'os';
 import Router from './Routing';
 import Server from './Server';
 import MetaStore from './utils/metaStore';
-import { asyncHandlerType } from './Decorators/method';
+import { AsyncHandlerType } from './Decorators/method';
 
 dotenv.config();
 
@@ -26,7 +26,7 @@ class App {
 
       const controllerInstance = new controller();
 
-      methods.forEach((handler: asyncHandlerType) => {
+      methods.forEach((handler: AsyncHandlerType) => {
         const handlerMeta = MetaStore.getMeta(handler);
 
         Router.addRoute(handler(controllerInstance), handlerMeta.meta);

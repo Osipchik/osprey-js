@@ -4,6 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const metaStore_1 = __importDefault(require("../utils/metaStore"));
+/**
+ * Create the new node into router
+ *
+ * @param {string} prefix - Prefix that added for all routes of the Controller
+ */
 function Controller(prefix) {
     return function (constructor) {
         const methods = Object.getOwnPropertyNames(constructor.prototype).reduce((acc, key) => {

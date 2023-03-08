@@ -69,8 +69,8 @@ function textResponseFabric(defaultOptions: IDefaultOptions) {
   };
 }
 
-type ResponseFunctionType = (result: unknown, options?: IOptions) => ResponseHandlerType;
-type ResponseTextFunctionType = (result: string, options?: IOptions) => ResponseHandlerType;
+export type ResponseFunctionType = (result: unknown, options?: IOptions) => ResponseHandlerType;
+export type ResponseTextFunctionType = (result: string, options?: IOptions) => ResponseHandlerType;
 
 interface IResponse {
   Ok: ResponseFunctionType;

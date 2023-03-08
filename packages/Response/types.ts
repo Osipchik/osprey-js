@@ -1,3 +1,4 @@
+import { ResponseFunctionType, ResponseTextFunctionType } from '.';
 import { IncomingMessageType, ServerResponseType } from '../Routing/types';
 import type { StatusCodes } from './statusCodes';
 
@@ -18,3 +19,7 @@ export type ResponseHandlerType = (
   response: ServerResponseType,
   meta: any,
 ) => void;
+
+export type IMethodDecorator<T> = (target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>) => TypedPropertyDescriptor<T>;
+export type ResponseFunctionTypeDescriptor = IMethodDecorator<ResponseFunctionType>;
+export type ResponseTextFunctionTypeDescriptor = IMethodDecorator<ResponseTextFunctionType>

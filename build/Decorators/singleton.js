@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SINGLETON_KEY = void 0;
 exports.SINGLETON_KEY = Symbol("Singleton Key");
+/**
+ * Decorator that implements Singleton pattern
+ */
 function Singleton(classTarget) {
     return new Proxy(classTarget, {
         construct(target, argumentsList, newTarget) {
