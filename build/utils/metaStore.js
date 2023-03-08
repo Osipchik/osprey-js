@@ -11,7 +11,9 @@ class MetaStore {
         else {
             MetaStore.meta.set(node, { [key]: data });
         }
-        MetaStore.values.set(node.value, MetaStore.meta.get(node));
+        if (node.value) {
+            MetaStore.values.set(node.value, MetaStore.meta.get(node));
+        }
     }
     static getMeta(node) {
         return MetaStore.meta.get(node) || MetaStore.values.get(node);

@@ -54,7 +54,7 @@ class Server {
         process.on('SIGINT', this.onServerClose);
     }
     onServerClose() {
-        Logger_1.default.warn(`Server is closed at http://${this.host}:${this.port}`);
+        Logger_1.default.warn('Server is closed');
         process.exit();
     }
 }

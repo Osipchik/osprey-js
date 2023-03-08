@@ -10,7 +10,9 @@ class MetaStore {
       MetaStore.meta.set(node, { [key]: data });
     }
 
-    MetaStore.values.set(node.value, MetaStore.meta.get(node))
+    if (node.value) {
+      MetaStore.values.set(node.value, MetaStore.meta.get(node))
+    }
   }
 
   static getMeta(node: any) {

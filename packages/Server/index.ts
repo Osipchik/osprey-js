@@ -63,7 +63,7 @@ class Server {
   }
 
   private onServerClose() {
-    Logger.warn(`Server is closed at http://${this.host}:${this.port}`);
+    Logger.warn('Server is closed');
     process.exit();
   }
 }

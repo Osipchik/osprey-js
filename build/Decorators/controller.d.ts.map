@@ -1,1 +1,1 @@
-{"version":3,"file":"controller.d.ts","sourceRoot":"","sources":["../../packages/Decorators/controller.ts"],"names":[],"mappings":"AAIA,iBAAS,UAAU,CAAC,MAAM,CAAC,EAAE,MAAM,GAAG,cAAc,CAanD;AAED,eAAe,UAAU,CAAC"}
+{"version":3,"file":"controller.d.ts","sourceRoot":"","sources":["../../packages/Decorators/controller.ts"],"names":[],"mappings":"AAGA,iBAAS,UAAU,CAAC,MAAM,CAAC,EAAE,MAAM,GAAG,cAAc,CAgBnD;AAED,eAAe,UAAU,CAAC"}

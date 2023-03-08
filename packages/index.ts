@@ -1,6 +1,9 @@
 import * as dotenv from 'dotenv';
 import * as OS from 'os';
+import Router from './Routing';
 import Server from './Server';
+import MetaStore from './utils/metaStore';
+import { asyncHandlerType } from './Decorators/method';
 
 dotenv.config();
 
@@ -11,17 +14,25 @@ type AppPropsType = {
 }
 
 class App {
-  private readonly threadPoolSize: number;
-
   constructor(props: AppPropsType = {}) {
-    this.threadPoolSize = setThreadPoolSize(props.threadPoolSize ?? availableLogicalCors);
+    setThreadPoolSize(props.threadPoolSize ?? availableLogicalCors);
   }
 
   useControllers(controllers: any[]): void {
     const controllersSet = [];
 
     for(const controller of controllers) {
-      controllersSet.push(new controller());
+      const { methods } = MetaStore.getMeta(controller);
+
+      const controllerInstance = new controller();
+
+      methods.forEach((handler: asyncHandlerType) => {
+        const handlerMeta = MetaStore.getMeta(handler);
+
+        Router.addRoute(handler(controllerInstance), handlerMeta.meta);
+      });
+
+      controllersSet.push(controllerInstance);
     }
   }
 

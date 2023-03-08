@@ -28,18 +28,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv = __importStar(require("dotenv"));
 const OS = __importStar(require("os"));
+const Routing_1 = __importDefault(require("./Routing"));
 const Server_1 = __importDefault(require("./Server"));
+const metaStore_1 = __importDefault(require("./utils/metaStore"));
 dotenv.config();
 const availableLogicalCors = OS.cpus().length;
 class App {
-    threadPoolSize;
     constructor(props = {}) {
-        this.threadPoolSize = setThreadPoolSize(props.threadPoolSize ?? availableLogicalCors);
+        setThreadPoolSize(props.threadPoolSize ?? availableLogicalCors);
     }
     useControllers(controllers) {
         const controllersSet = [];
         for (const controller of controllers) {
-            controllersSet.push(new controller());
+            const { methods } = metaStore_1.default.getMeta(controller);
+            const controllerInstance = new controller();
+            methods.forEach((handler) => {
+                const handlerMeta = metaStore_1.default.getMeta(handler);
+                Routing_1.default.addRoute(handler(controllerInstance), handlerMeta.meta);
+            });
+            controllersSet.push(controllerInstance);
         }
     }
     run() {

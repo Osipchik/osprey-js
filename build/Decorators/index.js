@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Header = exports.Trace = exports.Options = exports.Post = exports.Put = exports.Patch = exports.Delete = exports.Head = exports.Get = exports.Controller = void 0;
-const controller_1 = __importDefault(require("../Routing/decorators/controller"));
+const controller_1 = __importDefault(require("../Decorators/controller"));
 exports.Controller = controller_1.default;
-const method_1 = require("../Routing/decorators/method");
+const method_1 = require("../Decorators/method");
 Object.defineProperty(exports, "Get", { enumerable: true, get: function () { return method_1.Get; } });
 Object.defineProperty(exports, "Head", { enumerable: true, get: function () { return method_1.Head; } });
 Object.defineProperty(exports, "Delete", { enumerable: true, get: function () { return method_1.Delete; } });
@@ -15,6 +15,6 @@ Object.defineProperty(exports, "Put", { enumerable: true, get: function () { ret
 Object.defineProperty(exports, "Post", { enumerable: true, get: function () { return method_1.Post; } });
 Object.defineProperty(exports, "Options", { enumerable: true, get: function () { return method_1.Options; } });
 Object.defineProperty(exports, "Trace", { enumerable: true, get: function () { return method_1.Trace; } });
-const header_1 = __importDefault(require("../Routing/decorators/header"));
+const header_1 = __importDefault(require("../Decorators/header"));
 exports.Header = header_1.default;
 //# sourceMappingURL=index.js.map

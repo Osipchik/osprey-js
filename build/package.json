@@ -2,7 +2,7 @@
   "author": "Tim Osipchik",
   "license": "MIT",
   "name": "osprey-js",
-  "version": "0.0.36",
+  "version": "0.0.39",
   "description": "modern fast and lightweight backend framework",
   "main": "./index.js",
   "module": "./index.js",
