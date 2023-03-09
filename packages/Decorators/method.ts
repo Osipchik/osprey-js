@@ -1,15 +1,15 @@
-import { IncomingMessageType, ServerResponseType, methodsTypes, RequestHandlerType } from '../Routing/types';
+import { IncomingMessageType, ServerResponseType, methodsTypes, RequestHandlerType, ParamsType } from '../Routing/types';
 import { DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT, TRACE } from '../Routing/methods';
 import MetaStore from '../utils/metaStore';
 import type { ResponseFunctionTypeDescriptor, ResponseHandlerType, ResponseTextFunctionTypeDescriptor } from '../Response/types';
 
-export type AsyncHandlerType = (props: any) => RequestHandlerType;
+export type AsyncHandlerType = (props: ParamsType) => RequestHandlerType;
 
 function asyncHandler(originalHandler: Function, meta: any): AsyncHandlerType {
   return (props: any) => async (
     request: IncomingMessageType,
     response: ServerResponseType,
-    ...args: unknown[]
+    props: ParamsType,
   ) => {
     const context = {
       ...props,
@@ -17,7 +17,7 @@ function asyncHandler(originalHandler: Function, meta: any): AsyncHandlerType {
       response
     };
 
-    const handleResponse: ResponseHandlerType = await originalHandler.apply(context, args);
+    const handleResponse: ResponseHandlerType = await originalHandler.apply(context, props);
     handleResponse(request, response, meta);
   };
 }

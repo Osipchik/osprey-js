@@ -1,6 +1,6 @@
-import { RequestHandlerType } from '../Routing/types';
+import { RequestHandlerType, ParamsType } from '../Routing/types';
 import type { ResponseFunctionTypeDescriptor, ResponseTextFunctionTypeDescriptor } from '../Response/types';
-export type AsyncHandlerType = (props: any) => RequestHandlerType;
+export type AsyncHandlerType = (props: ParamsType) => RequestHandlerType;
 /**
  * Routes HTTP GET requests to the specified path.
  *

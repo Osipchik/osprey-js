@@ -7,7 +7,11 @@ import NotImplementedHandler from '../Routing/ErrorHandlers/NotImplementedHandle
 export type IncomingMessageType = http.IncomingMessage;
 export type ServerResponseType = http.ServerResponse;
 export type methodsTypes = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS' | 'TRACE' | 'PATCH';
-export type RequestHandlerType = (request: IncomingMessageType, response: ServerResponseType) => void;
+export type RequestHandlerType = (request: IncomingMessageType, response: ServerResponseType, args: ParamsType) => void;
+export type ParamsType = {
+    params: object | undefined;
+    query: object | undefined;
+};
 export type RouteValueType = {
     handler: Function;
     params?: object;

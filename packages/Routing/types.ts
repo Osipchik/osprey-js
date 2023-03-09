@@ -11,7 +11,13 @@ export type methodsTypes = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS
 export type RequestHandlerType = (
   request: IncomingMessageType,
   response: ServerResponseType,
+  args: ParamsType,
 ) => void;
+
+export type ParamsType = {
+  params: object | undefined;
+  query: object | undefined;
+};
 
 export type RouteValueType = {
   handler: Function,
