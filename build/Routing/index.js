@@ -43,11 +43,27 @@ class Router {
     }
     getRequestHandler(request) {
         if (request.method) {
-            const route = Router.router.findRoute(request.method, request.url);
+            const [url, searchParams] = request.url.split('?', 2);
+            const route = Router.router.findRoute(request.method, url);
             if (route) {
+                const payload = {
+                    params: route.params,
+                };
+                Object.defineProperty(payload, 'query', {
+                    configurable: true,
+                    get: function () {
+                        const asd = new URLSearchParams(searchParams);
+                        const query = Object.fromEntries(asd.entries());
+                        Object.defineProperty(this, 'query', {
+                            value: query,
+                            configurable: false,
+                        });
+                        return query;
+                    }
+                });
                 return {
                     handler: route.value,
-                    params: route.params,
+                    params: payload,
                 };
             }
             return {

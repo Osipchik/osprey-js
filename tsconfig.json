@@ -2,7 +2,7 @@
   "extends": "@tsconfig/recommended/tsconfig.json",
   "ts-node": {
     "files": true,
-    "swc": true
+    "swc": true,
   },
   "compilerOptions": {
     "target": "esnext",
