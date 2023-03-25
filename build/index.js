@@ -35,7 +35,7 @@ dotenv.config();
 const availableLogicalCors = OS.cpus().length;
 class App {
     constructor(props = {}) {
-        setThreadPoolSize(props.threadPoolSize ?? availableLogicalCors);
+        setThreadPoolSize(props.threadPoolSize || availableLogicalCors);
     }
     useControllers(controllers) {
         const controllersSet = [];

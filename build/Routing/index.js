@@ -11,6 +11,7 @@ const NotFoundHandler_1 = __importDefault(require("../Routing/ErrorHandlers/NotF
 const helpers_1 = require("../utils/helpers");
 const Logger_1 = __importDefault(require("../utils/Logger"));
 const methods_1 = require("../Routing/methods");
+const define_1 = require("../utils/define");
 class Router {
     static router = new road_runner_1.RoadRunner();
     static errorHandlers = {
@@ -49,18 +50,9 @@ class Router {
                 const payload = {
                     params: route.params,
                 };
-                Object.defineProperty(payload, 'query', {
-                    configurable: true,
-                    get: function () {
-                        const asd = new URLSearchParams(searchParams);
-                        const query = Object.fromEntries(asd.entries());
-                        Object.defineProperty(this, 'query', {
-                            value: query,
-                            configurable: false,
-                        });
-                        return query;
-                    }
-                });
+                (0, define_1.DefineQueryProperty)(payload, searchParams);
+                // @ts-ignore
+                (0, define_1.DefineBodyProperty)(payload, request.body);
                 return {
                     handler: route.value,
                     params: payload,

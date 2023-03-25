@@ -1,30 +1,30 @@
 import { IncomingMessageType, ServerResponseType, methodsTypes, RequestHandlerType, ParamsType } from '../Routing/types';
 import { DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT, TRACE } from '../Routing/methods';
 import MetaStore from '../utils/metaStore';
-import type { ResponseFunctionTypeDescriptor, ResponseHandlerType, ResponseTextFunctionTypeDescriptor } from '../Response/types';
+import type { IMethodDecorator, ResponseHandlerType } from '../Response/types';
 
 export type AsyncHandlerType = (props: ParamsType) => RequestHandlerType;
 
 function asyncHandler(originalHandler: Function, meta: any): AsyncHandlerType {
-  return (props: any) => async (
+  return (controller: any) => async (
     request: IncomingMessageType,
     response: ServerResponseType,
     props: ParamsType,
   ) => {
     const context = {
-      ...props,
+      ...controller,
       request,
       response
     };
 
-    const handleResponse: ResponseHandlerType = await originalHandler.apply(context, props);
+    const handleResponse: ResponseHandlerType = await originalHandler.call(context, props);
     handleResponse(request, response, meta);
   };
 }
 
 function decoratorFabric(method: methodsTypes, path?: string): MethodDecorator {
   return (
-    _target: object,
+    _target: any,
     _name: string | symbol,
     descriptor: TypedPropertyDescriptor<any>,
   ) => {
@@ -48,7 +48,7 @@ function decoratorFabric(method: methodsTypes, path?: string): MethodDecorator {
  * @param {string} path - Specified path.
  */
 export function Get(path?: string) {
-  return decoratorFabric(GET, path) as ResponseFunctionTypeDescriptor | ResponseTextFunctionTypeDescriptor;
+  return decoratorFabric(GET, path) as IMethodDecorator;
 }
 
 /**
@@ -57,7 +57,7 @@ export function Get(path?: string) {
  * @param {string} path - Specified path.
  */
 export function Put(path?: string) {
-  return decoratorFabric(PUT, path) as ResponseFunctionTypeDescriptor | ResponseTextFunctionTypeDescriptor;
+  return decoratorFabric(PUT, path) as IMethodDecorator;
 }
 
 /**
@@ -66,7 +66,7 @@ export function Put(path?: string) {
  * @param {string} path - Specified path.
  */
 export function Post(path?: string) {
-  return decoratorFabric(POST, path) as ResponseFunctionTypeDescriptor | ResponseTextFunctionTypeDescriptor;
+  return decoratorFabric(POST, path) as IMethodDecorator;
 }
 
 /**
@@ -75,7 +75,7 @@ export function Post(path?: string) {
  * @param {string} path - Specified path.
  */
 export function Delete(path?: string) {
-  return decoratorFabric(DELETE, path) as ResponseFunctionTypeDescriptor | ResponseTextFunctionTypeDescriptor;
+  return decoratorFabric(DELETE, path) as IMethodDecorator;
 }
 
 /**
@@ -84,7 +84,7 @@ export function Delete(path?: string) {
  * @param {string} path - Specified path.
  */
 export function Patch(path?: string) {
-  return decoratorFabric(PATCH, path) as ResponseFunctionTypeDescriptor | ResponseTextFunctionTypeDescriptor;
+  return decoratorFabric(PATCH, path) as IMethodDecorator;
 }
 
 /**
@@ -93,7 +93,7 @@ export function Patch(path?: string) {
  * @param {string} path - Specified path.
  */
 export function Trace(path?: string) {
-  return decoratorFabric(TRACE, path) as ResponseTextFunctionTypeDescriptor | ResponseFunctionTypeDescriptor;
+  return decoratorFabric(TRACE, path) as IMethodDecorator;
 }
 
 /**
@@ -102,7 +102,7 @@ export function Trace(path?: string) {
  * @param {string} path - Specified path.
  */
 export function Options(path?: string) {
-  return decoratorFabric(OPTIONS, path) as ResponseTextFunctionTypeDescriptor | ResponseFunctionTypeDescriptor;
+  return decoratorFabric(OPTIONS, path) as IMethodDecorator;
 }
 
 /**
@@ -111,5 +111,5 @@ export function Options(path?: string) {
  * @param {string} path - Specified path.
  */
 export function Head(path?: string) {
-  return decoratorFabric(HEAD, path) as ResponseTextFunctionTypeDescriptor | ResponseFunctionTypeDescriptor;
+  return decoratorFabric(HEAD, path) as IMethodDecorator;
 }

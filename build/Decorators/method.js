@@ -7,13 +7,13 @@ exports.Head = exports.Options = exports.Trace = exports.Patch = exports.Delete 
 const methods_1 = require("../Routing/methods");
 const metaStore_1 = __importDefault(require("../utils/metaStore"));
 function asyncHandler(originalHandler, meta) {
-    return (props) => async (request, response, props) => {
+    return (controller) => async (request, response, props) => {
         const context = {
-            ...props,
+            ...controller,
             request,
             response
         };
-        const handleResponse = await originalHandler.apply(context, props);
+        const handleResponse = await originalHandler.call(context, props);
         handleResponse(request, response, meta);
     };
 }

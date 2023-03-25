@@ -15,7 +15,7 @@ type AppPropsType = {
 
 class App {
   constructor(props: AppPropsType = {}) {
-    setThreadPoolSize(props.threadPoolSize ?? availableLogicalCors);
+    setThreadPoolSize(props.threadPoolSize || availableLogicalCors);
   }
 
   useControllers(controllers: any[]): void {

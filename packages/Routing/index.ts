@@ -13,6 +13,7 @@ import {
 import { getPath } from '../utils/helpers';
 import Logger from '../utils/Logger';
 import { DELETE, GET, PATCH, POST, PUT } from '../Routing/methods';
+import { DefineQueryProperty, DefineBodyProperty } from '../utils/define';
 
 class Router {
   static readonly router = new RoadRunner();
@@ -49,20 +50,9 @@ class Router {
           params: route.params,
         };
 
-        Object.defineProperty(payload, 'query', {
-          configurable: true,
-          get: function() {
-            const asd = new URLSearchParams(searchParams);
-            const query = Object.fromEntries(asd.entries());
-
-            Object.defineProperty(this, 'query', {
-              value: query,
-              configurable: false,
-            });
-
-            return query;
-          }
-      });
+        DefineQueryProperty(payload, searchParams);
+        // @ts-ignore
+        DefineBodyProperty(payload, request.body);
 
         return {
           handler: route.value as Function,
