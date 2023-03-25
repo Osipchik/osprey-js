@@ -2,7 +2,7 @@ class MetaStore {
   private static meta = new WeakMap();
   private static values = new WeakMap();
 
-  static addMeta(node: any, key: string, data: any) {
+  static addMeta(node: any, key: string | number, data: any) {
     if (MetaStore.meta.has(node)) {
       const root = MetaStore.meta.get(node);
       root[key] = data;

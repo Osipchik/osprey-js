@@ -19,6 +19,6 @@ export type ResponseHandlerType = (
   meta: any,
 ) => void;
 
-type MethodDecoratorTargetType = (props?: any | ParamsType) => ResponseHandlerType;
+type MethodDecoratorTargetType = (...args: any[]) => ResponseHandlerType;
 
 export type IMethodDecorator = (target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<MethodDecoratorTargetType>) => TypedPropertyDescriptor<MethodDecoratorTargetType>;
