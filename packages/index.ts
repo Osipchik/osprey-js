@@ -28,7 +28,6 @@ class App {
 
       methods.forEach((handler: AsyncHandlerType) => {
         const handlerMeta = MetaStore.getMeta(handler);
-        console.log('handlerMeta', handlerMeta);
 
         Router.addRoute(handler(controllerInstance), handlerMeta.meta);
       });

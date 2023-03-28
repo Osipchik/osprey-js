@@ -7,6 +7,7 @@ interface IResponse {
     PartialContent: ResponseFunctionType;
     BadRequest: ResponseFunctionType;
     NotFound: ResponseFunctionType;
+    NoContent: ResponseFunctionType;
     InternalServerError: ResponseFunctionType;
     NotImplemented: ResponseFunctionType;
     Accepted: ResponseTextFunctionType;

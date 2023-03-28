@@ -1,4 +1,4 @@
-import { StatusCodes } from '../../Response/statusCodes';
+import { StatusCodes } from '../../Response/enums';
 import { IncomingMessageType, ServerResponseType } from '../../Routing/types';
 
 function NotFoundHandler (

@@ -44,7 +44,6 @@ class App {
             const controllerInstance = new controller();
             methods.forEach((handler) => {
                 const handlerMeta = metaStore_1.default.getMeta(handler);
-                console.log('handlerMeta', handlerMeta);
                 Routing_1.default.addRoute(handler(controllerInstance), handlerMeta.meta);
             });
             controllersSet.push(controllerInstance);

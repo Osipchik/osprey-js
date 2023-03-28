@@ -1,8 +1,19 @@
+import Config from '../Config';
 import { IncomingMessageType, ParamsType } from '../Routing/types';
 import MetaStore from '../utils/metaStore';
 
-function bodyParser(request: IncomingMessageType, _: ParamsType) {
-  return JSON.parse((request as any).body);
+async function bodyParser(request: IncomingMessageType, _: ParamsType) {
+  return new Promise((resolve, reject) => {
+    const data: any[] = [];
+
+    request.on('data', (chunk) => {
+      data.push(chunk);
+    });
+
+    request.on('end', () => {
+      resolve(Config.getValue<Function>('bodyParser')(data));
+    });
+  })
 }
 
 function paramsParser(key: string) {
@@ -15,8 +26,12 @@ function getParams(_: IncomingMessageType, params: ParamsType) {
   return params.params;
 }
 
-function getQuery(_: IncomingMessageType, params: ParamsType) {
-  return params.query;
+function getQuery(request: IncomingMessageType, _: ParamsType) {
+  const [url, searchParams] = (request.url as string).split('?', 2);
+
+  const searchParamsList = new URLSearchParams(searchParams);
+
+  return Object.fromEntries(searchParamsList.entries());
 }
 
 /**

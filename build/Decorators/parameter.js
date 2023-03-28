@@ -4,9 +4,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Query = exports.Params = exports.Param = exports.Body = void 0;
+const Config_1 = __importDefault(require("../Config"));
 const metaStore_1 = __importDefault(require("../utils/metaStore"));
-function bodyParser(request, _) {
-    return JSON.parse(request.body);
+async function bodyParser(request, _) {
+    return new Promise((resolve, reject) => {
+        const data = [];
+        request.on('data', (chunk) => {
+            data.push(chunk);
+        });
+        request.on('end', () => {
+            resolve(Config_1.default.getValue('bodyParser')(data));
+        });
+    });
 }
 function paramsParser(key) {
     return (_, params) => {
@@ -16,8 +25,10 @@ function paramsParser(key) {
 function getParams(_, params) {
     return params.params;
 }
-function getQuery(_, params) {
-    return params.query;
+function getQuery(request, _) {
+    const [url, searchParams] = request.url.split('?', 2);
+    const searchParamsList = new URLSearchParams(searchParams);
+    return Object.fromEntries(searchParamsList.entries());
 }
 /**
  * Parse request body

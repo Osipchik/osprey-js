@@ -11,7 +11,7 @@ function asyncHandler(originalHandler, meta) {
         const context = {
             ...controller,
             request,
-            response
+            response,
         };
         const handleResponse = await originalHandler.call(context);
         handleResponse(request, response, meta);
@@ -24,7 +24,7 @@ function asyncHandlerWithParams(originalHandler, meta, paramsParsers) {
             request,
             response
         };
-        const params = paramsParsers.map((callback) => callback(request, props));
+        const params = await Promise.all(paramsParsers.map((callback) => callback(request, props)));
         const handleResponse = await originalHandler.apply(context, params);
         handleResponse(request, response, meta);
     };
@@ -33,11 +33,11 @@ function decoratorFabric(method, path) {
     return (_target, _name, descriptor) => {
         const originalDescriptorValue = descriptor.value;
         const meta = metaStore_1.default.getMeta(descriptor);
-        const propertiesParsers = Object.values(metaStore_1.default.getMeta(descriptor.value));
-        descriptor.value = propertiesParsers.length
+        const propertyParserObject = metaStore_1.default.getMeta(descriptor.value);
+        const propertiesParsers = propertyParserObject ? Object.values(propertyParserObject) : null;
+        descriptor.value = propertiesParsers?.length
             ? asyncHandlerWithParams(originalDescriptorValue, meta, propertiesParsers)
             : asyncHandler(originalDescriptorValue, meta);
-        console.log('\n\n\n\n descriptor', descriptor);
         metaStore_1.default.addMeta(descriptor, 'meta', {
             path: path || '',
             method,

@@ -1,37 +1,27 @@
-import serialize from 'serialize-javascript';
-import { IncomingMessageType, ServerResponseType } from '../Routing/types';
-import { StatusCodes } from './statusCodes';
+import { ContentTypes, StatusCodes } from './enums';
 import { IOptions, ResponseHandlerType } from './types';
+import { IncomingMessageType, ServerResponseType } from '../Routing/types';
+import Config from '../Config';
+
+const ResponseStringify = {
+  [ContentTypes.Application_Serialize]: Config.getValue<Function>('serializer'),
+};
 
 const defaultOptions = (statusCode: StatusCodes) => ({
   statusCode,
-  contentType: 'application/json',
-  isJSON: true,
+  contentType: ContentTypes.Application_Serialize,
 });
 
 interface IDefaultOptions {
   statusCode: StatusCodes,
-  contentType: string,
-  isJSON: boolean,
+  contentType: ContentTypes,
 }
 
 function resultResponseFabric(defaultOptions: IDefaultOptions) {
   return (result: unknown, options?: IOptions): ResponseHandlerType => {
-    const currentOptions = { ...options, ...defaultOptions };
+    const currentOptions = { ...defaultOptions, ...options, };
 
-    let contentType: any;
-    let stringifiedResult = result;
-
-    if (currentOptions.isJSON) {
-      stringifiedResult = serialize(result, { isJSON: true });
-      contentType = 'application/json';
-    }
-
-    if (!contentType) {
-      contentType = 'text/html; charset=UTF-8';
-    } else {
-      contentType = currentOptions.contentType;
-    }
+    const stringifiedResult = ResponseStringify[ContentTypes.Application_Serialize](result) || result;
 
     return (
       request: IncomingMessageType,
@@ -39,32 +29,8 @@ function resultResponseFabric(defaultOptions: IDefaultOptions) {
       meta: any,
     ) => {
       response.statusCode = currentOptions.statusCode;
-      response.setHeader('Content-Type', contentType);
+      response.setHeader('Content-Type', currentOptions.contentType);
       response.end(stringifiedResult);
-    }
-  };
-}
-
-function textResponseFabric(defaultOptions: IDefaultOptions) {
-  return (message: string, options?: IOptions): ResponseHandlerType => {
-    const currentOptions = { ...options, ...defaultOptions };
-
-    let contentType: any;
-
-    if (!contentType) {
-      contentType = 'text/html; charset=UTF-8';
-    } else {
-      contentType = currentOptions.contentType;
-    }
-
-    return (
-      request: IncomingMessageType,
-      response: ServerResponseType,
-      meta: any,
-    ) => {
-      response.statusCode = currentOptions.statusCode;
-      response.setHeader('Content-Type', contentType);
-      response.end(message);
     }
   };
 }
@@ -78,6 +44,7 @@ interface IResponse {
   PartialContent: ResponseFunctionType;
   BadRequest: ResponseFunctionType;
   NotFound: ResponseFunctionType;
+  NoContent: ResponseFunctionType;
   InternalServerError: ResponseFunctionType;
   NotImplemented: ResponseFunctionType;
   Accepted: ResponseTextFunctionType;
@@ -89,10 +56,10 @@ const Response: IResponse = {
   PartialContent: resultResponseFabric(defaultOptions(StatusCodes.PartialContent)),
   BadRequest: resultResponseFabric(defaultOptions(StatusCodes.BadRequest)),
   NotFound: resultResponseFabric(defaultOptions(StatusCodes.NotFound)),
+  NoContent: resultResponseFabric(defaultOptions(StatusCodes.NoContent)),
   InternalServerError: resultResponseFabric(defaultOptions(StatusCodes.NotFound)),
   NotImplemented: resultResponseFabric(defaultOptions(StatusCodes.NotImplemented)),
-
-  Accepted: textResponseFabric(defaultOptions(StatusCodes.Accepted)),
+  Accepted: resultResponseFabric(defaultOptions(StatusCodes.Accepted)),
 };
 
 export default Response;

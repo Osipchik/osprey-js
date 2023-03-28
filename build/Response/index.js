@@ -3,61 +3,36 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const serialize_javascript_1 = __importDefault(require("serialize-javascript"));
-const statusCodes_1 = require("./statusCodes");
+const enums_1 = require("./enums");
+const Config_1 = __importDefault(require("../Config"));
+const ResponseStringify = {
+    [enums_1.ContentTypes.Application_Serialize]: Config_1.default.getValue('serializer'),
+};
 const defaultOptions = (statusCode) => ({
     statusCode,
-    contentType: 'application/json',
-    isJSON: true,
+    contentType: enums_1.ContentTypes.Application_Serialize,
 });
 function resultResponseFabric(defaultOptions) {
     return (result, options) => {
-        const currentOptions = { ...options, ...defaultOptions };
-        let contentType;
-        let stringifiedResult = result;
-        if (currentOptions.isJSON) {
-            stringifiedResult = (0, serialize_javascript_1.default)(result, { isJSON: true });
-            contentType = 'application/json';
-        }
-        if (!contentType) {
-            contentType = 'text/html; charset=UTF-8';
-        }
-        else {
-            contentType = currentOptions.contentType;
-        }
+        const currentOptions = { ...defaultOptions, ...options, };
+        const stringifiedResult = ResponseStringify[enums_1.ContentTypes.Application_Serialize](result) || result;
         return (request, response, meta) => {
             response.statusCode = currentOptions.statusCode;
-            response.setHeader('Content-Type', contentType);
+            response.setHeader('Content-Type', currentOptions.contentType);
             response.end(stringifiedResult);
         };
     };
 }
-function textResponseFabric(defaultOptions) {
-    return (message, options) => {
-        const currentOptions = { ...options, ...defaultOptions };
-        let contentType;
-        if (!contentType) {
-            contentType = 'text/html; charset=UTF-8';
-        }
-        else {
-            contentType = currentOptions.contentType;
-        }
-        return (request, response, meta) => {
-            response.statusCode = currentOptions.statusCode;
-            response.setHeader('Content-Type', contentType);
-            response.end(message);
-        };
-    };
-}
 const Response = {
-    Ok: resultResponseFabric(defaultOptions(statusCodes_1.StatusCodes.Ok)),
-    Created: resultResponseFabric(defaultOptions(statusCodes_1.StatusCodes.Created)),
-    PartialContent: resultResponseFabric(defaultOptions(statusCodes_1.StatusCodes.PartialContent)),
-    BadRequest: resultResponseFabric(defaultOptions(statusCodes_1.StatusCodes.BadRequest)),
-    NotFound: resultResponseFabric(defaultOptions(statusCodes_1.StatusCodes.NotFound)),
-    InternalServerError: resultResponseFabric(defaultOptions(statusCodes_1.StatusCodes.NotFound)),
-    NotImplemented: resultResponseFabric(defaultOptions(statusCodes_1.StatusCodes.NotImplemented)),
-    Accepted: textResponseFabric(defaultOptions(statusCodes_1.StatusCodes.Accepted)),
+    Ok: resultResponseFabric(defaultOptions(enums_1.StatusCodes.Ok)),
+    Created: resultResponseFabric(defaultOptions(enums_1.StatusCodes.Created)),
+    PartialContent: resultResponseFabric(defaultOptions(enums_1.StatusCodes.PartialContent)),
+    BadRequest: resultResponseFabric(defaultOptions(enums_1.StatusCodes.BadRequest)),
+    NotFound: resultResponseFabric(defaultOptions(enums_1.StatusCodes.NotFound)),
+    NoContent: resultResponseFabric(defaultOptions(enums_1.StatusCodes.NoContent)),
+    InternalServerError: resultResponseFabric(defaultOptions(enums_1.StatusCodes.NotFound)),
+    NotImplemented: resultResponseFabric(defaultOptions(enums_1.StatusCodes.NotImplemented)),
+    Accepted: resultResponseFabric(defaultOptions(enums_1.StatusCodes.Accepted)),
 };
 exports.default = Response;
 //# sourceMappingURL=index.js.map

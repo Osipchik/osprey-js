@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const statusCodes_1 = require("../../Response/statusCodes");
+const enums_1 = require("../../Response/enums");
 function MethodNotAllowedHandler(request, response) {
     const message = `The request ${request.method} ${request.url} is not allowed`;
-    response.statusCode = statusCodes_1.StatusCodes.MethodNotAllowed;
+    response.statusCode = enums_1.StatusCodes.MethodNotAllowed;
     response.statusMessage = message;
     response.end();
 }

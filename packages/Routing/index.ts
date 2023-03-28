@@ -13,7 +13,6 @@ import {
 import { getPath } from '../utils/helpers';
 import Logger from '../utils/Logger';
 import { DELETE, GET, PATCH, POST, PUT } from '../Routing/methods';
-import { DefineQueryProperty, DefineBodyProperty } from '../utils/define';
 
 class Router {
   static readonly router = new RoadRunner();
@@ -49,10 +48,6 @@ class Router {
         const payload = {
           params: route.params,
         };
-
-        DefineQueryProperty(payload, searchParams);
-        // @ts-ignore
-        DefineBodyProperty(payload, request.body);
 
         return {
           handler: route.value as Function,
