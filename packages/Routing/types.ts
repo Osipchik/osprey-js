@@ -3,11 +3,11 @@ import ServerErrorHandler from '../Routing/ErrorHandlers/ServerErrorHandler';
 import NotFoundHandler from '../Routing/ErrorHandlers/NotFoundHandler';
 import MethodNotAllowedHandler from '../Routing/ErrorHandlers/MethodNotAllowedHandler';
 import NotImplementedHandler from '../Routing/ErrorHandlers/NotImplementedHandler';
+import { Methods } from '../Routing/methods';
 
 export type IncomingMessageType = http.IncomingMessage;
 export type ServerResponseType = http.ServerResponse;
 
-export type methodsTypes = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS' | 'TRACE' | 'PATCH';
 export type RequestHandlerType = (
   request: IncomingMessageType,
   response: ServerResponseType,
@@ -25,7 +25,7 @@ export type RouteValueType = {
 }
 
 export type HandlerMetaType = {
-  method: methodsTypes,
+  method: Methods,
   path: string,
   prefix?: string,
   query?: string,

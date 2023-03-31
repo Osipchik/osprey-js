@@ -1,6 +1,4 @@
-import { RequestHandlerType, ParamsType } from '../Routing/types';
-import type { IMethodDecorator } from '../Response/types';
-export type AsyncHandlerType = (props: ParamsType) => RequestHandlerType;
+import { IMethodDecorator } from '../../Response/types';
 /**
  * Routes HTTP GET requests to the specified path.
  *
@@ -49,4 +47,5 @@ export declare function Options(path?: string): IMethodDecorator;
  * @param {string} path - Specified path.
  */
 export declare function Head(path?: string): IMethodDecorator;
-//# sourceMappingURL=method.d.ts.map
+export declare function CustomDecoratorFabric(handler: Function): MethodDecorator;
+//# sourceMappingURL=index.d.ts.map

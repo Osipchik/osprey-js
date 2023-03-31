@@ -12,7 +12,7 @@ import {
 } from '../Routing/types';
 import { getPath } from '../utils/helpers';
 import Logger from '../utils/Logger';
-import { DELETE, GET, PATCH, POST, PUT } from '../Routing/methods';
+import { Methods } from '../Routing/methods';
 
 class Router {
   static readonly router = new RoadRunner();
@@ -28,11 +28,11 @@ class Router {
     const { pathName } = getPath(prefix, path);
 
     switch (method) {
-      case GET: Logger.info(pathName, method); break;
-      case POST: Logger.warn(pathName, method); break;
-      case DELETE: Logger.error(pathName, method); break;
-      case PATCH: Logger.patch(pathName, method); break;
-      case PUT: Logger.put(pathName, method); break;
+      case Methods.GET: Logger.info(pathName, method); break;
+      case Methods.POST: Logger.warn(pathName, method); break;
+      case Methods.DELETE: Logger.error(pathName, method); break;
+      case Methods.PATCH: Logger.patch(pathName, method); break;
+      case Methods.PUT: Logger.put(pathName, method); break;
       default: Logger.data(pathName, method);
     }
 

@@ -22,19 +22,19 @@ class Router {
     static addRoute(handler, { method, prefix, path }) {
         const { pathName } = (0, helpers_1.getPath)(prefix, path);
         switch (method) {
-            case methods_1.GET:
+            case methods_1.Methods.GET:
                 Logger_1.default.info(pathName, method);
                 break;
-            case methods_1.POST:
+            case methods_1.Methods.POST:
                 Logger_1.default.warn(pathName, method);
                 break;
-            case methods_1.DELETE:
+            case methods_1.Methods.DELETE:
                 Logger_1.default.error(pathName, method);
                 break;
-            case methods_1.PATCH:
+            case methods_1.Methods.PATCH:
                 Logger_1.default.patch(pathName, method);
                 break;
-            case methods_1.PUT:
+            case methods_1.Methods.PUT:
                 Logger_1.default.put(pathName, method);
                 break;
             default: Logger_1.default.data(pathName, method);

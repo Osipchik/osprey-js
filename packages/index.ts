@@ -3,7 +3,7 @@ import * as OS from 'os';
 import Router from './Routing';
 import Server from './Server';
 import MetaStore from './utils/metaStore';
-import { AsyncHandlerType } from './Decorators/method';
+import { AsyncHandlerType } from './Decorators/method/utils';
 
 dotenv.config();
 
