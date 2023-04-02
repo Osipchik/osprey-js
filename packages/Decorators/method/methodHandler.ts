@@ -116,7 +116,6 @@ export default function GetMethodHandler(
   isPropertyParserAsync: boolean,
   isOriginAsync: boolean,
 ) {
-  console.log({isPropertyParserAsync, isOriginAsync});
   if (!propertyParser && !isOriginAsync) {
     return syncHandler(originalDescriptorValue, meta);
   }

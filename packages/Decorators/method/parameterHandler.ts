@@ -24,22 +24,27 @@ const prepareAsyncProps = (asyncParsers: Function[]) => (
 const prepareMixedProps = (
   asyncParsers: Function[],
   syncParsers: Function[],
+  syncIndexes: number[],
+  asyncIndexes: number[]
 ) => async (
   request: IncomingMessageType,
   args?: ParamsType,
 ): Promise<unknown[]> => {
-  const syncPromise: Promise<unknown[]> = new Promise((resolve, reject) => {
-    const result: unknown[] = syncParsers.map((parser) => parser(request, args));
+  const normalisedResult: unknown[] = new Array(syncParsers.length + asyncParsers.length);
 
-    resolve(result);
-  });
+  const asyncPromises = asyncParsers.map((parser, index) => parser(request, args));
 
-  const result = await Promise.all([
-    syncPromise,
-    asyncParsers.map((parser): unknown => parser(request, args)),
-  ]);
+  for (const [index, parser] of syncParsers.entries()) {
+    normalisedResult[syncIndexes[index]] = parser(request, args);
+  }
 
-  return result;
+  const asyncResult = await Promise.all(asyncPromises);
+
+  for (const [index, result] of asyncResult.entries()) {
+    normalisedResult[asyncIndexes[index]] = result;
+  }
+
+  return normalisedResult;
 }
 
 export default function GetParameterHandler(paramsParsers: ObjectT<Function>) {
@@ -48,9 +53,9 @@ export default function GetParameterHandler(paramsParsers: ObjectT<Function>) {
   }
 
   const syncParsers = [];
-  const syncIndexes = [];
+  const syncIndexes: number[] = [];
   const asyncParsers = [];
-  const asyncIndexes = [];
+  const asyncIndexes: number[] = [];
 
   for (const [index, paramsParser] of Object.entries(paramsParsers)) {
     if (isAsyncFunction(paramsParser)) {
@@ -63,7 +68,7 @@ export default function GetParameterHandler(paramsParsers: ObjectT<Function>) {
   }
 
   if (asyncParsers.length && syncParsers.length) {
-    return prepareMixedProps(asyncParsers, syncParsers);
+    return prepareMixedProps(asyncParsers, syncParsers, syncIndexes, asyncIndexes);
   } else if (asyncParsers.length) {
     return prepareAsyncProps(asyncParsers);
   } else if (syncParsers.length) {
