@@ -2,7 +2,7 @@ import http from 'http';
 import Router from '../Routing';
 import Logger from '../utils/Logger';
 import Middleware from '../Middleware';
-import { IncomingMessageType, ServerResponseType } from '../Routing/types';
+import {IncomingMessageType, ParamsType, ServerResponseType} from '../Routing/types';
 
 class Server {
   private readonly server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>;
@@ -30,7 +30,7 @@ class Server {
       this.middleware.runMiddlewaresSync(request, response);
 
       const { handler, params } = this.router.getRequestHandler(request);
-      handler(request, response, params)?.catch((error: any) => Router.errorHandlers.ServerError(request, response, error));
+      handler(request, response, params as ParamsType)?.catch((error: any) => Router.errorHandlers.ServerError(request, response, error));
     } catch (error: any) {
       Router.errorHandlers.ServerError(request, response, error);
     }

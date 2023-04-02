@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isVarName = exports.getPath = exports.normalizeSlash = exports.isPromise = exports.isPrimitive = exports.addSlash = exports.normalizePath = void 0;
+exports.isVarName = exports.getPath = exports.normalizeSlash = exports.isAsyncFunction = exports.isPromise = exports.isPrimitive = exports.addSlash = exports.normalizePath = void 0;
 function normalizePath({ prefix, path, property, query }) {
     const pathname = [
         addSlash(prefix),
@@ -25,6 +25,10 @@ function isPromise(value) {
     return typeof value === 'object' && typeof value.then === 'function';
 }
 exports.isPromise = isPromise;
+function isAsyncFunction(value) {
+    return value.constructor.name === 'AsyncFunction' || isPromise(value);
+}
+exports.isAsyncFunction = isAsyncFunction;
 function normalizeSlash(value) {
     let val = value;
     while (val.startsWith('/')) {

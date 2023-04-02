@@ -32,6 +32,10 @@ export function isPromise(value: any) {
   return typeof value === 'object' && typeof value.then === 'function';
 }
 
+export function isAsyncFunction(value: Function): boolean {
+  return value.constructor.name === 'AsyncFunction' || isPromise(value);
+}
+
 export function normalizeSlash(value: string) {
   let val = value;
 

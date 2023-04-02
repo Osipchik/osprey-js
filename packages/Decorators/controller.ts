@@ -11,7 +11,6 @@ function Controller(prefix?: string): ClassDecorator {
     const methods = Object.getOwnPropertyNames(constructor.prototype).reduce((acc, key) => {
       const handler: MetaHandlerType = constructor.prototype[key];
       const handlerMeta = MetaStore.getMeta(handler);
-      console.log(handlerMeta);
 
       if (handlerMeta) {
         handlerMeta.meta.prefix = prefix || '';

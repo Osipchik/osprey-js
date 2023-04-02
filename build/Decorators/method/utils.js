@@ -3,42 +3,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const parameterHandler_1 = __importDefault(require("../../Decorators/method/parameterHandler"));
+const methodHandler_1 = __importDefault(require("../../Decorators/method/methodHandler"));
 const metaStore_1 = __importDefault(require("../../utils/metaStore"));
-function asyncHandler(originalHandler, meta) {
-    return (controller) => async (request, response, props) => {
-        const context = {
-            ...controller,
-            request,
-            response,
-        };
-        const handleResponse = await originalHandler.call(context);
-        handleResponse(request, response, meta);
-    };
-}
-function asyncHandlerWithParams(originalHandler, meta, paramsParsers) {
-    return (controller) => async (request, response, props) => {
-        const context = {
-            ...controller,
-            request,
-            response
-        };
-        const params = await Promise.all(paramsParsers.map((callback) => callback(request, props)));
-        const handleResponse = await originalHandler.apply(context, params);
-        handleResponse(request, response, meta);
-    };
-}
+const helpers_1 = require("../../utils/helpers");
 function DecoratorFabric(method, path) {
     return (_target, _name, descriptor) => {
         const originalDescriptorValue = descriptor.value;
         const meta = metaStore_1.default.getMeta(descriptor);
         const propertyParserObject = metaStore_1.default.getMeta(descriptor.value);
-        const propertiesParsers = propertyParserObject ? Object.values(propertyParserObject) : null;
-        descriptor.value = propertiesParsers?.length
-            ? asyncHandlerWithParams(originalDescriptorValue, meta, propertiesParsers)
-            : asyncHandler(originalDescriptorValue, meta);
+        const propertyParser = (0, parameterHandler_1.default)(propertyParserObject);
+        const isOriginAsync = (0, helpers_1.isAsyncFunction)(originalDescriptorValue);
+        const isPropertyParserAsync = propertyParser ? (0, helpers_1.isAsyncFunction)(propertyParser) : false;
+        descriptor.value = (0, methodHandler_1.default)(originalDescriptorValue, meta, propertyParser, isPropertyParserAsync, isOriginAsync);
         metaStore_1.default.addMeta(descriptor, 'meta', {
             path: path || '',
             method,
+            isOriginAsync,
+            isPropertyParserAsync
         });
         return descriptor;
     };

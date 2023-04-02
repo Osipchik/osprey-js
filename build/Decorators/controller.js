@@ -14,7 +14,6 @@ function Controller(prefix) {
         const methods = Object.getOwnPropertyNames(constructor.prototype).reduce((acc, key) => {
             const handler = constructor.prototype[key];
             const handlerMeta = metaStore_1.default.getMeta(handler);
-            console.log(handlerMeta);
             if (handlerMeta) {
                 handlerMeta.meta.prefix = prefix || '';
                 acc.push(handler);

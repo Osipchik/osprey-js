@@ -8,6 +8,7 @@ export declare function normalizePath({ prefix, path, property, query }: PathArg
 export declare function addSlash(param?: string): string;
 export declare function isPrimitive(value: any): boolean;
 export declare function isPromise(value: any): boolean;
+export declare function isAsyncFunction(value: Function): boolean;
 export declare function normalizeSlash(value: string): string;
 export declare function getPath(prefix?: string, pathName?: string): {
     pathName: string;

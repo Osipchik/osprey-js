@@ -3,7 +3,8 @@ import * as OS from 'os';
 import Router from './Routing';
 import Server from './Server';
 import MetaStore from './utils/metaStore';
-import { AsyncHandlerType } from './Decorators/method/utils';
+import Pipeline from './pipeline';
+import { AsyncHandlerType } from './Routing/types';
 
 dotenv.config();
 
@@ -14,8 +15,10 @@ type AppPropsType = {
 }
 
 class App {
+  private readonly pipeline: Pipeline;
   constructor(props: AppPropsType = {}) {
     setThreadPoolSize(props.threadPoolSize || availableLogicalCors);
+    this.pipeline = new Pipeline();
   }
 
   useControllers(controllers: any[]): void {

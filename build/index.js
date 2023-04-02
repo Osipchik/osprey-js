@@ -31,11 +31,14 @@ const OS = __importStar(require("os"));
 const Routing_1 = __importDefault(require("./Routing"));
 const Server_1 = __importDefault(require("./Server"));
 const metaStore_1 = __importDefault(require("./utils/metaStore"));
+const pipeline_1 = __importDefault(require("./pipeline"));
 dotenv.config();
 const availableLogicalCors = OS.cpus().length;
 class App {
+    pipeline;
     constructor(props = {}) {
         setThreadPoolSize(props.threadPoolSize || availableLogicalCors);
+        this.pipeline = new pipeline_1.default();
     }
     useControllers(controllers) {
         const controllersSet = [];

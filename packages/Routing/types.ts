@@ -8,11 +8,16 @@ import { Methods } from '../Routing/methods';
 export type IncomingMessageType = http.IncomingMessage;
 export type ServerResponseType = http.ServerResponse;
 
+export type ActionHandlerType = (request: IncomingMessageType) => void;
+export type ActionAuthorisationHandlerType = (request: IncomingMessageType) => boolean;
+
+export type AsyncHandlerType = (controllerContext: any) => RequestHandlerType;
+
 export type RequestHandlerType = (
   request: IncomingMessageType,
   response: ServerResponseType,
-  args: ParamsType,
-) => void;
+  args?: ParamsType,
+) => Promise<void> | void;
 
 export type ParamsType = {
   params: object | undefined;
@@ -20,7 +25,7 @@ export type ParamsType = {
 };
 
 export type RouteValueType = {
-  handler: Function,
+  handler: RequestHandlerType,
   params?: object,
 }
 
@@ -35,8 +40,10 @@ export type MetaHandlerType = RequestHandlerType & {
   meta?: HandlerMetaType
 };
 
-export type routeType = {
-  [key: string]: RequestHandlerType;
+export type routeType = ObjectT<RequestHandlerType>;
+
+export type ObjectT<T> = {
+  [key: number | string]: T;
 }
 
 export interface IErrorRouter {

@@ -50,7 +50,7 @@ class Router {
         };
 
         return {
-          handler: route.value as Function,
+          handler: route.value as RequestHandlerType,
           params: payload,
         }
       }

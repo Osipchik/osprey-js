@@ -1,7 +1,7 @@
 import Config from '../../Config';
 import { IncomingMessageType, ParamsType } from '../../Routing/types';
 
-export async function bodyParser(request: IncomingMessageType, _: ParamsType) {
+export async function bodyParser(request: IncomingMessageType, _: ParamsType): Promise<unknown> {
   return new Promise((resolve, reject) => {
     const data: any[] = [];
 
