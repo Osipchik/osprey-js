@@ -1,7 +1,7 @@
 import { IncomingMessageType, ObjectT, ParamsType } from '../../Routing/types';
-import { isAsyncFunction } from '../../utils/helpers';
+import { getSyncAndAsyncLists } from '../../utils/helpers';
 
-const prepareSyncProps = (syncParsers: Function[]) => (
+const PrepareSyncProps = (syncParsers: Function[]) => (
   request: IncomingMessageType,
   args?: ParamsType,
 ): unknown[] => {
@@ -14,14 +14,14 @@ const prepareSyncProps = (syncParsers: Function[]) => (
   return result;
 }
 
-const prepareAsyncProps = (asyncParsers: Function[]) => (
+const PrepareAsyncProps = (asyncParsers: Function[]) => (
   request: IncomingMessageType,
   args?: ParamsType,
 ): Promise<Awaited<unknown>[]> => {
   return Promise.all(asyncParsers.map((parser) => parser(request, args)));
 }
 
-const prepareMixedProps = (
+const PrepareMixedProps = (
   asyncParsers: Function[],
   syncParsers: Function[],
   syncIndexes: number[],
@@ -32,7 +32,7 @@ const prepareMixedProps = (
 ): Promise<unknown[]> => {
   const normalisedResult: unknown[] = new Array(syncParsers.length + asyncParsers.length);
 
-  const asyncPromises = asyncParsers.map((parser, index) => parser(request, args));
+  const asyncPromises = asyncParsers.map((parser) => parser(request, args));
 
   for (const [index, parser] of syncParsers.entries()) {
     normalisedResult[syncIndexes[index]] = parser(request, args);
@@ -52,27 +52,19 @@ export default function GetParameterHandler(paramsParsers: ObjectT<Function>) {
     return null;
   }
 
-  const syncParsers = [];
-  const syncIndexes: number[] = [];
-  const asyncParsers = [];
-  const asyncIndexes: number[] = [];
+  const {
+    asyncValues,
+    asyncIndexes,
+    syncValues,
+    syncIndexes,
+  } = getSyncAndAsyncLists(paramsParsers) ;
 
-  for (const [index, paramsParser] of Object.entries(paramsParsers)) {
-    if (isAsyncFunction(paramsParser)) {
-      asyncParsers.push(paramsParser);
-      asyncIndexes.push(Number(index));
-    } else {
-      syncParsers.push(paramsParser);
-      syncIndexes.push(Number(index));
-    }
-  }
-
-  if (asyncParsers.length && syncParsers.length) {
-    return prepareMixedProps(asyncParsers, syncParsers, syncIndexes, asyncIndexes);
-  } else if (asyncParsers.length) {
-    return prepareAsyncProps(asyncParsers);
-  } else if (syncParsers.length) {
-    return prepareSyncProps(syncParsers);
+  if (asyncValues.length && syncValues.length) {
+    return PrepareMixedProps(asyncValues, syncValues, syncIndexes, asyncIndexes);
+  } else if (asyncValues.length) {
+    return PrepareAsyncProps(asyncValues);
+  } else if (syncValues.length) {
+    return PrepareSyncProps(syncValues);
   } else {
     return null;
   }

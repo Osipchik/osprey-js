@@ -75,14 +75,14 @@ export function Head(path?: string) {
   return DecoratorFabric(Methods.HEAD, path) as IMethodDecorator;
 }
 
-export function CustomDecoratorFabric(handler: Function): MethodDecorator {
+export function CreateMethodDecorator(handler: Function): MethodDecorator {
   return (
     _target: any,
     _name: string | symbol,
     descriptor: TypedPropertyDescriptor<any>,
   ) => {
     const meta = MetaStore.getMeta(descriptor);
-    const existedFilters = meta.filters || [];
+    const existedFilters = meta?.filters || [];
 
     MetaStore.addMeta(descriptor, 'filters', [
       ...existedFilters,

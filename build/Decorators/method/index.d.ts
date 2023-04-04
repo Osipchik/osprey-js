@@ -47,5 +47,5 @@ export declare function Options(path?: string): IMethodDecorator;
  * @param {string} path - Specified path.
  */
 export declare function Head(path?: string): IMethodDecorator;
-export declare function CustomDecoratorFabric(handler: Function): MethodDecorator;
+export declare function CreateMethodDecorator(handler: Function): MethodDecorator;
 //# sourceMappingURL=index.d.ts.map

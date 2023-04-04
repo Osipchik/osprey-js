@@ -8,7 +8,7 @@ export declare function normalizePath({ prefix, path, property, query }: PathArg
 export declare function addSlash(param?: string): string;
 export declare function isPrimitive(value: any): boolean;
 export declare function isPromise(value: any): boolean;
-export declare function isAsyncFunction(value: Function): boolean;
+export declare function isAsyncFunction(value?: Function): boolean;
 export declare function normalizeSlash(value: string): string;
 export declare function getPath(prefix?: string, pathName?: string): {
     pathName: string;
@@ -16,5 +16,11 @@ export declare function getPath(prefix?: string, pathName?: string): {
     props: string[];
 };
 export declare function isVarName(name: string): boolean;
+export declare function getSyncAndAsyncLists(list: any[] | object): {
+    asyncValues: any[];
+    asyncIndexes: number[];
+    syncValues: any[];
+    syncIndexes: number[];
+};
 export {};
 //# sourceMappingURL=helpers.d.ts.map

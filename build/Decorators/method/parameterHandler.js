@@ -1,19 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const helpers_1 = require("../../utils/helpers");
-const prepareSyncProps = (syncParsers) => (request, args) => {
+const PrepareSyncProps = (syncParsers) => (request, args) => {
     const result = new Array(syncParsers.length);
     for (const [index, parser] of syncParsers.entries()) {
         result[index] = parser(request, args);
     }
     return result;
 };
-const prepareAsyncProps = (asyncParsers) => (request, args) => {
+const PrepareAsyncProps = (asyncParsers) => (request, args) => {
     return Promise.all(asyncParsers.map((parser) => parser(request, args)));
 };
-const prepareMixedProps = (asyncParsers, syncParsers, syncIndexes, asyncIndexes) => async (request, args) => {
+const PrepareMixedProps = (asyncParsers, syncParsers, syncIndexes, asyncIndexes) => async (request, args) => {
     const normalisedResult = new Array(syncParsers.length + asyncParsers.length);
-    const asyncPromises = asyncParsers.map((parser, index) => parser(request, args));
+    const asyncPromises = asyncParsers.map((parser) => parser(request, args));
     for (const [index, parser] of syncParsers.entries()) {
         normalisedResult[syncIndexes[index]] = parser(request, args);
     }
@@ -27,28 +27,15 @@ function GetParameterHandler(paramsParsers) {
     if (!paramsParsers) {
         return null;
     }
-    const syncParsers = [];
-    const syncIndexes = [];
-    const asyncParsers = [];
-    const asyncIndexes = [];
-    for (const [index, paramsParser] of Object.entries(paramsParsers)) {
-        if ((0, helpers_1.isAsyncFunction)(paramsParser)) {
-            asyncParsers.push(paramsParser);
-            asyncIndexes.push(Number(index));
-        }
-        else {
-            syncParsers.push(paramsParser);
-            syncIndexes.push(Number(index));
-        }
+    const { asyncValues, asyncIndexes, syncValues, syncIndexes, } = (0, helpers_1.getSyncAndAsyncLists)(paramsParsers);
+    if (asyncValues.length && syncValues.length) {
+        return PrepareMixedProps(asyncValues, syncValues, syncIndexes, asyncIndexes);
     }
-    if (asyncParsers.length && syncParsers.length) {
-        return prepareMixedProps(asyncParsers, syncParsers, syncIndexes, asyncIndexes);
+    else if (asyncValues.length) {
+        return PrepareAsyncProps(asyncValues);
     }
-    else if (asyncParsers.length) {
-        return prepareAsyncProps(asyncParsers);
-    }
-    else if (syncParsers.length) {
-        return prepareSyncProps(syncParsers);
+    else if (syncValues.length) {
+        return PrepareSyncProps(syncValues);
     }
     else {
         return null;

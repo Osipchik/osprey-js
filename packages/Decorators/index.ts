@@ -1,5 +1,5 @@
 import Controller from '../Decorators/controller';
-import { Get, Head, Delete, Patch, Put, Post, Options, Trace, CustomDecoratorFabric } from '../Decorators/method';
+import { Get, Head, Delete, Patch, Put, Post, Options, Trace, CreateMethodDecorator } from '../Decorators/method';
 import Header from '../Decorators/header';
 
 export {
@@ -13,5 +13,5 @@ export {
   Options,
   Trace,
   Header,
-  CustomDecoratorFabric,
+  CreateMethodDecorator,
 }

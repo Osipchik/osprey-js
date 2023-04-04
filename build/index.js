@@ -28,7 +28,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv = __importStar(require("dotenv"));
 const OS = __importStar(require("os"));
-const Routing_1 = __importDefault(require("./Routing"));
 const Server_1 = __importDefault(require("./Server"));
 const metaStore_1 = __importDefault(require("./utils/metaStore"));
 const pipeline_1 = __importDefault(require("./pipeline"));
@@ -41,15 +40,14 @@ class App {
         this.pipeline = new pipeline_1.default();
     }
     useControllers(controllers) {
-        const controllersSet = [];
         for (const controller of controllers) {
             const { methods } = metaStore_1.default.getMeta(controller);
             const controllerInstance = new controller();
             methods.forEach((handler) => {
                 const handlerMeta = metaStore_1.default.getMeta(handler);
-                Routing_1.default.addRoute(handler(controllerInstance), handlerMeta.meta);
+                // Router.addRoute(handler(controllerInstance), handlerMeta.meta);
+                this.pipeline.registerMethod(handler(controllerInstance), handlerMeta);
             });
-            controllersSet.push(controllerInstance);
         }
     }
     run() {

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isVarName = exports.getPath = exports.normalizeSlash = exports.isAsyncFunction = exports.isPromise = exports.isPrimitive = exports.addSlash = exports.normalizePath = void 0;
+exports.getSyncAndAsyncLists = exports.isVarName = exports.getPath = exports.normalizeSlash = exports.isAsyncFunction = exports.isPromise = exports.isPrimitive = exports.addSlash = exports.normalizePath = void 0;
 function normalizePath({ prefix, path, property, query }) {
     const pathname = [
         addSlash(prefix),
@@ -26,6 +26,9 @@ function isPromise(value) {
 }
 exports.isPromise = isPromise;
 function isAsyncFunction(value) {
+    if (!value) {
+        return false;
+    }
     return value.constructor.name === 'AsyncFunction' || isPromise(value);
 }
 exports.isAsyncFunction = isAsyncFunction;
@@ -84,4 +87,28 @@ function isVarName(name) {
     return true;
 }
 exports.isVarName = isVarName;
+function getSyncAndAsyncLists(list) {
+    const syncValues = [];
+    const syncIndexes = [];
+    const asyncValues = [];
+    const asyncIndexes = [];
+    const entries = Array.isArray(list) ? list.entries() : Object.entries(list);
+    for (const [index, paramsParser] of entries) {
+        if (isAsyncFunction(paramsParser)) {
+            asyncValues.push(paramsParser);
+            asyncIndexes.push(Number(index));
+        }
+        else {
+            syncValues.push(paramsParser);
+            syncIndexes.push(Number(index));
+        }
+    }
+    return {
+        asyncValues,
+        asyncIndexes,
+        syncValues,
+        syncIndexes,
+    };
+}
+exports.getSyncAndAsyncLists = getSyncAndAsyncLists;
 //# sourceMappingURL=helpers.js.map

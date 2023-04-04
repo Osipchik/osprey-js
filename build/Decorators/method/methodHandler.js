@@ -71,7 +71,6 @@ function syncHandlerWithParams(originalHandler, meta, paramsParser) {
     };
 }
 function GetMethodHandler(originalDescriptorValue, meta, propertyParser, isPropertyParserAsync, isOriginAsync) {
-    console.log({ isPropertyParserAsync, isOriginAsync });
     if (!propertyParser && !isOriginAsync) {
         return syncHandler(originalDescriptorValue, meta);
     }

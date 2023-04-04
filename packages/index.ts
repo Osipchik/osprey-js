@@ -16,14 +16,13 @@ type AppPropsType = {
 
 class App {
   private readonly pipeline: Pipeline;
+
   constructor(props: AppPropsType = {}) {
     setThreadPoolSize(props.threadPoolSize || availableLogicalCors);
     this.pipeline = new Pipeline();
   }
 
   useControllers(controllers: any[]): void {
-    const controllersSet = [];
-
     for(const controller of controllers) {
       const { methods } = MetaStore.getMeta(controller);
 
@@ -32,10 +31,9 @@ class App {
       methods.forEach((handler: AsyncHandlerType) => {
         const handlerMeta = MetaStore.getMeta(handler);
 
-        Router.addRoute(handler(controllerInstance), handlerMeta.meta);
+        // Router.addRoute(handler(controllerInstance), handlerMeta.meta);
+        this.pipeline.registerMethod(handler(controllerInstance), handlerMeta);
       });
-
-      controllersSet.push(controllerInstance);
     }
   }
 

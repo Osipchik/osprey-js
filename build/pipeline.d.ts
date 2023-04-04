@@ -1,10 +1,10 @@
-import { ActionAuthorisationHandlerType, ActionHandlerType, RequestHandlerType } from './Routing/types';
-import { ActionFilterKeys } from './Decorators/actionFilters/utils';
-type FiltersType = {
-    [key in ActionFilterKeys]: ActionAuthorisationHandlerType[] | ActionHandlerType[];
-};
+import type { RequestHandlerType } from './Routing/types';
 export default class Pipeline {
-    registerMethod(method: RequestHandlerType, filters: FiltersType): void;
+    registerMethod(method: RequestHandlerType, filters: any): void;
+    private getFilterHandlers;
+    private getFiltersHandler;
+    private PrepareSyncFilters;
+    private PrepareAsyncFilters;
+    private PrepareMixedFilters;
 }
-export {};
 //# sourceMappingURL=pipeline.d.ts.map

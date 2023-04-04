@@ -7,8 +7,8 @@ import NotImplementedHandler from '../Routing/ErrorHandlers/NotImplementedHandle
 import { Methods } from '../Routing/methods';
 export type IncomingMessageType = http.IncomingMessage;
 export type ServerResponseType = http.ServerResponse;
-export type ActionHandlerType = (request: IncomingMessageType) => void;
-export type ActionAuthorisationHandlerType = (request: IncomingMessageType) => boolean;
+export type ActionHandlerType = (request: IncomingMessageType, args?: ParamsType) => void;
+export type ActionAuthorisationHandlerType = (request: IncomingMessageType, args?: ParamsType) => boolean;
 export type AsyncHandlerType = (controllerContext: any) => RequestHandlerType;
 export type RequestHandlerType = (request: IncomingMessageType, response: ServerResponseType, args?: ParamsType) => Promise<void> | void;
 export type ParamsType = {

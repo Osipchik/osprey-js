@@ -32,7 +32,11 @@ export function isPromise(value: any) {
   return typeof value === 'object' && typeof value.then === 'function';
 }
 
-export function isAsyncFunction(value: Function): boolean {
+export function isAsyncFunction(value?: Function): boolean {
+  if (!value) {
+    return false;
+  }
+
   return value.constructor.name === 'AsyncFunction' || isPromise(value);
 }
 
@@ -104,4 +108,30 @@ export function isVarName(name: string) {
   }
 
   return true;
+}
+
+export function getSyncAndAsyncLists(list: any[] | object) {
+  const syncValues = [];
+  const syncIndexes: number[] = [];
+  const asyncValues = [];
+  const asyncIndexes: number[] = [];
+
+  const entries = Array.isArray(list) ? list.entries() : Object.entries(list);
+
+  for (const [index, paramsParser] of entries) {
+    if (isAsyncFunction(paramsParser)) {
+      asyncValues.push(paramsParser);
+      asyncIndexes.push(Number(index));
+    } else {
+      syncValues.push(paramsParser);
+      syncIndexes.push(Number(index));
+    }
+  }
+
+  return {
+    asyncValues,
+    asyncIndexes,
+    syncValues,
+    syncIndexes,
+  };
 }
