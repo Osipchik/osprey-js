@@ -15,11 +15,16 @@ export default function DecoratorFabric(method: Methods, path?: string): MethodD
 
     const propertyParserObject = MetaStore.getMeta(descriptor.value);
 
-    const propertyParser = GetParameterHandler(propertyParserObject) as Function;
+    const parameterHandler = GetParameterHandler(propertyParserObject);
     const isOriginAsync = isAsyncFunction(originalDescriptorValue);
-    const isPropertyParserAsync = propertyParser ? isAsyncFunction(propertyParser) : false;
 
-    descriptor.value = GetMethodHandler(originalDescriptorValue, meta, propertyParser, isPropertyParserAsync, isOriginAsync);
+    descriptor.value = GetMethodHandler(
+      originalDescriptorValue,
+      meta,
+      isOriginAsync,
+      parameterHandler?.handler,
+      parameterHandler?.isAsync,
+    );
 
     MetaStore.addMeta(
       descriptor,
@@ -27,8 +32,6 @@ export default function DecoratorFabric(method: Methods, path?: string): MethodD
       {
         path: path || '',
         method,
-        isOriginAsync,
-        isPropertyParserAsync
       },
     );
 

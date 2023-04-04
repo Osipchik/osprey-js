@@ -112,9 +112,9 @@ function syncHandlerWithParams(originalHandler: Function, meta: any, paramsParse
 export default function GetMethodHandler(
   originalDescriptorValue: Function,
   meta: any,
-  propertyParser: Function,
-  isPropertyParserAsync: boolean,
   isOriginAsync: boolean,
+  propertyParser?: Function,
+  isPropertyParserAsync?: boolean,
 ) {
   if (!propertyParser && !isOriginAsync) {
     return syncHandler(originalDescriptorValue, meta);
@@ -122,16 +122,16 @@ export default function GetMethodHandler(
   else if (!propertyParser && isOriginAsync) {
     return asyncHandler(originalDescriptorValue, meta);
   }
-  else if (isPropertyParserAsync && isOriginAsync) {
+  else if (isPropertyParserAsync && isOriginAsync && propertyParser) {
     return asyncHandlerWithAsyncParams(originalDescriptorValue, meta, propertyParser);
   }
-  else if (isPropertyParserAsync && !isOriginAsync) {
+  else if (isPropertyParserAsync && !isOriginAsync && propertyParser) {
     return syncHandlerWithAsyncParams(originalDescriptorValue, meta, propertyParser);
   }
-  else if (!isPropertyParserAsync && isOriginAsync) {
+  else if (!isPropertyParserAsync && isOriginAsync && propertyParser) {
     return asyncHandlerWithParams(originalDescriptorValue, meta, propertyParser);
   }
-  else if (!isPropertyParserAsync && !isOriginAsync) {
+  else if (!isPropertyParserAsync && !isOriginAsync && propertyParser) {
     return syncHandlerWithParams(originalDescriptorValue, meta, propertyParser);
   }
 }

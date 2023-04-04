@@ -12,15 +12,12 @@ function DecoratorFabric(method, path) {
         const originalDescriptorValue = descriptor.value;
         const meta = metaStore_1.default.getMeta(descriptor);
         const propertyParserObject = metaStore_1.default.getMeta(descriptor.value);
-        const propertyParser = (0, parameterHandler_1.default)(propertyParserObject);
+        const parameterHandler = (0, parameterHandler_1.default)(propertyParserObject);
         const isOriginAsync = (0, helpers_1.isAsyncFunction)(originalDescriptorValue);
-        const isPropertyParserAsync = propertyParser ? (0, helpers_1.isAsyncFunction)(propertyParser) : false;
-        descriptor.value = (0, methodHandler_1.default)(originalDescriptorValue, meta, propertyParser, isPropertyParserAsync, isOriginAsync);
+        descriptor.value = (0, methodHandler_1.default)(originalDescriptorValue, meta, isOriginAsync, parameterHandler?.handler, parameterHandler?.isAsync);
         metaStore_1.default.addMeta(descriptor, 'meta', {
             path: path || '',
             method,
-            isOriginAsync,
-            isPropertyParserAsync
         });
         return descriptor;
     };

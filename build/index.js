@@ -45,7 +45,6 @@ class App {
             const controllerInstance = new controller();
             methods.forEach((handler) => {
                 const handlerMeta = metaStore_1.default.getMeta(handler);
-                // Router.addRoute(handler(controllerInstance), handlerMeta.meta);
                 this.pipeline.registerMethod(handler(controllerInstance), handlerMeta);
             });
         }

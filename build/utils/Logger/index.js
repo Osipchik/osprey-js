@@ -3,15 +3,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const util_1 = __importDefault(require("util"));
 const concollor_1 = __importDefault(require("../../utils/Logger/concollor"));
 const utils_1 = require("./utils");
+const logger = util_1.default.promisify(console.log);
 function Log(message) {
     const text = String(message);
-    console.log(text.replace(utils_1.urlRegex, (url) => (0, concollor_1.default) `${url}(u,blue)`));
+    return new Promise(() => {
+        console.log(text.replace(utils_1.urlRegex, (url) => (0, concollor_1.default) `${url}(u,blue)`));
+    });
 }
 function _print({ titleTag, messageTag, defaultTitle }) {
     return function (message, title) {
-        console.log(titleTag(`${title ?? defaultTitle}: `) + messageTag(`${message}`));
+        return new Promise(() => {
+            console.log(titleTag(`${title ?? defaultTitle}: `) + messageTag(`${message}`));
+        });
     };
 }
 Log.error = _print(utils_1.Error);

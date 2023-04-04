@@ -60,11 +60,20 @@ export default function GetParameterHandler(paramsParsers: ObjectT<Function>) {
   } = getSyncAndAsyncLists(paramsParsers) ;
 
   if (asyncValues.length && syncValues.length) {
-    return PrepareMixedProps(asyncValues, syncValues, syncIndexes, asyncIndexes);
+    return {
+      handler: PrepareMixedProps(asyncValues, syncValues, syncIndexes, asyncIndexes),
+      isAsync: true,
+    };
   } else if (asyncValues.length) {
-    return PrepareAsyncProps(asyncValues);
+    return {
+      handler: PrepareAsyncProps(asyncValues),
+      isAsync: true,
+    };
   } else if (syncValues.length) {
-    return PrepareSyncProps(syncValues);
+    return {
+      handler: PrepareSyncProps(syncValues),
+      isAsync: false,
+    };
   } else {
     return null;
   }

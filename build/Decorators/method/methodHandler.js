@@ -70,23 +70,23 @@ function syncHandlerWithParams(originalHandler, meta, paramsParser) {
         handleResponse(request, response, meta);
     };
 }
-function GetMethodHandler(originalDescriptorValue, meta, propertyParser, isPropertyParserAsync, isOriginAsync) {
+function GetMethodHandler(originalDescriptorValue, meta, isOriginAsync, propertyParser, isPropertyParserAsync) {
     if (!propertyParser && !isOriginAsync) {
         return syncHandler(originalDescriptorValue, meta);
     }
     else if (!propertyParser && isOriginAsync) {
         return asyncHandler(originalDescriptorValue, meta);
     }
-    else if (isPropertyParserAsync && isOriginAsync) {
+    else if (isPropertyParserAsync && isOriginAsync && propertyParser) {
         return asyncHandlerWithAsyncParams(originalDescriptorValue, meta, propertyParser);
     }
-    else if (isPropertyParserAsync && !isOriginAsync) {
+    else if (isPropertyParserAsync && !isOriginAsync && propertyParser) {
         return syncHandlerWithAsyncParams(originalDescriptorValue, meta, propertyParser);
     }
-    else if (!isPropertyParserAsync && isOriginAsync) {
+    else if (!isPropertyParserAsync && isOriginAsync && propertyParser) {
         return asyncHandlerWithParams(originalDescriptorValue, meta, propertyParser);
     }
-    else if (!isPropertyParserAsync && !isOriginAsync) {
+    else if (!isPropertyParserAsync && !isOriginAsync && propertyParser) {
         return syncHandlerWithParams(originalDescriptorValue, meta, propertyParser);
     }
 }

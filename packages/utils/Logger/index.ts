@@ -1,3 +1,4 @@
+import util from 'util';
 import Concollor from '../../utils/Logger/concollor';
 import { IDecorator, Info, urlRegex, Warn, Error, Success, Data, Put, Patch } from './utils';
 
@@ -15,15 +16,21 @@ interface ILogger {
 
 type Log = ILogger & ((message: string) => void);
 
-function Log(message: string): void {
+const logger = util.promisify(console.log);
+
+function Log(message: string): Promise<void> {
   const text = String(message);
 
-  console.log(text.replace(urlRegex, (url) => Concollor`${url}(u,blue)`));
+  return new Promise(() => {
+    console.log(text.replace(urlRegex, (url) => Concollor`${url}(u,blue)`));
+  });
 }
 
 function _print({ titleTag, messageTag, defaultTitle }: IDecorator) {
   return function (message: string, title?: string) {
-    console.log(titleTag(`${ title ?? defaultTitle}: `) + messageTag(`${message}`));
+    return new Promise(() => {
+      console.log(titleTag(`${ title ?? defaultTitle}: `) + messageTag(`${message}`));
+    });
   }
 }
 

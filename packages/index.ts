@@ -23,7 +23,7 @@ class App {
   }
 
   useControllers(controllers: any[]): void {
-    for(const controller of controllers) {
+    for (const controller of controllers) {
       const { methods } = MetaStore.getMeta(controller);
 
       const controllerInstance = new controller();
@@ -31,7 +31,6 @@ class App {
       methods.forEach((handler: AsyncHandlerType) => {
         const handlerMeta = MetaStore.getMeta(handler);
 
-        // Router.addRoute(handler(controllerInstance), handlerMeta.meta);
         this.pipeline.registerMethod(handler(controllerInstance), handlerMeta);
       });
     }

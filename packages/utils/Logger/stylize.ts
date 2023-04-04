@@ -31,7 +31,7 @@ function esc(style: string | number, value: string) {
 }
 
 function stylize(styles: string, text: string): string {
-  for(const style of styles.split(',')) {
+  for (const style of styles.split(',')) {
     if (style.length === 1) {
       text = esc(ANSI[style], text);
     } else {
