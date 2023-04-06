@@ -6,12 +6,47 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./Decorators/actionFilters/utils");
 const Routing_1 = __importDefault(require("./Routing"));
 const helpers_1 = require("./utils/helpers");
+const metaStore_1 = __importDefault(require("./utils/metaStore"));
+const filterTypes = [
+    utils_1.ActionFilterKeys.AUTHORISATION,
+    utils_1.ActionFilterKeys.RESOURCE,
+    utils_1.ActionFilterKeys.ACTION_BEFORE,
+    utils_1.ActionFilterKeys.ACTION_AFTER,
+    utils_1.ActionFilterKeys.EXCEPTION,
+];
 class Pipeline {
-    registerMethod(method, filters) {
+    registerMethod(method, filters, controllerFilters) {
+        for (const key of filterTypes) {
+            const filter = filters[key] || [];
+            const controllerFilter = controllerFilters[key] || [];
+            filters[key] = [...controllerFilter, ...filter];
+        }
+        this.setExceptionHandler(filters, method);
         const { handlers, hasAsync } = this.getFilterHandlers(filters, method);
-        let routeHandler;
+        const routeHandler = this.createMethodHandlers(handlers, hasAsync);
+        Routing_1.default.addRoute(routeHandler, filters.meta);
+    }
+    setExceptionHandler(filters, method) {
+        let hasAsync = false;
+        const key = utils_1.ActionFilterKeys.EXCEPTION;
+        let exceptionHandlers = [];
+        if (filters.hasOwnProperty(key) && filters[key].length) {
+            const handler = this.getFiltersHandler([filters[key][0]]);
+            const isAsync = (0, helpers_1.isAsyncFunction)(handler);
+            hasAsync = hasAsync || isAsync;
+            exceptionHandlers.push({
+                handler,
+                isAsync,
+            });
+        }
+        if (exceptionHandlers.length) {
+            const exceptionHandler = this.createMethodHandlers(exceptionHandlers, hasAsync);
+            metaStore_1.default.addMeta(method, 'catch', exceptionHandler);
+        }
+    }
+    createMethodHandlers(handlers, hasAsync) {
         if (hasAsync) {
-            routeHandler = async (request, response, args) => {
+            return async (request, response, args) => {
                 for (const { isAsync, handler } of handlers) {
                     if (isAsync) {
                         await handler(request, response, args);
@@ -22,23 +57,15 @@ class Pipeline {
                 }
             };
         }
-        else {
-            routeHandler = (request, response, args) => {
-                for (const { handler } of handlers) {
-                    handler(request, response, args);
-                }
-            };
-        }
-        Routing_1.default.addRoute(routeHandler, filters.meta);
+        return (request, response, args) => {
+            for (const { handler } of handlers) {
+                handler(request, response, args);
+            }
+        };
     }
     getFilterHandlers(filters, method) {
-        const order = [
-            utils_1.ActionFilterKeys.AUTHORISATION,
-            utils_1.ActionFilterKeys.ACTION_BEFORE,
-            utils_1.ActionFilterKeys.ACTION_AFTER,
-        ];
         let hasAsync = false;
-        const handlers = order.reduce((acc, key) => {
+        const handlers = filterTypes.reduce((acc, key) => {
             if (key === utils_1.ActionFilterKeys.ACTION_AFTER) {
                 const isAsync = (0, helpers_1.isAsyncFunction)(method);
                 hasAsync = hasAsync || isAsync;
@@ -47,9 +74,9 @@ class Pipeline {
                     isAsync,
                 });
             }
-            if (filters.hasOwnProperty(key)) {
+            if (filters.hasOwnProperty(key) && filters[key].length) {
                 const handler = this.getFiltersHandler(filters[key]);
-                const isAsync = (0, helpers_1.isAsyncFunction)(method);
+                const isAsync = (0, helpers_1.isAsyncFunction)(handler);
                 hasAsync = hasAsync || isAsync;
                 acc.push({
                     handler,

@@ -24,14 +24,14 @@ class App {
 
   useControllers(controllers: any[]): void {
     for (const controller of controllers) {
-      const { methods } = MetaStore.getMeta(controller);
+      const { methods, filters } = MetaStore.getMeta(controller);
 
       const controllerInstance = new controller();
 
       methods.forEach((handler: AsyncHandlerType) => {
         const handlerMeta = MetaStore.getMeta(handler);
 
-        this.pipeline.registerMethod(handler(controllerInstance), handlerMeta);
+        this.pipeline.registerMethod(handler(controllerInstance), handlerMeta, filters);
       });
     }
   }

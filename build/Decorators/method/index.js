@@ -3,10 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateMethodDecorator = exports.Head = exports.Options = exports.Trace = exports.Patch = exports.Delete = exports.Post = exports.Put = exports.Get = void 0;
+exports.Head = exports.Options = exports.Trace = exports.Patch = exports.Delete = exports.Post = exports.Put = exports.Get = void 0;
 const methods_1 = require("../../Routing/methods");
 const utils_1 = __importDefault(require("../../Decorators/method/utils"));
-const metaStore_1 = __importDefault(require("../../utils/metaStore"));
 /**
  * Routes HTTP GET requests to the specified path.
  *
@@ -79,16 +78,4 @@ function Head(path) {
     return (0, utils_1.default)(methods_1.Methods.HEAD, path);
 }
 exports.Head = Head;
-function CreateMethodDecorator(handler) {
-    return (_target, _name, descriptor) => {
-        const meta = metaStore_1.default.getMeta(descriptor);
-        const existedFilters = meta?.filters || [];
-        metaStore_1.default.addMeta(descriptor, 'filters', [
-            ...existedFilters,
-            handler,
-        ]);
-        return descriptor;
-    };
-}
-exports.CreateMethodDecorator = CreateMethodDecorator;
 //# sourceMappingURL=index.js.map

@@ -7,6 +7,7 @@ const http_1 = __importDefault(require("http"));
 const Routing_1 = __importDefault(require("../Routing"));
 const Logger_1 = __importDefault(require("../utils/Logger"));
 const Middleware_1 = __importDefault(require("../Middleware"));
+const metaStore_1 = __importDefault(require("../utils/metaStore"));
 class Server {
     server;
     middleware;
@@ -20,16 +21,6 @@ class Server {
         this.server = http_1.default.createServer(this.requestListener);
         this.host = process.env.HOST || 'localhost';
         this.port = Number(process.env.PORT) || 3000;
-    }
-    requestListener(request, response) {
-        try {
-            this.middleware.runMiddlewaresSync(request, response);
-            const { handler, params } = this.router.getRequestHandler(request);
-            handler(request, response, params)?.catch((error) => Routing_1.default.errorHandlers.ServerError(request, response, error));
-        }
-        catch (error) {
-            Routing_1.default.errorHandlers.ServerError(request, response, error);
-        }
     }
     run() {
         this.server.on('error', (error) => {
@@ -52,6 +43,27 @@ class Server {
         });
         this.server.on('close', this.onServerClose);
         process.on('SIGINT', this.onServerClose);
+    }
+    requestListener(request, response) {
+        try {
+            this.middleware.runMiddlewaresSync(request, response);
+            const { handler, params } = this.router.getRequestHandler(request);
+            handler(request, response, params)?.
+                catch((error) => {
+                const exceptionHandler = metaStore_1.default.getByKey(handler, 'catch');
+                if (exceptionHandler) {
+                    exceptionHandler(request, response, params)?.catch((err) => {
+                        throw new Error(err);
+                    });
+                }
+                else {
+                    Routing_1.default.errorHandlers.ServerError(request, response, error);
+                }
+            });
+        }
+        catch (error) {
+            Routing_1.default.errorHandlers.ServerError(request, response, error);
+        }
     }
     onServerClose() {
         Logger_1.default.warn('Server is closed');

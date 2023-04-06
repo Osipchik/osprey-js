@@ -14,6 +14,7 @@ export type RequestHandlerType = (request: IncomingMessageType, response: Server
 export type ParamsType = {
     params: object | undefined;
     query: object | undefined;
+    error: unknown | undefined;
 };
 export type RouteValueType = {
     handler: RequestHandlerType;

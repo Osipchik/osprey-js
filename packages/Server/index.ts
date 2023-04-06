@@ -3,6 +3,7 @@ import Router from '../Routing';
 import Logger from '../utils/Logger';
 import Middleware from '../Middleware';
 import {IncomingMessageType, ParamsType, ServerResponseType} from '../Routing/types';
+import MetaStore from '../utils/metaStore';
 
 class Server {
   private readonly server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>;
@@ -20,20 +21,6 @@ class Server {
 
     this.host = process.env.HOST || 'localhost';
     this.port = Number(process.env.PORT) || 3000;
-  }
-
-  private requestListener(
-    request: IncomingMessageType,
-    response: ServerResponseType,
-  ): void {
-    try {
-      this.middleware.runMiddlewaresSync(request, response);
-
-      const { handler, params } = this.router.getRequestHandler(request);
-      handler(request, response, params as ParamsType)?.catch((error: any) => Router.errorHandlers.ServerError(request, response, error));
-    } catch (error: any) {
-      Router.errorHandlers.ServerError(request, response, error);
-    }
   }
 
   run(): void {
@@ -60,6 +47,31 @@ class Server {
     this.server.on('close', this.onServerClose);
 
     process.on('SIGINT', this.onServerClose);
+  }
+
+  private requestListener(
+    request: IncomingMessageType,
+    response: ServerResponseType,
+  ): void {
+    try {
+      this.middleware.runMiddlewaresSync(request, response);
+
+      const { handler, params } = this.router.getRequestHandler(request);
+      handler(request, response, params as ParamsType)?.
+        catch((error: any) => {
+          const exceptionHandler = MetaStore.getByKey(handler, 'catch');
+
+          if (exceptionHandler) {
+            exceptionHandler(request, response, params as ParamsType)?.catch((err: any) => {
+              throw new Error(err);
+            })
+          } else {
+            Router.errorHandlers.ServerError(request, response, error);
+          }
+        });
+    } catch (error: any) {
+      Router.errorHandlers.ServerError(request, response, error);
+    }
   }
 
   private onServerClose() {

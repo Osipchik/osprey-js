@@ -41,11 +41,11 @@ class App {
     }
     useControllers(controllers) {
         for (const controller of controllers) {
-            const { methods } = metaStore_1.default.getMeta(controller);
+            const { methods, filters } = metaStore_1.default.getMeta(controller);
             const controllerInstance = new controller();
             methods.forEach((handler) => {
                 const handlerMeta = metaStore_1.default.getMeta(handler);
-                this.pipeline.registerMethod(handler(controllerInstance), handlerMeta);
+                this.pipeline.registerMethod(handler(controllerInstance), handlerMeta, filters);
             });
         }
     }

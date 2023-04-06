@@ -38,7 +38,7 @@ function asyncHandlerWithAsyncParams(originalHandler: Function, meta: any, param
     request: IncomingMessageType,
     response: ServerResponseType,
     args,
-  ) => {
+  ): Promise<void> => {
     const context = {
       ...controllerContext,
       request,
@@ -57,7 +57,7 @@ function syncHandlerWithAsyncParams(originalHandler: Function, meta: any, params
     request: IncomingMessageType,
     response: ServerResponseType,
     args,
-  ) => {
+  ): Promise<void> => {
     const context = {
       ...controllerContext,
       request,
@@ -115,7 +115,7 @@ export default function GetMethodHandler(
   isOriginAsync: boolean,
   propertyParser?: Function,
   isPropertyParserAsync?: boolean,
-) {
+): AsyncHandlerType {
   if (!propertyParser && !isOriginAsync) {
     return syncHandler(originalDescriptorValue, meta);
   }
@@ -131,7 +131,7 @@ export default function GetMethodHandler(
   else if (!isPropertyParserAsync && isOriginAsync && propertyParser) {
     return asyncHandlerWithParams(originalDescriptorValue, meta, propertyParser);
   }
-  else if (!isPropertyParserAsync && !isOriginAsync && propertyParser) {
-    return syncHandlerWithParams(originalDescriptorValue, meta, propertyParser);
+  else {
+    return syncHandlerWithParams(originalDescriptorValue, meta, propertyParser!);
   }
 }

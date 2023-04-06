@@ -10,7 +10,11 @@ export async function bodyParser(request: IncomingMessageType, _: ParamsType): P
     });
 
     request.on('end', () => {
-      resolve(Config.getValue<Function>('bodyParser')(data));
+      try {
+        resolve(Config.getValue<Function>('bodyParser')(data));
+      } catch (error) {
+        reject(error);
+      }
     });
   })
 }

@@ -6,4 +6,8 @@ export declare enum ActionFilterKeys {
     EXCEPTION = "exceptionFilter",
     RESULT = "resultFilter"
 }
+type ActionFilterFabricType = <T>(actionKey: ActionFilterKeys) => (handler: T) => MethodDecorator;
+export declare const ActionFilterDecoratorFabric: ActionFilterFabricType;
+export declare const ExceptionFilterDecoratorFabric: (handler: Function) => MethodDecorator;
+export {};
 //# sourceMappingURL=utils.d.ts.map

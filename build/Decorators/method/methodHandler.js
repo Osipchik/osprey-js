@@ -86,7 +86,7 @@ function GetMethodHandler(originalDescriptorValue, meta, isOriginAsync, property
     else if (!isPropertyParserAsync && isOriginAsync && propertyParser) {
         return asyncHandlerWithParams(originalDescriptorValue, meta, propertyParser);
     }
-    else if (!isPropertyParserAsync && !isOriginAsync && propertyParser) {
+    else {
         return syncHandlerWithParams(originalDescriptorValue, meta, propertyParser);
     }
 }

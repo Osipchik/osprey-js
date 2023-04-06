@@ -12,7 +12,12 @@ async function bodyParser(request, _) {
             data.push(chunk);
         });
         request.on('end', () => {
-            resolve(Config_1.default.getValue('bodyParser')(data));
+            try {
+                resolve(Config_1.default.getValue('bodyParser')(data));
+            }
+            catch (error) {
+                reject(error);
+            }
         });
     });
 }

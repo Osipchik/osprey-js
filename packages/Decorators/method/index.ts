@@ -1,7 +1,6 @@
 import { Methods } from '../../Routing/methods';
 import { IMethodDecorator } from '../../Response/types';
 import DecoratorFabric from '../../Decorators/method/utils';
-import MetaStore from '../../utils/metaStore';
 
 /**
  * Routes HTTP GET requests to the specified path.
@@ -73,22 +72,4 @@ export function Options(path?: string) {
  */
 export function Head(path?: string) {
   return DecoratorFabric(Methods.HEAD, path) as IMethodDecorator;
-}
-
-export function CreateMethodDecorator(handler: Function): MethodDecorator {
-  return (
-    _target: any,
-    _name: string | symbol,
-    descriptor: TypedPropertyDescriptor<any>,
-  ) => {
-    const meta = MetaStore.getMeta(descriptor);
-    const existedFilters = meta?.filters || [];
-
-    MetaStore.addMeta(descriptor, 'filters', [
-      ...existedFilters,
-      handler,
-    ]);
-
-    return descriptor;
-  };
 }

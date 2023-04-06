@@ -1,21 +1,63 @@
 import { ActionFilterKeys } from './Decorators/actionFilters/utils';
 import Router from './Routing';
 import { getSyncAndAsyncLists, isAsyncFunction } from './utils/helpers';
-import type { RequestHandlerType } from './Routing/types';
+import type {RequestHandlerType } from './Routing/types';
 import { IncomingMessageType, ParamsType, ServerResponseType } from './Routing/types';
+import MetaStore from './utils/metaStore';
+
+const filterTypes = [
+  ActionFilterKeys.AUTHORISATION,
+  ActionFilterKeys.RESOURCE,
+  ActionFilterKeys.ACTION_BEFORE,
+  ActionFilterKeys.ACTION_AFTER,
+  ActionFilterKeys.EXCEPTION,
+];
 
 export default class Pipeline {
-  registerMethod(method: RequestHandlerType, filters: any) {
+  registerMethod(method: RequestHandlerType, filters: any, controllerFilters: any): void {
+    for(const key of filterTypes) {
+      const filter = filters[key] || [];
+      const controllerFilter = controllerFilters[key] || [];
+      filters[key] = [ ...controllerFilter, ...filter ];
+    }
+
+    this.setExceptionHandler(filters, method);
     const { handlers, hasAsync } = this.getFilterHandlers(filters, method);
 
-    let routeHandler: RequestHandlerType;
+    const routeHandler: RequestHandlerType = this.createMethodHandlers(handlers, hasAsync);
 
+    Router.addRoute(routeHandler, filters.meta);
+  }
+
+  private setExceptionHandler(filters: any, method: RequestHandlerType) {
+    let hasAsync = false;
+    const key = ActionFilterKeys.EXCEPTION;
+    let exceptionHandlers = [];
+
+    if (filters.hasOwnProperty(key) && filters[key].length) {
+      const handler = this.getFiltersHandler([filters[key][0]]);
+      const isAsync = isAsyncFunction(handler);
+      hasAsync = hasAsync || isAsync;
+
+      exceptionHandlers.push({
+        handler,
+        isAsync,
+      });
+    }
+
+    if (exceptionHandlers.length) {
+      const exceptionHandler = this.createMethodHandlers(exceptionHandlers, hasAsync);
+      MetaStore.addMeta(method, 'catch', exceptionHandler)
+    }
+  }
+
+  private createMethodHandlers(handlers: any[], hasAsync: boolean) {
     if (hasAsync) {
-      routeHandler = async (
+      return async (
         request: IncomingMessageType,
         response: ServerResponseType,
         args?: ParamsType,
-      ) => {
+      ): Promise<void> => {
         for (const { isAsync, handler } of handlers) {
           if (isAsync) {
             await handler(request, response, args);
@@ -24,32 +66,23 @@ export default class Pipeline {
           }
         }
       }
-    } else {
-      routeHandler = (
-        request: IncomingMessageType,
-        response: ServerResponseType,
-        args?: ParamsType,
-      ) => {
-        for (const { handler } of handlers) {
-          handler(request, response, args);
-        }
-      }
     }
 
-
-    Router.addRoute(routeHandler, filters.meta);
+    return (
+      request: IncomingMessageType,
+      response: ServerResponseType,
+      args?: ParamsType,
+    ): void => {
+      for (const { handler } of handlers) {
+        handler(request, response, args);
+      }
+    }
   }
 
   private getFilterHandlers(filters: any, method: RequestHandlerType) {
-    const order = [
-      ActionFilterKeys.AUTHORISATION,
-      ActionFilterKeys.ACTION_BEFORE,
-      ActionFilterKeys.ACTION_AFTER,
-    ];
-
     let hasAsync = false;
 
-    const handlers =  order.reduce((acc, key) => {
+    const handlers =  filterTypes.reduce((acc, key) => {
       if (key === ActionFilterKeys.ACTION_AFTER) {
         const isAsync = isAsyncFunction(method);
         hasAsync = hasAsync || isAsync;
@@ -60,9 +93,9 @@ export default class Pipeline {
         });
       }
 
-      if (filters.hasOwnProperty(key)) {
+      if (filters.hasOwnProperty(key) && filters[key].length) {
         const handler = this.getFiltersHandler(filters[key]);
-        const isAsync = isAsyncFunction(method);
+        const isAsync = isAsyncFunction(handler);
         hasAsync = hasAsync || isAsync;
 
         acc.push({
@@ -80,7 +113,7 @@ export default class Pipeline {
     };
   }
 
-  private getFiltersHandler(filters?: Function[]) {
+  private getFiltersHandler(filters?: RequestHandlerType[]) {
     if (!filters) {
       return undefined;
     }

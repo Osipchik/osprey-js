@@ -5,8 +5,8 @@ declare class Server {
     private readonly host;
     private readonly port;
     constructor();
-    private requestListener;
     run(): void;
+    private requestListener;
     private onServerClose;
 }
 export default Server;

@@ -22,6 +22,7 @@ export type RequestHandlerType = (
 export type ParamsType = {
   params: object | undefined;
   query: object | undefined;
+  error: unknown | undefined;
 };
 
 export type RouteValueType = {
