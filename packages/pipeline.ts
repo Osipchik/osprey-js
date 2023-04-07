@@ -1,4 +1,4 @@
-import { ActionFilterKeys } from './Decorators/actionFilters/utils';
+import { ActionFilterKeys } from './Decorators/ActionFilters/utils';
 import Router from './Routing';
 import { getSyncAndAsyncLists, isAsyncFunction } from './utils/helpers';
 import type {RequestHandlerType } from './Routing/types';
@@ -17,7 +17,7 @@ export default class Pipeline {
   registerMethod(method: RequestHandlerType, filters: any, controllerFilters: any): void {
     for(const key of filterTypes) {
       const filter = filters[key] || [];
-      const controllerFilter = controllerFilters[key] || [];
+      const controllerFilter = controllerFilters ? controllerFilters[key] || [] : [];
       filters[key] = [ ...controllerFilter, ...filter ];
     }
 

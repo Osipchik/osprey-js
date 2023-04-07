@@ -2,7 +2,7 @@
   "author": "Tim Osipchik",
   "license": "MIT",
   "name": "osprey-js",
-  "version": "0.0.65",
+  "version": "0.0.72",
   "type": "module",
   "description": "modern fast and lightweight backend framework",
   "main": "./index.js",
@@ -10,7 +10,7 @@
   "scripts": {
     "clear": "rm -rf build/*",
     "build:tsc": "pnpm clear &&  tsc",
-    "build": "pnpm clear && tsc && node ./esbuild.js"
+    "build": "pnpm clear && swc packages -d build && tsc && node ./esbuild.js"
   },
   "dependencies": {
     "@parisholley/road-runner": "^1.1.8",
@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@esbuild/darwin-arm64": "^0.17.11",
+    "@swc/cli": "^0.1.62",
     "@swc/core": "^1.3.37",
     "@swc/wasm": "^1.3.37",
     "@tsconfig/node18-strictest-esm": "^1.0.1",

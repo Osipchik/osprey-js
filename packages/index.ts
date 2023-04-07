@@ -1,6 +1,5 @@
 import * as dotenv from 'dotenv';
 import * as OS from 'os';
-import Router from './Routing';
 import Server from './Server';
 import MetaStore from './utils/metaStore';
 import Pipeline from './pipeline';
@@ -24,14 +23,14 @@ class App {
 
   useControllers(controllers: any[]): void {
     for (const controller of controllers) {
-      const { methods, filters } = MetaStore.getMeta(controller);
+      const meta = MetaStore.getMeta(controller);
 
       const controllerInstance = new controller();
 
-      methods.forEach((handler: AsyncHandlerType) => {
+      meta.methods.forEach((handler: AsyncHandlerType) => {
         const handlerMeta = MetaStore.getMeta(handler);
 
-        this.pipeline.registerMethod(handler(controllerInstance), handlerMeta, filters);
+        this.pipeline.registerMethod(handler(controllerInstance), handlerMeta, meta.filters);
       });
     }
   }

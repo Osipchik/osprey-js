@@ -15,6 +15,7 @@
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
+    "emitDeclarationOnly": true,
 
     "moduleResolution": "node",
     "allowJs": true,

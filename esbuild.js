@@ -1,20 +1,4 @@
 import fs from 'fs';
-import esbuild from 'esbuild';
-import { globSync } from 'glob';
-
-// const entryPoints = globSync('./packages/**/*.ts')
-
-// await esbuild.build({
-//   entryPoints: entryPoints,
-//   bundle: true,
-//   minify: true,
-//   format: 'esm',
-//   sourcemap: true,
-//   outdir: 'build',
-//   platform: 'node',
-//   target: 'node14',
-//   keepNames: true,
-// });
 
 const packageBase = JSON.parse(fs.readFileSync('./package.json'));
 

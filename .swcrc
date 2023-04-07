@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json.schemastore.org/swcrc",
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "jsx": false,
+      "dynamicImport": false,
+      "privateMethod": true,
+      "functionBind": false,
+      "exportDefaultFrom": false,
+      "exportNamespaceFrom": false,
+      "decorators": true,
+      "decoratorsBeforeExport": true,
+      "topLevelAwait": false,
+      "importMeta": false
+    },
+    "transform": null,
+    "target": "esnext",
+    "loose": false,
+    "externalHelpers": false,
+    // Requires v1.2.50 or upper and requires target to be es2016 or upper.
+    "keepClassNames": false,
+    "baseUrl": "."
+  },
+  "minify": true,
+  "module": {
+    "type": "commonjs"
+  }
+}

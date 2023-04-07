@@ -1,7 +1,7 @@
 import MetaStore from '../utils/metaStore';
 
 /**
- * Decorator to add header parameter into response.
+ * Decorator to add header Parameter into response.
  *
  * @param {string} name - The key of the property
  * @param {string} value - The value of the property
