@@ -1,17 +1,17 @@
 import { IncomingMessageType, ServerResponseType } from '../Routing/types';
-import type { StatusCodes } from './enums';
+import type { StatusCodes, ContentTypes } from './enums';
 
 export interface IOptions {
   statusCode?: StatusCodes,
-  contentType?: string,
+  contentType?: ContentTypes,
   isJSON?: boolean,
-};
+}
 
 export interface IResult {
   value: unknown,
   statusCode: StatusCodes,
   contentType: string,
-};
+}
 
 export type ResponseHandlerType = (
   request: IncomingMessageType,
@@ -35,3 +35,7 @@ export type IAsyncMethodDecorator = (
   propertyKey: string | symbol,
   descriptor: TypedPropertyDescriptor<AsyncMethodDecoratorTargetType>,
 ) => TypedPropertyDescriptor<AsyncMethodDecoratorTargetType>;
+
+export type temp = {
+  [key in any]: any;
+}

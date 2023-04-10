@@ -2,14 +2,14 @@
   "author": "Tim Osipchik",
   "license": "MIT",
   "name": "osprey-js",
-  "version": "0.0.72",
+  "version": "0.0.74",
   "type": "module",
   "description": "modern fast and lightweight backend framework",
   "main": "./index.js",
   "module": "./index.js",
   "scripts": {
     "clear": "rm -rf build/*",
-    "build:tsc": "pnpm clear &&  tsc",
+    "build:tsc": "pnpm clear && tsc",
     "build": "pnpm clear && swc packages -d build && tsc && node ./esbuild.js"
   },
   "dependencies": {
@@ -38,9 +38,9 @@
     "url": "git+https://github.com/Osipchik/osprey-js.git"
   },
   "bugs": {
-    "url": "https://github.com/Osipchik/Lark/issues"
+    "url": "https://github.com/Osipchik/osprey-js/issues"
   },
-  "homepage": "https://github.com/Osipchik/Lark#readme",
+  "homepage": "https://github.com/Osipchik/osprey-js#readme",
   "keywords": [
     "api",
     "backend",

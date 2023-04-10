@@ -9,8 +9,8 @@ export type ParameterDecoratorHandlerType = (request: IncomingMessageType, param
  * @param {function} handler - Param handler.
  */
 export function CreateParamDecorator(handler: ParameterDecoratorHandlerType): ParameterDecorator {
-  return (target, propertyKey, parameterIndex): void => {
-    MetaStore.addMeta((target as any)[propertyKey], parameterIndex, handler);
+  return (target: any, propertyKey, parameterIndex): void => {
+    MetaStore.addMeta(target[propertyKey], parameterIndex, handler);
   };
 }
 

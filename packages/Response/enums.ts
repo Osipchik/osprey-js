@@ -1,3 +1,7 @@
+import zlib from 'zlib';
+import Config from '../Config';
+import { temp } from '../Response/types';
+
 export enum StatusCodes {
   Ok = 200,
   Created,
@@ -20,7 +24,6 @@ export enum ContentTypes {
   Application_JavaArchive = 'application/java-archive',
   Application_EDI_X12 = 'application/EDI-X12',
   Application_EDIFACT = 'application/EDIFACT',
-  Application_Javascript = 'application/javascript',
   Application_OctetStream = 'application/octet-stream',
   Application_Ogg = 'application/ogg',
   Application_Pdf = 'application/pdf',
@@ -66,3 +69,46 @@ export enum ContentTypes {
   Video_XFlv = 'video/x-flv',
   Video_Webm = 'video/webm',
 }
+
+export enum COMPRESSION_TYPES {
+  compress = 'compress',
+  deflate = 'deflate',
+  gzip = 'gzip',
+  br = 'br',
+}
+
+export enum CONTENT_HEADERS {
+  TYPE = 'Content-Type',
+  ENCODING = 'Content-Encoding',
+  BR = 'br',
+  GZIP = 'gzip',
+}
+
+export enum ACCEPT_HEADERS {
+  ENCODING = 'accept-encoding',
+}
+
+export const GZIP_OPTIONS = {
+  flush: zlib.constants.Z_FULL_FLUSH,
+  memLevel: 7,
+  windowBits: 14,
+};
+
+export const BROTLI_OPTIONS = {
+  flush: zlib.constants.BROTLI_OPERATION_FLUSH,
+}
+
+const defaultParsers = () => Object.values(ContentTypes).reduce((acc, key) => {
+  return { ...acc, [key]: (content: any) => content };
+}, {} as any)();
+
+export const ResponseStringify: temp = {
+  ...defaultParsers,
+  [ContentTypes.Application_Serialize]: (Config.getValue<Function>('serializer')),
+  [ContentTypes.Text_Plain]: Config.getValue<Function>('stringify'),
+};
+
+export const defaultOptions = (statusCode: StatusCodes) => ({
+  statusCode,
+  contentType: ContentTypes.Application_Serialize,
+});

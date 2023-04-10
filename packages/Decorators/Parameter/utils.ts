@@ -1,3 +1,4 @@
+import url from 'url';
 import Config from '../../Config';
 import { IncomingMessageType, ParamsType } from '../../Routing/types';
 
@@ -30,9 +31,7 @@ export function getParams(_: IncomingMessageType, params: ParamsType) {
 }
 
 export function getQuery(request: IncomingMessageType, _: ParamsType) {
-  const [url, searchParams] = (request.url as string).split('?', 2);
+  const path = url.parse(request.url!, true);
 
-  const searchParamsList = new URLSearchParams(searchParams);
-
-  return Object.fromEntries(searchParamsList.entries());
+  return path.query;
 }

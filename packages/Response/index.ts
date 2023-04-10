@@ -1,6 +1,6 @@
-import { StatusCodes } from './enums';
+import { defaultOptions, StatusCodes } from './enums';
 import { IOptions, ResponseHandlerType } from './types';
-import { resultResponseFabric, defaultOptions } from '../Response/utils';
+import { resultResponseFabric } from '../Response/utils';
 
 
 export type ResponseFunctionType = (result: unknown, options?: IOptions) => ResponseHandlerType;
