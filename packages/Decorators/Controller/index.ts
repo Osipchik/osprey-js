@@ -2,6 +2,7 @@ import type { MetaHandlerType } from '../../Routing/types';
 import MetaStore from '../../utils/metaStore';
 import { ControllerActionFilterDecoratorFabric } from '../../Decorators/Controller/utils';
 import { ActionFilterKeys } from '../../Decorators/ActionFilters/utils';
+import { RequestHandlerType } from '../../Routing/types';
 
 /**
  * Create the new node into router
@@ -11,7 +12,7 @@ import { ActionFilterKeys } from '../../Decorators/ActionFilters/utils';
 export function Controller(prefix?: string): ClassDecorator {
   return function (constructor: Function) {
     const methods = Object.getOwnPropertyNames(constructor.prototype).reduce((acc, key) => {
-      const handler: MetaHandlerType = constructor.prototype[key];
+      const handler: RequestHandlerType = constructor.prototype[key];
       const handlerMeta = MetaStore.getByKey(handler, 'meta');
 
       if (handlerMeta) {

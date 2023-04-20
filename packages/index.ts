@@ -4,6 +4,7 @@ import Server from './Server';
 import MetaStore from './utils/metaStore';
 import Pipeline from './pipeline';
 import { AsyncHandlerType } from './Routing/types';
+import { ActionFilterKeys } from './Decorators/ActionFilters/utils';
 
 dotenv.config();
 
@@ -15,10 +16,13 @@ type AppPropsType = {
 
 class App {
   private readonly pipeline: Pipeline;
+  private readonly middlewares: any[];
 
   constructor(props: AppPropsType = {}) {
     setThreadPoolSize(props.threadPoolSize || availableLogicalCors);
     this.pipeline = new Pipeline();
+
+    this.middlewares = [];
   }
 
   useControllers(controllers: any[]): void {
@@ -29,10 +33,15 @@ class App {
 
       meta.methods.forEach((handler: AsyncHandlerType) => {
         const handlerMeta = MetaStore.getMeta(handler);
+        const filters = { ...meta.filters, [ActionFilterKeys.MIDDLEWARE]: this.middlewares };
 
-        this.pipeline.registerMethod(handler(controllerInstance), handlerMeta, meta.filters);
+        this.pipeline.registerMethod(handler(controllerInstance), handlerMeta, filters);
       });
     }
+  }
+
+  useMiddlewares(middlewares: any[]): void {
+    this.middlewares.push(...middlewares);
   }
 
   run(): void {

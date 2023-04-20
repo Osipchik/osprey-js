@@ -32,6 +32,7 @@ export default function DecoratorFabric(method: Methods, path?: string): MethodD
       {
         path: path || '',
         method,
+        isAsync: isOriginAsync,
       },
     );
 

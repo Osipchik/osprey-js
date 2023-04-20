@@ -7,8 +7,11 @@ const PrepareSyncProps = (syncParsers: Function[]) => (
 ): unknown[] => {
   const result: unknown[] = new Array(syncParsers.length);
 
-  for (const [index, parser] of syncParsers.entries()) {
-    result[index] = parser(request, args);
+  let counter = syncParsers.length;
+  while (counter > 0) {
+    counter--;
+
+    result[counter] = syncParsers[counter](request, args);
   }
 
   return result;
@@ -34,14 +37,26 @@ const PrepareMixedProps = (
 
   const asyncPromises = asyncParsers.map((parser) => parser(request, args));
 
-  for (const [index, parser] of syncParsers.entries()) {
-    normalisedResult[syncIndexes[index]] = parser(request, args);
+  {
+    let counter = syncParsers.length;
+
+    while(counter > 0) {
+      counter--;
+
+      normalisedResult[syncIndexes[counter]] = syncParsers[counter](request, args);
+    }
   }
 
   const asyncResult = await Promise.all(asyncPromises);
 
-  for (const [index, result] of asyncResult.entries()) {
-    normalisedResult[asyncIndexes[index]] = result;
+  {
+    let counter = asyncResult.length;
+
+    while(counter > 0) {
+      counter--;
+
+      normalisedResult[asyncIndexes[counter]] = asyncResult[counter](request, args);
+    }
   }
 
   return normalisedResult;

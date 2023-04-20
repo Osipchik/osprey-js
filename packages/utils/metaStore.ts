@@ -24,26 +24,6 @@ class MetaStore {
 
     return meta ? meta[key] : null;
   }
-
-  static push(node: any, key: string | number, value: any[] | object) {
-    const isArray = Array.isArray(value);
-    const defaultValue = isArray ? [] : {};
-
-    const meta = MetaStore.getMeta(node);
-    const metaData = meta[key] || defaultValue;
-
-    if (isArray) {
-      this.addMeta(node, key, [
-        ...metaData,
-        value,
-      ]);
-    } else {
-      this.addMeta(node, key, {
-        ...metaData,
-        ...value,
-      });
-    }
-  }
 }
 
 export default MetaStore;

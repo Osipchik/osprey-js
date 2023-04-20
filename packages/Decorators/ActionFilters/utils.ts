@@ -7,6 +7,7 @@ export enum ActionFilterKeys {
   ACTION_AFTER = 'actionAfterFilter',
   EXCEPTION = 'exceptionFilter',
   RESULT = 'resultFilter',
+  MIDDLEWARE = 'middleware',
 }
 
 type ActionFilterFabricType = <T>(actionKey: ActionFilterKeys) => (handler: T) => MethodDecorator;

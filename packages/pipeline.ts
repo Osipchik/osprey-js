@@ -1,8 +1,8 @@
-import { ActionFilterKeys } from './Decorators/ActionFilters/utils';
+import {ActionFilterKeys} from './Decorators/ActionFilters/utils';
 import Router from './Routing';
-import { getSyncAndAsyncLists, isAsyncFunction } from './utils/helpers';
-import type {RequestHandlerType } from './Routing/types';
-import { IncomingMessageType, ParamsType, ServerResponseType } from './Routing/types';
+import {getSyncAndAsyncLists, isAsyncFunction} from './utils/helpers';
+import type {RequestHandlerType} from './Routing/types';
+import {IncomingMessageType, ParamsType, ServerResponseType} from './Routing/types';
 import MetaStore from './utils/metaStore';
 
 const filterTypes = [
@@ -15,10 +15,13 @@ const filterTypes = [
 
 export default class Pipeline {
   registerMethod(method: RequestHandlerType, filters: any, controllerFilters: any): void {
-    for(const key of filterTypes) {
-      const filter = filters[key] || [];
-      const controllerFilter = controllerFilters ? controllerFilters[key] || [] : [];
-      filters[key] = [ ...controllerFilter, ...filter ];
+    let counter = filterTypes.length;
+    while (counter > 0) {
+      counter--;
+
+      const filter = filters[filterTypes[counter]] || [];
+      const controllerFilter = controllerFilters ? controllerFilters[filterTypes[counter]] || [] : [];
+      filters[filterTypes[counter]] = [ ...controllerFilter, ...filter ];
     }
 
     this.setExceptionHandler(filters, method);
@@ -58,11 +61,14 @@ export default class Pipeline {
         response: ServerResponseType,
         args?: ParamsType,
       ): Promise<void> => {
-        for (const { isAsync, handler } of handlers) {
-          if (isAsync) {
-            await handler(request, response, args);
+        let counter = handlers.length;
+        while (counter > 0) {
+          counter--;
+
+          if (handlers[counter].isAsync === true) {
+            await handlers[counter].handler(request, response, args);
           } else {
-            handler(request, response, args);
+            handlers[counter].handler(request, response, args);
           }
         }
       }
@@ -73,8 +79,11 @@ export default class Pipeline {
       response: ServerResponseType,
       args?: ParamsType,
     ): void => {
-      for (const { handler } of handlers) {
-        handler(request, response, args);
+      let counter = handlers.length;
+      while (counter > 0) {
+        counter--;
+
+        handlers[counter].handler(request, response, args);
       }
     }
   }
@@ -135,8 +144,10 @@ export default class Pipeline {
       response: ServerResponseType,
       args?: ParamsType,
     ): void => {
-      for (const handler of syncValues) {
-        handler(request, args);
+      let counter = 0;
+      while (counter < syncValues.length) {
+        syncValues[counter](request, args);
+        counter++;
       }
     }
   }
@@ -147,7 +158,17 @@ export default class Pipeline {
       response: ServerResponseType,
       args?: ParamsType,
     ): Promise<Awaited<any>> => {
-      return Promise.all(asyncValues.map((handler) => handler(request, args)));
+      const handlerPromises = new Array(asyncValues.length);
+
+      {
+        let counter = 0;
+        while (counter < asyncValues.length) {
+          handlerPromises[counter] = asyncValues[counter](request, args);
+          counter++;
+        }
+      }
+
+      return Promise.all(handlerPromises);
     }
   }
 
@@ -157,13 +178,25 @@ export default class Pipeline {
       response: ServerResponseType,
       args?: ParamsType,
     ): Promise<Awaited<any>> => {
-      const handlerPromise = asyncValues.map((handler) => handler(request, args));
+      const handlerPromises = new Array(asyncValues.length);
 
-      for (const handler of syncValues) {
-        handler(request, args);
+      {
+        let counter = 0;
+        while (counter < asyncValues.length) {
+          handlerPromises[counter] = asyncValues[counter](request, args);
+          counter++;
+        }
       }
 
-      await Promise.all(handlerPromise);
+      {
+        let counter = 0;
+        while (counter < syncValues.length) {
+          syncValues[counter](request, args);
+          counter++;
+        }
+      }
+
+      await Promise.all(handlerPromises);
     }
   }
 }

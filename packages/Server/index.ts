@@ -1,20 +1,17 @@
 import http from 'http';
 import Router from '../Routing';
 import Logger from '../utils/Logger';
-import Middleware from '../Middleware';
 import {IncomingMessageType, ParamsType, ServerResponseType} from '../Routing/types';
 import MetaStore from '../utils/metaStore';
 
 class Server {
   private readonly server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>;
-  private readonly middleware: Middleware;
   private readonly router: Router;
   private readonly host: string;
   private readonly port: number;
 
   constructor() {
     this.requestListener = this.requestListener.bind(this);
-    this.middleware = new Middleware();
     this.router = new Router();
 
     this.server = http.createServer(this.requestListener);
@@ -54,15 +51,13 @@ class Server {
     response: ServerResponseType,
   ): void {
     try {
-      this.middleware.runMiddlewaresSync(request, response);
-
-      const { handler, params } = this.router.getRequestHandler(request);
-      handler(request, response, params as ParamsType)?.
+      const route = this.router.getRequestHandler(request);
+      route.handler(request, response, route.params as ParamsType)?.
         catch((error: any) => {
-          const exceptionHandler = MetaStore.getByKey(handler, 'catch');
+          const exceptionHandler = MetaStore.getByKey(route.handler, 'catch');
 
-          if (exceptionHandler) {
-            exceptionHandler(request, response, params as ParamsType)?.catch((err: any) => {
+          if (exceptionHandler !== undefined) {
+            exceptionHandler(request, response, route.params)?.catch((err: any) => {
               throw new Error(err);
             })
           } else {

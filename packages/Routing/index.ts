@@ -40,11 +40,11 @@ class Router {
   }
 
   getRequestHandler(request: IncomingMessageType): RouteValueType {
-    if (request.method) {
+    if (request.method !== undefined) {
       const [url, searchParams] = (request.url as string).split('?', 2);
       const route = Router.router.findRoute(request.method, url);
 
-      if (route) {
+      if (route !== null) {
         const payload = {
           params: route.params,
         };
