@@ -1,7 +1,9 @@
 import { AsyncHandlerType, IncomingMessageType, ServerResponseType } from '../../Routing/types';
-import { ResponseHandlerType } from '../../Response/types';
+import { ResultResponseType } from '../../Response/types';
+import { OriginalHandlerAsyncType, OriginalHandlerSyncType } from '../../Decorators/Method/types';
+import { sendResponse } from '../../Response/utils';
 
-function syncHandler(originalHandler: Function, meta: any): AsyncHandlerType {
+function syncHandler(originalHandler: OriginalHandlerSyncType, meta: any): AsyncHandlerType {
   return (controllerContext) => (
     request: IncomingMessageType,
     response: ServerResponseType,
@@ -12,12 +14,12 @@ function syncHandler(originalHandler: Function, meta: any): AsyncHandlerType {
       response,
     };
 
-    const handleResponse: ResponseHandlerType = originalHandler.call(context);
-    handleResponse(request, response, meta);
+    const result = originalHandler.call(context);
+    return sendResponse(request, response, meta, result[0], result[1]);
   };
 }
 
-function asyncHandler(originalHandler: Function, meta: any): AsyncHandlerType {
+function asyncHandler(originalHandler: OriginalHandlerAsyncType, meta: any): AsyncHandlerType {
   return (controllerContext) => async (
     request: IncomingMessageType,
     response: ServerResponseType,
@@ -28,17 +30,17 @@ function asyncHandler(originalHandler: Function, meta: any): AsyncHandlerType {
       response,
     };
 
-    const handleResponse: ResponseHandlerType = await originalHandler.call(context);
-    handleResponse(request, response, meta);
+    const result = await originalHandler.call(context);
+    return sendResponse(request, response, meta, result[0], result[1]);
   };
 }
 
-function asyncHandlerWithAsyncParams(originalHandler: Function, meta: any, paramsParser: Function): AsyncHandlerType {
+function asyncHandlerWithAsyncParams(originalHandler: OriginalHandlerAsyncType, meta: any, paramsParser: Function): AsyncHandlerType {
   return (controllerContext) => async (
     request: IncomingMessageType,
     response: ServerResponseType,
     args,
-  ): Promise<void> => {
+  ) => {
     const context = {
       ...controllerContext,
       request,
@@ -47,17 +49,17 @@ function asyncHandlerWithAsyncParams(originalHandler: Function, meta: any, param
 
     const params = await paramsParser(request, args);
 
-    const handleResponse: ResponseHandlerType = await originalHandler.apply(context, params);
-    handleResponse(request, response, meta);
+    const result = await originalHandler.apply(context, params);
+    return sendResponse(request, response, meta, result[0], result[1]);
   };
 }
 
-function syncHandlerWithAsyncParams(originalHandler: Function, meta: any, paramsParser: Function): AsyncHandlerType {
+function syncHandlerWithAsyncParams(originalHandler: OriginalHandlerSyncType, meta: any, paramsParser: Function): AsyncHandlerType {
   return (controllerContext) => async (
     request: IncomingMessageType,
     response: ServerResponseType,
     args,
-  ): Promise<void> => {
+  ) => {
     const context = {
       ...controllerContext,
       request,
@@ -66,12 +68,12 @@ function syncHandlerWithAsyncParams(originalHandler: Function, meta: any, params
 
     const params = await paramsParser(request, args);
 
-    const handleResponse: ResponseHandlerType = originalHandler.apply(context, params);
-    handleResponse(request, response, meta);
+    const result: ResultResponseType = originalHandler.apply(context, params);
+    return sendResponse(request, response, meta, result[0], result[1]);
   };
 }
 
-function asyncHandlerWithParams(originalHandler: Function, meta: any, paramsParser: Function): AsyncHandlerType {
+function asyncHandlerWithParams(originalHandler: OriginalHandlerAsyncType, meta: any, paramsParser: Function): AsyncHandlerType {
   return (controllerContext) => async (
     request: IncomingMessageType,
     response: ServerResponseType,
@@ -85,12 +87,12 @@ function asyncHandlerWithParams(originalHandler: Function, meta: any, paramsPars
 
     const params = paramsParser(request, args);
 
-    const handleResponse: ResponseHandlerType = await originalHandler.apply(context, params);
-    handleResponse(request, response, meta);
+    const result = await originalHandler.apply(context, params);
+    return sendResponse(request, response, meta, result[0], result[1]);
   };
 }
 
-function syncHandlerWithParams(originalHandler: Function, meta: any, paramsParser: Function): AsyncHandlerType {
+function syncHandlerWithParams(originalHandler: OriginalHandlerSyncType, meta: any, paramsParser: Function): AsyncHandlerType {
   return (controllerContext) => (
     request: IncomingMessageType,
     response: ServerResponseType,
@@ -104,34 +106,34 @@ function syncHandlerWithParams(originalHandler: Function, meta: any, paramsParse
 
     const params = paramsParser(request, args);
 
-    const handleResponse: ResponseHandlerType = originalHandler.apply(context, params);
-    handleResponse(request, response, meta);
+    const result = originalHandler.apply(context, params);
+    return sendResponse(request, response, meta, result[0], result[1]);
   };
 }
 
 export default function GetMethodHandler(
-  originalDescriptorValue: Function,
+  originalDescriptorValue: OriginalHandlerSyncType | OriginalHandlerAsyncType,
   meta: any,
   isOriginAsync: boolean,
   propertyParser?: Function,
   isPropertyParserAsync?: boolean,
 ): AsyncHandlerType {
   if (!propertyParser && !isOriginAsync) {
-    return syncHandler(originalDescriptorValue, meta);
+    return syncHandler(originalDescriptorValue as OriginalHandlerSyncType, meta);
   }
   else if (!propertyParser && isOriginAsync) {
-    return asyncHandler(originalDescriptorValue, meta);
+    return asyncHandler(originalDescriptorValue as OriginalHandlerAsyncType, meta);
   }
   else if (isPropertyParserAsync && isOriginAsync && propertyParser) {
-    return asyncHandlerWithAsyncParams(originalDescriptorValue, meta, propertyParser);
+    return asyncHandlerWithAsyncParams(originalDescriptorValue as OriginalHandlerAsyncType, meta, propertyParser);
   }
   else if (isPropertyParserAsync && !isOriginAsync && propertyParser) {
-    return syncHandlerWithAsyncParams(originalDescriptorValue, meta, propertyParser);
+    return syncHandlerWithAsyncParams(originalDescriptorValue as OriginalHandlerSyncType, meta, propertyParser);
   }
   else if (!isPropertyParserAsync && isOriginAsync && propertyParser) {
-    return asyncHandlerWithParams(originalDescriptorValue, meta, propertyParser);
+    return asyncHandlerWithParams(originalDescriptorValue as OriginalHandlerAsyncType, meta, propertyParser);
   }
   else {
-    return syncHandlerWithParams(originalDescriptorValue, meta, propertyParser!);
+    return syncHandlerWithParams(originalDescriptorValue as OriginalHandlerSyncType, meta, propertyParser!);
   }
 }

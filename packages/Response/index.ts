@@ -1,33 +1,17 @@
 import { defaultOptions, StatusCodes } from './enums';
-import { IOptions, ResponseHandlerType } from './types';
 import { resultResponseFabric } from '../Response/utils';
-
-
-export type ResponseFunctionType = (result: unknown, options?: IOptions) => ResponseHandlerType;
-export type ResponseTextFunctionType = (result: string, options?: IOptions) => ResponseHandlerType;
-
-interface IResponse {
-  Ok: ResponseFunctionType;
-  Created: ResponseFunctionType;
-  PartialContent: ResponseFunctionType;
-  BadRequest: ResponseFunctionType;
-  NotFound: ResponseFunctionType;
-  NoContent: ResponseFunctionType;
-  InternalServerError: ResponseFunctionType;
-  NotImplemented: ResponseFunctionType;
-  Accepted: ResponseTextFunctionType;
-}
+import { IResponse } from './types';
 
 const Response: IResponse = {
-  Ok: resultResponseFabric(defaultOptions(StatusCodes.Ok)),
-  Created: resultResponseFabric(defaultOptions(StatusCodes.Created)),
-  PartialContent: resultResponseFabric(defaultOptions(StatusCodes.PartialContent)),
-  BadRequest: resultResponseFabric(defaultOptions(StatusCodes.BadRequest)),
-  NotFound: resultResponseFabric(defaultOptions(StatusCodes.NotFound)),
-  NoContent: resultResponseFabric(defaultOptions(StatusCodes.NoContent)),
-  InternalServerError: resultResponseFabric(defaultOptions(StatusCodes.NotFound)),
-  NotImplemented: resultResponseFabric(defaultOptions(StatusCodes.NotImplemented)),
-  Accepted: resultResponseFabric(defaultOptions(StatusCodes.Accepted)),
+  Ok: resultResponseFabric(defaultOptions(StatusCodes.Ok, true)),
+  Created: resultResponseFabric(defaultOptions(StatusCodes.Created, true)),
+  PartialContent: resultResponseFabric(defaultOptions(StatusCodes.PartialContent, true)),
+  BadRequest: resultResponseFabric(defaultOptions(StatusCodes.BadRequest, false)),
+  NotFound: resultResponseFabric(defaultOptions(StatusCodes.NotFound, false)),
+  NoContent: resultResponseFabric(defaultOptions(StatusCodes.NoContent, true)),
+  InternalServerError: resultResponseFabric(defaultOptions(StatusCodes.NotFound, false)),
+  NotImplemented: resultResponseFabric(defaultOptions(StatusCodes.NotImplemented, false)),
+  Accepted: resultResponseFabric(defaultOptions(StatusCodes.Accepted, true)),
 };
 
 export default Response;

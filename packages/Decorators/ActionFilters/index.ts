@@ -3,14 +3,14 @@ import {
   ActionFilterDecoratorFabric,
   ExceptionFilterDecoratorFabric,
 } from '../../Decorators/ActionFilters/utils';
-import { ActionAuthorisationHandlerType, ActionHandlerType } from '../../Routing/types';
+import { ActionHandlerType } from './types';
 
 /**
  * Add function that runs before all decorators and methods route handler
  *
  * @param {function} handler - Function that implements logic of the decorator
  */
-export const CreateAuthorisationFilter = ActionFilterDecoratorFabric<ActionAuthorisationHandlerType>(ActionFilterKeys.AUTHORISATION);
+export const CreateAuthorisationFilter = ActionFilterDecoratorFabric<ActionHandlerType>(ActionFilterKeys.AUTHORISATION);
 
 /**
  * Add function that runs after Authorisation filter and before BeforeFilter

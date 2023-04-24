@@ -8,10 +8,13 @@ import { Methods } from '../Routing/methods';
 export type IncomingMessageType = http.IncomingMessage;
 export type ServerResponseType = http.ServerResponse;
 
-export type ActionHandlerType = (request: IncomingMessageType, args?: ParamsType) => void;
-export type ActionAuthorisationHandlerType = (request: IncomingMessageType, args?: ParamsType) => boolean;
+export type AsyncHandlerType = (controllerContext: any) => ResponseHandlerType;
 
-export type AsyncHandlerType = (controllerContext: any) => RequestHandlerType;
+export type ResponseHandlerType = (
+  request: IncomingMessageType,
+  response: ServerResponseType,
+  args?: ParamsType,
+) => Promise<Boolean> | Boolean;
 
 export type RequestHandlerType = (
   request: IncomingMessageType,

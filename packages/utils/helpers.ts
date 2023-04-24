@@ -129,9 +129,9 @@ export function getSyncAndAsyncLists(list: any[] | object) {
   }
 
   return {
-    asyncValues,
+    asyncValues: asyncValues.reverse(),
     asyncIndexes,
-    syncValues,
+    syncValues: syncValues.reverse(),
     syncIndexes,
   };
 }
