@@ -1,10 +1,10 @@
-import { RequestHandlerType } from '../../Routing/types';
 import { ActionFilterKeys } from '../../Decorators/ActionFilters/utils';
 import MetaStore from '../../utils/metaStore';
+import type { ActionHandlerType } from '../../Decorators/ActionFilters/types';
 
 export const ControllerActionFilterDecoratorFabric =
   (actionKey: ActionFilterKeys) =>
-    (handler: RequestHandlerType): ClassDecorator =>
+    (handler: ActionHandlerType): ClassDecorator =>
       (constructor: Function) => {
         const filters = MetaStore.getByKey(constructor, 'filters') || {};
 

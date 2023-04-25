@@ -14,7 +14,7 @@ export type ResponseHandlerType = (
   request: IncomingMessageType,
   response: ServerResponseType,
   args?: ParamsType,
-) => Promise<Boolean> | Boolean;
+) => Promise<unknown> | unknown;
 
 export type RequestHandlerType = (
   request: IncomingMessageType,

@@ -20,7 +20,7 @@ export const ActionFilterDecoratorFabric: ActionFilterFabricType =
         _name,
         descriptor,
       ) => {
-        const existedFilters = MetaStore.getByKey(descriptor, actionKey) || [];
+        const existedFilters = MetaStore.getByKey(descriptor.value, actionKey) || [];
 
         MetaStore.addMeta(descriptor, actionKey, [
           ...existedFilters,

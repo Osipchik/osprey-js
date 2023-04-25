@@ -13,7 +13,6 @@ import { IncomingMessageType, ServerResponseType } from '../Routing/types';
 interface IDefaultOptions {
   statusCode: StatusCodes,
   contentType: ContentTypes,
-  continue: Boolean,
 }
 
 export function resultResponseFabric(defaultOptions: IDefaultOptions) {
@@ -34,7 +33,7 @@ export function sendResponse(
   meta: any,
   result: string,
   options: IDefaultOptions,
-): Boolean {
+): void {
   let resultBuffer: Buffer;
 
   if (request.headers[ACCEPT_HEADERS.ENCODING]!.indexOf(COMPRESSION_TYPES.gzip) !== -1) {
@@ -74,6 +73,8 @@ export function sendResponse(
 
   response.write(resultBuffer);
   response.end();
+}
 
-  return options.continue;
+export function ErrorHandler(statusCode: StatusCodes | number, message: string) {
+
 }

@@ -108,8 +108,7 @@ export const ResponseStringify: temp = {
   [ContentTypes.Text_Plain]: Config.getValue<Function>('stringify'),
 };
 
-export const defaultOptions = (statusCode: StatusCodes, next: Boolean) => ({
+export const defaultOptions = (statusCode: StatusCodes) => ({
   statusCode,
   contentType: ContentTypes.Application_Serialize,
-  continue: next,
 });

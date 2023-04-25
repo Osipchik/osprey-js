@@ -1,11 +1,14 @@
-import {ActionFilterKeys} from './Decorators/ActionFilters/utils';
 import Router from './Routing';
+import { ActionFilterKeys } from './Decorators/ActionFilters/utils';
+import CustomErrorHandler from './Routing/ErrorHandlers/CustomErrorHandler';
 import { isAsyncFunction } from './utils/helpers';
 import MetaStore from './utils/metaStore';
-import type {RequestHandlerType} from './Routing/types';
-import type {IncomingMessageType, ParamsType, ResponseHandlerType, ServerResponseType} from './Routing/types';
+
+import type { RequestHandlerType } from './Routing/types';
+import type { IncomingMessageType, ParamsType, ResponseHandlerType, ServerResponseType } from './Routing/types';
 import type { ActionHandlerType } from './Decorators/ActionFilters/types';
-import type { PipelineDescriptorType } from './types';
+import type { PipelineDescriptorType, ErrorValueType } from './types';
+import type { StatusCodes } from './Response/enums';
 
 const filterTypes = [
   ActionFilterKeys.AUTHORISATION,
@@ -35,13 +38,11 @@ export default class Pipeline {
   }
 
   private setExceptionHandler(filters: any, method: ResponseHandlerType) {
-    let hasAsync = false;
     const key = ActionFilterKeys.EXCEPTION;
     let exceptionHandlers = [];
 
     if (filters.hasOwnProperty(key) && filters[key].length) {
       const isAsync = isAsyncFunction(filters[key][0]);
-      hasAsync = hasAsync || isAsync;
 
       exceptionHandlers.push({
         handler: filters[key][0],
@@ -63,19 +64,36 @@ export default class Pipeline {
       methodStatuses.push(isAsync);
     });
 
+    let errorValue: null | ErrorValueType = null;
+
+    const breakLoop = (message: string, statusCode: StatusCodes) => {
+      errorValue = {
+        message,
+        statusCode,
+      };
+    };
+
     return async (
       request: IncomingMessageType,
       response: ServerResponseType,
       args?: ParamsType,
     ): Promise<void> => {
-      let counter = methods.length - 1;
-      while (counter > 0) {
+      let counter = methods.length;
+
+      while (counter > 1 && errorValue === null) {
+        counter--;
 
         if (methodStatuses[counter] === true) {
-          counter -= await methods[counter](request, response, args);
+          await methods[counter](request, response, breakLoop);
         } else {
-          counter -= methods[counter](request, response, args);
+          methods[counter](request, response, breakLoop);
         }
+      }
+
+      if (errorValue === null) {
+        methods[0](request, response, args);
+      } else {
+        CustomErrorHandler(request, response, errorValue);
       }
     }
   }
@@ -85,6 +103,7 @@ export default class Pipeline {
       if (key === ActionFilterKeys.ACTION_AFTER) {
         const isAsync = isAsyncFunction(method);
 
+        acc.reverse();
         acc.push({
           type: 'method',
           handler: method,
@@ -106,5 +125,9 @@ export default class Pipeline {
 
       return acc;
     }, [] as PipelineDescriptorType[]).reverse();
+  }
+
+  private handleError() {
+    throw new Error('some error');
   }
 }

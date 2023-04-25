@@ -10,7 +10,11 @@ export type ParameterDecoratorHandlerType = (request: IncomingMessageType, param
  */
 export function CreateParamDecorator(handler: ParameterDecoratorHandlerType): ParameterDecorator {
   return (target: any, propertyKey, parameterIndex): void => {
-    MetaStore.addMeta(target[propertyKey], parameterIndex, handler);
+    const existedFilters = MetaStore.getByKey(target[propertyKey], 'properties') || { };
+
+    existedFilters[parameterIndex] = handler;
+
+    MetaStore.addMeta(target[propertyKey], 'properties', existedFilters);
   };
 }
 

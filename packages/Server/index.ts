@@ -54,9 +54,9 @@ class Server {
       const route = this.router.getRequestHandler(request);
       route.handler(request, response, route.params as ParamsType)?.
         catch((error: any) => {
-          const exceptionHandler = MetaStore.getByKey(route.handler, 'catch');
+          const exceptionHandler: Function | undefined = MetaStore.getByKey(route.handler, 'catch');
 
-          if (exceptionHandler !== undefined) {
+          if (typeof exceptionHandler === 'function') {
             exceptionHandler(request, response, route.params)?.catch((err: any) => {
               throw new Error(err);
             })

@@ -5,7 +5,6 @@ export enum Methods {
   PUT = 'PUT',
   DELETE = 'DELETE',
   CONNECTS = 'CONNECTS',
-  OPTIONS = 'OPTIONS',
   TRACE = 'TRACE',
   PATCH = 'PATCH',
 }

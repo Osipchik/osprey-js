@@ -57,15 +57,6 @@ export function Trace(path?: string) {
 }
 
 /**
- * Routes HTTP Options requests to the specified path.
- *
- * @param {string} path - Specified path.
- */
-export function Options(path?: string) {
-  return DecoratorFabric(Methods.OPTIONS, path) as IMethodDecorator;
-}
-
-/**
  * Routes HTTP Head requests to the specified path.
  *
  * @param {string} path - Specified path.

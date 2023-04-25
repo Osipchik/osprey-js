@@ -3,7 +3,7 @@ import GetParameterHandler from '../../Decorators/Method/parameterHandler';
 import GetMethodHandler from '../../Decorators/Method/methodHandler';
 import MetaStore from '../../utils/metaStore';
 import { isAsyncFunction } from '../../utils/helpers';
-import { OriginalHandlerAsyncType, OriginalHandlerSyncType } from '../../Decorators/Method/types';
+import { OriginalHandlerSyncType } from '../../Decorators/Method/types';
 
 export default function DecoratorFabric(method: Methods, path?: string): MethodDecorator {
   return (
@@ -11,10 +11,10 @@ export default function DecoratorFabric(method: Methods, path?: string): MethodD
     _name: string | symbol,
     descriptor: TypedPropertyDescriptor<any>,
   ) => {
-    const originalDescriptorValue = descriptor.value as OriginalHandlerAsyncType | OriginalHandlerSyncType;
+    const originalDescriptorValue = descriptor.value as OriginalHandlerSyncType;
     const meta = MetaStore.getMeta(descriptor);
 
-    const propertyParserObject = MetaStore.getMeta(descriptor.value);
+    const propertyParserObject = MetaStore.getByKey(descriptor.value, 'properties');
 
     const parameterHandler = GetParameterHandler(propertyParserObject);
     const isOriginAsync = isAsyncFunction(originalDescriptorValue);
