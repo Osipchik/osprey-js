@@ -1,6 +1,6 @@
 import { defaultOptions, StatusCodes } from './enums';
 import { resultResponseFabric } from '../Response/utils';
-import { IResponse } from './types';
+import type { IResponse } from './types';
 
 const Response: IResponse = {
   Ok: resultResponseFabric(defaultOptions(StatusCodes.Ok)),

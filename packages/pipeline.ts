@@ -2,7 +2,7 @@ import Router from './Routing';
 import { ActionFilterKeys } from './Decorators/ActionFilters/utils';
 import CustomErrorHandler from './Routing/ErrorHandlers/CustomErrorHandler';
 import { isAsyncFunction } from './utils/helpers';
-import MetaStore from './utils/metaStore';
+import MetaStore, { MetaStoreKeys } from './utils/metaStore';
 
 import type { RequestHandlerType } from './Routing/types';
 import type { IncomingMessageType, ParamsType, ResponseHandlerType, ServerResponseType } from './Routing/types';
@@ -51,7 +51,7 @@ export default class Pipeline {
     }
 
     if (exceptionHandlers.length) {
-      MetaStore.addMeta(method, 'catch', exceptionHandlers[0])
+      MetaStore.addMeta(method, MetaStoreKeys.catch, exceptionHandlers[0])
     }
   }
 

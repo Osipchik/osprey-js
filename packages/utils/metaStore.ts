@@ -27,3 +27,11 @@ class MetaStore {
 }
 
 export default MetaStore;
+
+export enum MetaStoreKeys {
+  headers = 'headers',
+  properties = 'properties',
+  meta = 'meta',
+  catch = 'catch',
+  filters = 'filters',
+}

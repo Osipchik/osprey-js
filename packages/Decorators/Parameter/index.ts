@@ -1,8 +1,9 @@
-import MetaStore from '../../utils/metaStore';
-import { bodyParser, getParams, getQuery, paramsParser } from '../../Decorators/Parameter/utils';
-import {IncomingMessageType, ParamsType} from '../../Routing/types';
+import MetaStore, { MetaStoreKeys } from '../../utils/metaStore';
+import { bodyParser, getParams, getQuery, getRequest, getResponse, paramsParser } from '../../Decorators/Parameter/utils';
+import type { IncomingMessageType, ParamsType, ServerResponseType } from '../../Routing/types';
 
-export type ParameterDecoratorHandlerType = (request: IncomingMessageType, params: ParamsType) => unknown;
+export type ParameterDecoratorHandlerType = (request: IncomingMessageType, response: ServerResponseType, params: ParamsType) => unknown;
+
 /**
  * Create custom Parameter decorator
  *
@@ -10,11 +11,11 @@ export type ParameterDecoratorHandlerType = (request: IncomingMessageType, param
  */
 export function CreateParamDecorator(handler: ParameterDecoratorHandlerType): ParameterDecorator {
   return (target: any, propertyKey, parameterIndex): void => {
-    const existedFilters = MetaStore.getByKey(target[propertyKey], 'properties') || { };
+    const existedFilters = MetaStore.getByKey(target[propertyKey], MetaStoreKeys.properties) || { };
 
     existedFilters[parameterIndex] = handler;
 
-    MetaStore.addMeta(target[propertyKey], 'properties', existedFilters);
+    MetaStore.addMeta(target[propertyKey], MetaStoreKeys.properties, existedFilters);
   };
 }
 
@@ -41,3 +42,13 @@ export const Params = CreateParamDecorator(getParams);
  * Get query parameters as object
  */
 export const Query = CreateParamDecorator(getQuery);
+
+/**
+ * Get response parameter
+ */
+export const Response = CreateParamDecorator(getResponse);
+
+/**
+ * Get request parameter
+ */
+export const Request = CreateParamDecorator(getRequest);

@@ -1,7 +1,7 @@
 import { Methods } from '../../Routing/methods';
 import GetParameterHandler from '../../Decorators/Method/parameterHandler';
 import GetMethodHandler from '../../Decorators/Method/methodHandler';
-import MetaStore from '../../utils/metaStore';
+import MetaStore, { MetaStoreKeys } from '../../utils/metaStore';
 import { isAsyncFunction } from '../../utils/helpers';
 import { OriginalHandlerSyncType } from '../../Decorators/Method/types';
 
@@ -14,7 +14,7 @@ export default function DecoratorFabric(method: Methods, path?: string): MethodD
     const originalDescriptorValue = descriptor.value as OriginalHandlerSyncType;
     const meta = MetaStore.getMeta(descriptor);
 
-    const propertyParserObject = MetaStore.getByKey(descriptor.value, 'properties');
+    const propertyParserObject = MetaStore.getByKey(descriptor.value, MetaStoreKeys.properties);
 
     const parameterHandler = GetParameterHandler(propertyParserObject);
     const isOriginAsync = isAsyncFunction(originalDescriptorValue);
@@ -29,7 +29,7 @@ export default function DecoratorFabric(method: Methods, path?: string): MethodD
 
     MetaStore.addMeta(
       descriptor,
-      'meta',
+      MetaStoreKeys.meta,
       {
         path: path || '',
         method,

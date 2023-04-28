@@ -1,8 +1,8 @@
 import http from 'http';
 import Router from '../Routing';
 import Logger from '../utils/Logger';
-import {IncomingMessageType, ParamsType, ServerResponseType} from '../Routing/types';
-import MetaStore from '../utils/metaStore';
+import MetaStore, { MetaStoreKeys } from '../utils/metaStore';
+import type { IncomingMessageType, ParamsType, ServerResponseType } from '../Routing/types';
 
 class Server {
   private readonly server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>;
@@ -54,7 +54,7 @@ class Server {
       const route = this.router.getRequestHandler(request);
       route.handler(request, response, route.params as ParamsType)?.
         catch((error: any) => {
-          const exceptionHandler: Function | undefined = MetaStore.getByKey(route.handler, 'catch');
+          const exceptionHandler: Function | undefined = MetaStore.getByKey(route.handler, MetaStoreKeys.catch);
 
           if (typeof exceptionHandler === 'function') {
             exceptionHandler(request, response, route.params)?.catch((err: any) => {

@@ -1,12 +1,12 @@
 import { ActionFilterKeys } from '../../Decorators/ActionFilters/utils';
-import MetaStore from '../../utils/metaStore';
+import MetaStore, { MetaStoreKeys } from '../../utils/metaStore';
 import type { ActionHandlerType } from '../../Decorators/ActionFilters/types';
 
 export const ControllerActionFilterDecoratorFabric =
   (actionKey: ActionFilterKeys) =>
     (handler: ActionHandlerType): ClassDecorator =>
       (constructor: Function) => {
-        const filters = MetaStore.getByKey(constructor, 'filters') || {};
+        const filters = MetaStore.getByKey(constructor, MetaStoreKeys.filters) || {};
 
         if (!filters[actionKey]) {
           filters[actionKey] = [];
@@ -14,5 +14,5 @@ export const ControllerActionFilterDecoratorFabric =
 
         filters[actionKey].push(handler);
 
-        MetaStore.addMeta(constructor, 'filters', filters);
+        MetaStore.addMeta(constructor, MetaStoreKeys.filters, filters);
       };

@@ -1,4 +1,4 @@
-import MetaStore from '../utils/metaStore';
+import MetaStore, { MetaStoreKeys } from '../utils/metaStore';
 
 /**
  * Decorator to add header Parameter into response.
@@ -15,7 +15,8 @@ function Header(
     _key: string | symbol,
     descriptor: TypedPropertyDescriptor<any>,
   ) => {
-    MetaStore.addMeta(descriptor, 'header', { key, value });
+    const headers = MetaStore.getByKey(descriptor, MetaStoreKeys.headers) || {};
+    MetaStore.addMeta(descriptor, MetaStoreKeys.headers, Object.assign(headers, { [key]: value }));
   };
 }
 

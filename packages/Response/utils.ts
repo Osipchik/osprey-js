@@ -7,8 +7,8 @@ import {
   ResponseStringify,
   StatusCodes
 } from '../Response/enums';
-import { IOptions, ResultResponseType } from '../Response/types';
-import { IncomingMessageType, ServerResponseType } from '../Routing/types';
+import type { IOptions, ResultResponseType } from '../Response/types';
+import type { IncomingMessageType, ServerResponseType } from '../Routing/types';
 
 interface IDefaultOptions {
   statusCode: StatusCodes,
@@ -30,9 +30,9 @@ export function resultResponseFabric(defaultOptions: IDefaultOptions) {
 export function sendResponse(
   request: IncomingMessageType,
   response: ServerResponseType,
-  meta: any,
   result: string,
   options: IDefaultOptions,
+  headers: any,
 ): void {
   let resultBuffer: Buffer;
 
@@ -42,6 +42,7 @@ export function sendResponse(
     response.writeHead(options.statusCode, {
       [CONTENT_HEADERS.TYPE]: options.contentType,
       [CONTENT_HEADERS.ENCODING]: CONTENT_HEADERS.GZIP,
+      ...headers,
     });
   } else if (request.headers[ACCEPT_HEADERS.ENCODING]!.indexOf(COMPRESSION_TYPES.deflate) !== -1) {
     resultBuffer = zlib.deflateSync(result);
@@ -49,6 +50,7 @@ export function sendResponse(
     response.writeHead(options.statusCode, {
       [CONTENT_HEADERS.TYPE]: options.contentType,
       [CONTENT_HEADERS.ENCODING]: COMPRESSION_TYPES.deflate,
+      ...headers,
     });
   } else if (request.headers[ACCEPT_HEADERS.ENCODING]!.indexOf(COMPRESSION_TYPES.br) !== -1) {
     resultBuffer = zlib.brotliCompressSync(result, BROTLI_OPTIONS);
@@ -56,6 +58,7 @@ export function sendResponse(
     response.writeHead(options.statusCode, {
       [CONTENT_HEADERS.TYPE]: options.contentType,
       [CONTENT_HEADERS.ENCODING]: CONTENT_HEADERS.BR,
+      ...headers,
     });
   } else if (request.headers[ACCEPT_HEADERS.ENCODING]!.indexOf(COMPRESSION_TYPES.compress) !== -1) {
     resultBuffer = zlib.brotliCompressSync(result, BROTLI_OPTIONS);
@@ -63,18 +66,16 @@ export function sendResponse(
     response.writeHead(options.statusCode, {
       [CONTENT_HEADERS.TYPE]: options.contentType,
       [CONTENT_HEADERS.ENCODING]: COMPRESSION_TYPES.compress,
+      ...headers,
     });
   } else {
     resultBuffer = new Buffer(result);
     response.writeHead(options.statusCode, {
       [CONTENT_HEADERS.TYPE]: options.contentType,
+      ...headers,
     });
   }
 
   response.write(resultBuffer);
   response.end();
-}
-
-export function ErrorHandler(statusCode: StatusCodes | number, message: string) {
-
 }
