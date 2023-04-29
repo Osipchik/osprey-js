@@ -83,21 +83,21 @@ export default function GetMethodHandler(
   isPropertyParserAsync?: boolean,
 ): AsyncHandlerType {
   if (!propertyParser && !isOriginAsync) {
-    return syncHandler(originalDescriptorValue as OriginalHandlerSyncType, meta.headers);
+    return syncHandler(originalDescriptorValue as OriginalHandlerSyncType, meta?.headers);
   }
   else if (!propertyParser && isOriginAsync) {
-    return asyncHandler(originalDescriptorValue as OriginalHandlerAsyncType, meta.headers);
+    return asyncHandler(originalDescriptorValue as OriginalHandlerAsyncType, meta?.headers);
   }
   else if (isPropertyParserAsync && isOriginAsync && propertyParser) {
-    return asyncHandlerWithAsyncParams(originalDescriptorValue as OriginalHandlerAsyncType, propertyParser, meta.headers);
+    return asyncHandlerWithAsyncParams(originalDescriptorValue as OriginalHandlerAsyncType, propertyParser, meta?.headers);
   }
   else if (isPropertyParserAsync && !isOriginAsync && propertyParser) {
-    return syncHandlerWithAsyncParams(originalDescriptorValue as OriginalHandlerSyncType, propertyParser, meta.headers);
+    return syncHandlerWithAsyncParams(originalDescriptorValue as OriginalHandlerSyncType, propertyParser, meta?.headers);
   }
   else if (!isPropertyParserAsync && isOriginAsync && propertyParser) {
-    return asyncHandlerWithParams(originalDescriptorValue as OriginalHandlerAsyncType, propertyParser, meta.headers);
+    return asyncHandlerWithParams(originalDescriptorValue as OriginalHandlerAsyncType, propertyParser, meta?.headers);
   }
   else {
-    return syncHandlerWithParams(originalDescriptorValue as OriginalHandlerSyncType, propertyParser!, meta.headers);
+    return syncHandlerWithParams(originalDescriptorValue as OriginalHandlerSyncType, propertyParser!, meta?.headers);
   }
 }
