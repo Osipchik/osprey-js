@@ -24,7 +24,8 @@
     "noImplicitThis": false,
     "removeComments": false,
     "noEmitOnError": true,
-    "rootDir": "./packages",
+    "rootDir": "./",
+    "baseUrl": "./",
     "paths": {
       "@/*": ["./packages/*"],
     },

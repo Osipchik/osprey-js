@@ -1,4 +1,4 @@
-import { ResultResponseType } from '../../Response/types';
+import { ResultResponseType } from '@/Response/types';
 
 export type OriginalHandlerSyncType = (...args: any[]) => ResultResponseType;
 export type OriginalHandlerAsyncType = (...args: any[]) => Promise<ResultResponseType>;

@@ -1,4 +1,4 @@
-import type { StatusCodes, ContentTypes } from './enums';
+import type { StatusCodes, ContentTypes } from '@/Response/enums';
 
 export interface IOptions {
   statusCode?: StatusCodes,

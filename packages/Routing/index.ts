@@ -1,18 +1,18 @@
 import { RoadRunner } from '@parisholley/road-runner';
-import NotImplementedHandler from '../Routing/ErrorHandlers/NotImplementedHandler';
-import ServerErrorHandler from '../Routing/ErrorHandlers/ServerErrorHandler';
-import MethodNotAllowedHandler from '../Routing/ErrorHandlers/MethodNotAllowedHandler';
-import NotFoundHandler from '../Routing/ErrorHandlers/NotFoundHandler';
+import NotImplementedHandler from '@/Routing/ErrorHandlers/NotImplementedHandler';
+import ServerErrorHandler from '@/Routing/ErrorHandlers/ServerErrorHandler';
+import MethodNotAllowedHandler from '@/Routing/ErrorHandlers/MethodNotAllowedHandler';
+import NotFoundHandler from '@/Routing/ErrorHandlers/NotFoundHandler';
 import {
   RequestHandlerType,
   HandlerMetaType,
   IncomingMessageType,
   RouteValueType,
   IErrorRouter,
-} from '../Routing/types';
-import { getPath } from '../utils/helpers';
-import Logger from '../utils/Logger';
-import { Methods } from '../Routing/methods';
+} from '@/Routing/types';
+import { getPath } from '@/utils/helpers';
+import Logger from '@/utils/Logger';
+import { Methods } from '@/Routing/methods';
 
 class Router {
   static readonly router = new RoadRunner();

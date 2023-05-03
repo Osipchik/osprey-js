@@ -1,6 +1,6 @@
-import Logger from '../../utils/Logger';
-import { IncomingMessageType, ServerResponseType } from '../../Routing/types';
-import { StatusCodes } from '../../Response/enums';
+import Logger from '@/utils/Logger';
+import { IncomingMessageType, ServerResponseType } from '@/Routing/types';
+import { StatusCodes } from '@/Response/enums';
 
 function NotImplementedHandler (
   request: IncomingMessageType,

@@ -1,6 +1,6 @@
 import url from 'url';
-import Config from '../../Config';
-import { IncomingMessageType, ParamsType, ServerResponseType } from '../../Routing/types';
+import Config from '@/Config';
+import { IncomingMessageType, ParamsType, ServerResponseType } from '@/Routing/types';
 
 export async function bodyParser(request: IncomingMessageType, response: ServerResponseType, _: ParamsType): Promise<unknown> {
   return new Promise((resolve, reject) => {

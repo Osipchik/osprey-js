@@ -1,4 +1,4 @@
-import MetaStore from '../../utils/metaStore';
+import MetaStore from '@/utils/metaStore';
 
 export enum ActionFilterKeys {
   AUTHORISATION = 'actionFilter',

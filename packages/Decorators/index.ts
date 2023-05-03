@@ -1,4 +1,4 @@
-import Header from '../Decorators/header';
+import Header from '@/Decorators/header';
 
 export {
   Header,

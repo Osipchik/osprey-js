@@ -1,8 +1,8 @@
-import type { MetaHandlerType } from '../../Routing/types';
-import MetaStore from '../../utils/metaStore';
-import { ControllerActionFilterDecoratorFabric } from '../../Decorators/Controller/utils';
-import { ActionFilterKeys } from '../../Decorators/ActionFilters/utils';
-import { RequestHandlerType } from '../../Routing/types';
+import type { MetaHandlerType } from '@/Routing/types';
+import MetaStore from '@/utils/metaStore';
+import { ControllerActionFilterDecoratorFabric } from '@/Decorators/Controller/utils';
+import { ActionFilterKeys } from '@/Decorators/ActionFilters/utils';
+import { RequestHandlerType } from '@/Routing/types';
 
 /**
  * Create the new node into router

@@ -37,6 +37,12 @@ export function isAsyncFunction(value?: Function): boolean {
     return false;
   }
 
+  const funcString = value.toString();
+
+  if (funcString.includes('_async_to_generator')) {
+    return true;
+  }
+
   return value.constructor.name === 'AsyncFunction' || isPromise(value);
 }
 

@@ -1,4 +1,4 @@
-import MetaStore, { MetaStoreKeys } from '../utils/metaStore';
+import MetaStore, { MetaStoreKeys } from '@/utils/metaStore';
 
 /**
  * Decorator to add header Parameter into response.

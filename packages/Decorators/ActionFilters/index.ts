@@ -2,8 +2,8 @@ import {
   ActionFilterKeys,
   ActionFilterDecoratorFabric,
   ExceptionFilterDecoratorFabric,
-} from '../../Decorators/ActionFilters/utils';
-import { ActionHandlerType } from './types';
+} from '@/Decorators/ActionFilters/utils';
+import { ActionHandlerType } from '@/Decorators/ActionFilters/types';
 
 /**
  * Add function that runs before all decorators and methods route handler
