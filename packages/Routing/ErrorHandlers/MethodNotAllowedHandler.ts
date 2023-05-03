@@ -1,5 +1,5 @@
-import { StatusCodes } from '@/Response/enums';
-import { IncomingMessageType, ServerResponseType } from '@/Routing/types';
+import { StatusCodes } from '../../Response/enums';
+import { IncomingMessageType, ServerResponseType } from '../../Routing/types';
 
 function MethodNotAllowedHandler (
   request: IncomingMessageType,

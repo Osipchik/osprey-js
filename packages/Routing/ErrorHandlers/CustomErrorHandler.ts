@@ -1,5 +1,5 @@
-import { IncomingMessageType, ServerResponseType } from '@/Routing/types';
-import { ErrorValueType } from '@/types';
+import { IncomingMessageType, ServerResponseType } from '../../Routing/types';
+import { ErrorValueType } from '../../types';
 
 function CustomErrorHandler (
   request: IncomingMessageType,
