@@ -1,6 +1,6 @@
-import { Methods } from '@/Routing/methods';
-import DecoratorFabric from '@/Decorators/Method/utils';
-import { IMethodDecorator } from '@/Decorators/Method/types';
+import { Methods } from '../../Routing/methods';
+import DecoratorFabric from '../../Decorators/Method/utils';
+import { IMethodDecorator } from './types';
 
 /**
  * Routes HTTP GET requests to the specified path.

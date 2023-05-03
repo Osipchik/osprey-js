@@ -1,10 +1,10 @@
 import * as dotenv from 'dotenv';
 import * as OS from 'os';
-import Server from '@/Server';
-import MetaStore from '@/utils/metaStore';
-import Pipeline from '@/pipeline';
-import { AsyncHandlerType } from '@/Routing/types';
-import { ActionFilterKeys } from '@/Decorators/ActionFilters/utils';
+import Server from './Server';
+import MetaStore from './utils/metaStore';
+import Pipeline from './pipeline';
+import { AsyncHandlerType } from './Routing/types';
+import { ActionFilterKeys } from './Decorators/ActionFilters/utils';
 
 dotenv.config();
 

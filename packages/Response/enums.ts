@@ -1,6 +1,6 @@
 import zlib from 'zlib';
-import Config from '@/Config';
-import { temp } from '@/Response/types';
+import Config from '../Config';
+import { temp } from '../Response/types';
 
 export enum StatusCodes {
   Ok = 200,

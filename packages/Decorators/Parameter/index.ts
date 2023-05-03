@@ -1,6 +1,6 @@
-import MetaStore, { MetaStoreKeys } from '@/utils/metaStore';
-import { bodyParser, getParams, getQuery, getRequest, getResponse, paramsParser } from '@/Decorators/Parameter/utils';
-import type { IncomingMessageType, ParamsType, ServerResponseType } from '@/Routing/types';
+import MetaStore, { MetaStoreKeys } from '../../utils/metaStore';
+import { bodyParser, getParams, getQuery, getRequest, getResponse, paramsParser } from '../../Decorators/Parameter/utils';
+import type { IncomingMessageType, ParamsType, ServerResponseType } from '../../Routing/types';
 
 export type ParameterDecoratorHandlerType = (request: IncomingMessageType, response: ServerResponseType, params: ParamsType) => unknown;
 

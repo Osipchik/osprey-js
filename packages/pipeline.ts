@@ -1,14 +1,14 @@
-import Router from '@/Routing';
-import { ActionFilterKeys } from '@/Decorators/ActionFilters/utils';
-import CustomErrorHandler from '@/Routing/ErrorHandlers/CustomErrorHandler';
-import { isAsyncFunction } from '@/utils/helpers';
-import MetaStore, { MetaStoreKeys } from '@/utils/metaStore';
+import Router from './Routing';
+import { ActionFilterKeys } from './Decorators/ActionFilters/utils';
+import CustomErrorHandler from './Routing/ErrorHandlers/CustomErrorHandler';
+import { isAsyncFunction } from './utils/helpers';
+import MetaStore, { MetaStoreKeys } from './utils/metaStore';
 
-import type { RequestHandlerType } from '@/Routing/types';
-import type { IncomingMessageType, ParamsType, ResponseHandlerType, ServerResponseType } from '@/Routing/types';
-import type { ActionHandlerType } from '@/Decorators/ActionFilters/types';
-import type { PipelineDescriptorType, ErrorValueType } from '@/types';
-import type { StatusCodes } from '@/Response/enums';
+import type { RequestHandlerType } from './Routing/types';
+import type { IncomingMessageType, ParamsType, ResponseHandlerType, ServerResponseType } from './Routing/types';
+import type { ActionHandlerType } from './Decorators/ActionFilters/types';
+import type { PipelineDescriptorType, ErrorValueType } from './types';
+import type { StatusCodes } from './Response/enums';
 
 const filterTypes = [
   ActionFilterKeys.AUTHORISATION,

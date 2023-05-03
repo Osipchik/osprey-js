@@ -1,5 +1,5 @@
-import { IncomingMessageType, ServerResponseType } from '@/Routing/types';
-import { BreakType } from '@/types';
+import { IncomingMessageType, ServerResponseType } from '../../Routing/types';
+import { BreakType } from '../../types';
 
 export type ActionHandlerType = (
   request: IncomingMessageType,

@@ -6,9 +6,9 @@ import {
   ContentTypes, GZIP_OPTIONS,
   ResponseStringify,
   StatusCodes
-} from '@/Response/enums';
-import type { IOptions, ResultResponseType } from '@/Response/types';
-import type { IncomingMessageType, ServerResponseType } from '@/Routing/types';
+} from '../Response/enums';
+import type { IOptions, ResultResponseType } from '../Response/types';
+import type { IncomingMessageType, ServerResponseType } from '../Routing/types';
 
 interface IDefaultOptions {
   statusCode: StatusCodes,

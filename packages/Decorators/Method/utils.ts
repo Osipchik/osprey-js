@@ -1,9 +1,9 @@
-import { Methods } from '@/Routing/methods';
-import GetParameterHandler from '@/Decorators/Method/parameterHandler';
-import GetMethodHandler from '@/Decorators/Method/methodHandler';
-import MetaStore, { MetaStoreKeys } from '@/utils/metaStore';
-import { isAsyncFunction } from '@/utils/helpers';
-import { OriginalHandlerSyncType } from '@/Decorators/Method/types';
+import { Methods } from '../../Routing/methods';
+import GetParameterHandler from '../../Decorators/Method/parameterHandler';
+import GetMethodHandler from '../../Decorators/Method/methodHandler';
+import MetaStore, { MetaStoreKeys } from '../../utils/metaStore';
+import { isAsyncFunction } from '../../utils/helpers';
+import { OriginalHandlerSyncType } from '../../Decorators/Method/types';
 
 export default function DecoratorFabric(method: Methods, path?: string): MethodDecorator {
   return (

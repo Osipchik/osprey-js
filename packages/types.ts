@@ -1,4 +1,4 @@
-import { StatusCodes } from '@/Response/enums';
+import { StatusCodes } from './Response/enums';
 
 export type PipelineDescriptorType = {
   type: string;

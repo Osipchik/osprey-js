@@ -1,7 +1,7 @@
-import { sendResponse } from '@/Response/utils';
-import type { ResultResponseType } from '@/Response/types';
-import type { AsyncHandlerType, IncomingMessageType, ServerResponseType } from '@/Routing/types';
-import type { OriginalHandlerAsyncType, OriginalHandlerSyncType } from '@/Decorators/Method/types';
+import { sendResponse } from '../../Response/utils';
+import type { ResultResponseType } from '../../Response/types';
+import type { AsyncHandlerType, IncomingMessageType, ServerResponseType } from '../../Routing/types';
+import type { OriginalHandlerAsyncType, OriginalHandlerSyncType } from '../../Decorators/Method/types';
 
 function syncHandler(originalHandler: OriginalHandlerSyncType, headers: any): AsyncHandlerType {
   return (controllerContext) => (

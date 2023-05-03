@@ -1,5 +1,5 @@
-import { IncomingMessageType, ObjectT, ParamsType } from '@/Routing/types';
-import { getSyncAndAsyncLists } from '@/utils/helpers';
+import { IncomingMessageType, ObjectT, ParamsType } from '../../Routing/types';
+import { getSyncAndAsyncLists } from '../../utils/helpers';
 
 const PrepareSyncProps = (syncParsers: Function[]) => (
   request: IncomingMessageType,
