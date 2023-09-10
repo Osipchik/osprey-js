@@ -11,7 +11,7 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
       - name: Install dependencies and build 🔧
-        run: bun install && bun build
+        run: bun install && bun build-release
       - name: Publish package on NPM 📦
         run: npm publish ./build
         env:

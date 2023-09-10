@@ -10,7 +10,8 @@
   "scripts": {
     "clear": "rm -rf build/*",
     "build:tsc": "bun clear && tsc",
-    "build": "bun clear && swc packages -d build && tsc && bun ./esbuild.js"
+    "build": "bun clear && swc packages -d build && tsc && bun ./script.js",
+    "build-release": "bun install bun && bun build"
   },
   "dependencies": {
     "@parisholley/road-runner": "^1.1.8",
