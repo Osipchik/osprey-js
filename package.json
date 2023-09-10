@@ -2,19 +2,19 @@
   "author": "Tim Osipchik",
   "license": "MIT",
   "name": "osprey-js",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "type": "module",
   "description": "modern fast and lightweight backend framework",
   "main": "./index.js",
   "module": "./index.js",
   "scripts": {
     "clear": "rm -rf build/*",
-    "build:tsc": "pnpm clear && tsc",
-    "build": "pnpm clear && swc packages -d build && tsc && node ./esbuild.js"
+    "build:tsc": "bun clear && tsc",
+    "build": "bun clear && swc packages -d build && tsc && bun ./esbuild.js"
   },
   "dependencies": {
     "@parisholley/road-runner": "^1.1.8",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.3.1",
     "serialize-javascript": "^6.0.1"
   },
   "devDependencies": {
@@ -26,6 +26,7 @@
     "@tsconfig/recommended": "^1.0.2",
     "@types/node": "^18.14.1",
     "@types/serialize-javascript": "^5.0.2",
+    "bun-types": "^1.0.1",
     "esbuild": "^0.17.11",
     "glob": "^9.2.1",
     "ts-node": "^10.9.1",

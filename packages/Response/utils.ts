@@ -1,4 +1,5 @@
 import zlib from 'zlib';
+
 import {
   ACCEPT_HEADERS, BROTLI_OPTIONS,
   COMPRESSION_TYPES,
