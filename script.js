@@ -1,7 +1,10 @@
 import { file } from 'bun';
 
-const packageBase = JSON.parse(file('./package.json'));
-const readMe = JSON.parse(file('./README.md'));
+const packageFile = file('./package.json');
+const readMeFile = file('./README.md');
+
+const packageBase = await packageFile.json();
+const readMe = await readMeFile.text();
 
 // const version = packageBase.version.split('.');
 // version[2] = Number(version[2]) + 1;
