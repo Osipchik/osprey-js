@@ -1,26 +1,20 @@
-import http from 'http';
 import ServerErrorHandler from '../Routing/ErrorHandlers/ServerErrorHandler';
 import NotFoundHandler from '../Routing/ErrorHandlers/NotFoundHandler';
 import MethodNotAllowedHandler from '../Routing/ErrorHandlers/MethodNotAllowedHandler';
 import NotImplementedHandler from '../Routing/ErrorHandlers/NotImplementedHandler';
 import { Methods } from '../Routing/methods';
 
-export type IncomingMessageType = http.IncomingMessage;
-export type ServerResponseType = http.ServerResponse;
-
 export type AsyncHandlerType = (controllerContext: any) => ResponseHandlerType;
 
 export type ResponseHandlerType = (
-  request: IncomingMessageType,
-  response: ServerResponseType,
+  request: Request,
   args?: ParamsType,
 ) => Promise<unknown> | unknown;
 
 export type RequestHandlerType = (
-  request: IncomingMessageType,
-  response: ServerResponseType,
+  request: Request,
   args?: ParamsType,
-) => Promise<void> | void;
+) => Promise<Response> | Response;
 
 export type ParamsType = {
   params: object | undefined;

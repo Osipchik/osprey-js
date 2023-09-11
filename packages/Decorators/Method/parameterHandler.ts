@@ -1,8 +1,8 @@
-import { IncomingMessageType, ObjectT, ParamsType } from '../../Routing/types';
+import { ObjectT, ParamsType } from '../../Routing/types';
 import { getSyncAndAsyncLists } from '../../utils/helpers';
 
 const PrepareSyncProps = (syncParsers: Function[]) => (
-  request: IncomingMessageType,
+  request: Request,
   args?: ParamsType,
 ): unknown[] => {
   const result: unknown[] = new Array(syncParsers.length);
@@ -18,7 +18,7 @@ const PrepareSyncProps = (syncParsers: Function[]) => (
 }
 
 const PrepareAsyncProps = (asyncParsers: Function[]) => (
-  request: IncomingMessageType,
+  request: Request,
   args?: ParamsType,
 ): Promise<Awaited<unknown>[]> => {
   return Promise.all(asyncParsers.map((parser) => parser(request, args)));
@@ -30,7 +30,7 @@ const PrepareMixedProps = (
   syncIndexes: number[],
   asyncIndexes: number[]
 ) => async (
-  request: IncomingMessageType,
+  request: Request,
   args?: ParamsType,
 ): Promise<unknown[]> => {
   const normalisedResult: unknown[] = new Array(syncParsers.length + asyncParsers.length);

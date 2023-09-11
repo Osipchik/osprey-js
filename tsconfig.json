@@ -2,41 +2,26 @@
   "compilerOptions": {
     "types": ["bun-types"],
     "lib": ["esnext"],
-    "module": "esnext",
-    "target": "esnext",
-
-    "moduleDetection": "force",
-    "moduleResolution": "node",
-
-    "allowJs": true,
-    "esModuleInterop": true,
-
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-
-    "outDir": "build",
+    "incremental": true,            /* Enable incremental compilation */
+    "target": "esnext",                /* Specify ECMAScript target version: */
+    "module": "commonjs",           /* 'none', 'commonjs', 'amd', 'system', etc */
+    "declaration": true,            /* Concatenate & emit output to single file.*/
     "sourceMap": true,
-    "declaration": true,
     "declarationMap": true,
-    "emitDeclarationOnly": true,
-
-    "allowSyntheticDefaultImports": true,
+    "outDir": "build",                /* Redirect output to the directory. */
+    "esModuleInterop": true,        /* Enables intero between CommonJS and ES */
+    "skipLibCheck": true,           /* Skip type checking of declaration files. */
+    "forceConsistentCasingInFileNames": true, /* Disallow inconsistently */
     "experimentalDecorators": true,
-    "noImplicitThis": false,
-    "removeComments": false,
-    "noEmitOnError": true,
-    "rootDir": "./packages",
-    "baseUrl": "./packages",
     "paths": {
       "@/*": ["./packages/*"],
-    },
+    }
   },
   "include": [
     "packages",
   ],
   "exclude": [
-    "dist",
+    "build",
     "node_modules"
   ]
 }

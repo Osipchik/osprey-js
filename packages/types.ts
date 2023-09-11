@@ -1,4 +1,5 @@
 import { StatusCodes } from './Response/enums';
+import {GenericServeOptions, TLSOptions} from 'bun';
 
 export type PipelineDescriptorType = {
   type: string;
@@ -12,3 +13,5 @@ export type ErrorValueType = {
   message: string;
   statusCode: StatusCodes;
 };
+
+export type TLSOptionsGenericServeOptions = TLSOptions & Pick<GenericServeOptions, 'maxRequestBodySize'| 'development' | 'id'>

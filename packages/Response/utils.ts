@@ -1,15 +1,16 @@
 import zlib from 'zlib';
 
 import {
-  ACCEPT_HEADERS, BROTLI_OPTIONS,
+  ACCEPT_HEADERS,
   COMPRESSION_TYPES,
   CONTENT_HEADERS,
-  ContentTypes, GZIP_OPTIONS,
+  ContentTypes,
+  GZIP_OPTIONS,
+  BROTLI_OPTIONS,
   ResponseStringify,
-  StatusCodes
+  StatusCodes,
 } from '../Response/enums';
 import type { IOptions, ResultResponseType } from '../Response/types';
-import type { IncomingMessageType, ServerResponseType } from '../Routing/types';
 
 interface IDefaultOptions {
   statusCode: StatusCodes,
@@ -29,54 +30,69 @@ export function resultResponseFabric(defaultOptions: IDefaultOptions) {
 }
 
 export function sendResponse(
-  request: IncomingMessageType,
-  response: ServerResponseType,
+  request: Request,
   result: string,
   options: IDefaultOptions,
   headers: any,
-): void {
+): Response {
   let resultBuffer: Buffer;
+  let header: ResponseInit;
 
-  if (request.headers[ACCEPT_HEADERS.ENCODING]!.indexOf(COMPRESSION_TYPES.gzip) !== -1) {
+  if (request.headers.get(ACCEPT_HEADERS.ENCODING).indexOf(COMPRESSION_TYPES.gzip) !== -1) {
     resultBuffer = zlib.gzipSync(result, GZIP_OPTIONS);
 
-    response.writeHead(options.statusCode, {
-      [CONTENT_HEADERS.TYPE]: options.contentType,
-      [CONTENT_HEADERS.ENCODING]: CONTENT_HEADERS.GZIP,
-      ...headers,
-    });
-  } else if (request.headers[ACCEPT_HEADERS.ENCODING]!.indexOf(COMPRESSION_TYPES.deflate) !== -1) {
+    header = {
+      headers: new Headers({
+        [CONTENT_HEADERS.TYPE]: options.contentType,
+        [CONTENT_HEADERS.ENCODING]: CONTENT_HEADERS.GZIP,
+        ...headers,
+      }),
+      status: options.statusCode,
+    };
+  } else if (request.headers.get(ACCEPT_HEADERS.ENCODING).indexOf(COMPRESSION_TYPES.deflate) !== -1) {
     resultBuffer = zlib.deflateSync(result);
 
-    response.writeHead(options.statusCode, {
-      [CONTENT_HEADERS.TYPE]: options.contentType,
-      [CONTENT_HEADERS.ENCODING]: COMPRESSION_TYPES.deflate,
-      ...headers,
-    });
-  } else if (request.headers[ACCEPT_HEADERS.ENCODING]!.indexOf(COMPRESSION_TYPES.br) !== -1) {
+    header = {
+      headers: new Headers({
+        [CONTENT_HEADERS.TYPE]: options.contentType,
+        [CONTENT_HEADERS.ENCODING]: COMPRESSION_TYPES.deflate,
+        ...headers,
+      }),
+      status: options.statusCode,
+    };
+  } else if (request.headers.get(ACCEPT_HEADERS.ENCODING).indexOf(COMPRESSION_TYPES.br) !== -1) {
     resultBuffer = zlib.brotliCompressSync(result, BROTLI_OPTIONS);
 
-    response.writeHead(options.statusCode, {
-      [CONTENT_HEADERS.TYPE]: options.contentType,
-      [CONTENT_HEADERS.ENCODING]: CONTENT_HEADERS.BR,
-      ...headers,
-    });
-  } else if (request.headers[ACCEPT_HEADERS.ENCODING]!.indexOf(COMPRESSION_TYPES.compress) !== -1) {
+    header = {
+      headers: new Headers({
+        [CONTENT_HEADERS.TYPE]: options.contentType,
+        [CONTENT_HEADERS.ENCODING]: CONTENT_HEADERS.BR,
+        ...headers,
+      }),
+      status: options.statusCode,
+    };
+  } else if (request.headers.get(ACCEPT_HEADERS.ENCODING).indexOf(COMPRESSION_TYPES.compress) !== -1) {
     resultBuffer = zlib.brotliCompressSync(result, BROTLI_OPTIONS);
 
-    response.writeHead(options.statusCode, {
-      [CONTENT_HEADERS.TYPE]: options.contentType,
-      [CONTENT_HEADERS.ENCODING]: COMPRESSION_TYPES.compress,
-      ...headers,
-    });
+    header = {
+      headers: new Headers({
+        [CONTENT_HEADERS.TYPE]: options.contentType,
+        [CONTENT_HEADERS.ENCODING]: COMPRESSION_TYPES.compress,
+        ...headers,
+      }),
+      status: options.statusCode,
+    };
   } else {
     resultBuffer = new Buffer(result);
-    response.writeHead(options.statusCode, {
-      [CONTENT_HEADERS.TYPE]: options.contentType,
-      ...headers,
-    });
+
+    header = {
+      headers: new Headers({
+        [CONTENT_HEADERS.TYPE]: options.contentType,
+        ...headers,
+      }),
+      status: options.statusCode,
+    };
   }
 
-  response.write(resultBuffer);
-  response.end();
+  return new Response(resultBuffer, header);
 }

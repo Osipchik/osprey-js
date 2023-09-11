@@ -14,6 +14,16 @@ type AppPropsType = {
   threadPoolSize?: number;
 }
 
+/**
+ * Root class to start the project
+ *
+ * @param {AppPropsType} props - application basic config.
+ *
+ * @example
+ * ```ts
+ * new App({ threadPoolSize: 5 })
+ * ```
+ */
 class App {
   private readonly pipeline: Pipeline;
   private readonly middlewares: any[];
@@ -25,6 +35,12 @@ class App {
     this.middlewares = [];
   }
 
+  /**
+   * Register controllers
+   *
+   * @param {any[]} controllers - controllers list.
+   *
+   */
   useControllers(controllers: any[]): void {
     for (const controller of controllers) {
       const meta = MetaStore.getMeta(controller);
@@ -40,10 +56,20 @@ class App {
     }
   }
 
+  /**
+   * Register middlewares
+   *
+   * @param {any[]} middlewares - middlewares list.
+   *
+   */
   useMiddlewares(middlewares: any[]): void {
     this.middlewares.push(...middlewares);
   }
 
+  /**
+   * Finish setup and run the server
+   *
+   */
   run(): void {
     const server = new Server();
     server.run();

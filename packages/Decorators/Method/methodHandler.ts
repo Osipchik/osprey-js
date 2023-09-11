@@ -1,77 +1,67 @@
 import { sendResponse } from '../../Response/utils';
 import type { ResultResponseType } from '../../Response/types';
-import type { AsyncHandlerType, IncomingMessageType, ServerResponseType } from '../../Routing/types';
+import type { AsyncHandlerType } from '../../Routing/types';
 import type { OriginalHandlerAsyncType, OriginalHandlerSyncType } from '../../Decorators/Method/types';
 
 function syncHandler(originalHandler: OriginalHandlerSyncType, headers: any): AsyncHandlerType {
-  return (controllerContext) => (
-    request: IncomingMessageType,
-    response: ServerResponseType,
-  ) => {
+  return (controllerContext) => (request: Request) => {
     const result = originalHandler.call(controllerContext);
-    return sendResponse(request, response, result[0], result[1], headers);
+    return sendResponse(request, result[0], result[1], headers);
   };
 }
 
 function asyncHandler(originalHandler: OriginalHandlerAsyncType, headers: any): AsyncHandlerType {
-  return (controllerContext) => async (
-    request: IncomingMessageType,
-    response: ServerResponseType,
-  ) => {
+  return (controllerContext) => async (request: Request) => {
     const result = await originalHandler.call(controllerContext);
-    return sendResponse(request, response, result[0], result[1], headers);
+    return sendResponse(request, result[0], result[1], headers);
   };
 }
 
 function asyncHandlerWithAsyncParams(originalHandler: OriginalHandlerAsyncType, paramsParser: Function, headers: any): AsyncHandlerType {
   return (controllerContext) => async (
-    request: IncomingMessageType,
-    response: ServerResponseType,
+    request: Request,
     args,
   ) => {
-    const params = await paramsParser(request, response, args);
+    const params = await paramsParser(request, args);
 
     const result = await originalHandler.apply(controllerContext, params);
-    return sendResponse(request, response, result[0], result[1], headers);
+    return sendResponse(request, result[0], result[1], headers);
   };
 }
 
 function syncHandlerWithAsyncParams(originalHandler: OriginalHandlerSyncType, paramsParser: Function, headers: any): AsyncHandlerType {
   return (controllerContext) => async (
-    request: IncomingMessageType,
-    response: ServerResponseType,
+    request: Request,
     args,
   ) => {
-    const params = await paramsParser(request, response, args);
+    const params = await paramsParser(request, args);
 
     const result: ResultResponseType = originalHandler.apply(controllerContext, params);
-    return sendResponse(request, response, result[0], result[1], headers);
+    return sendResponse(request, result[0], result[1], headers);
   };
 }
 
 function asyncHandlerWithParams(originalHandler: OriginalHandlerAsyncType, paramsParser: Function, headers: any): AsyncHandlerType {
   return (controllerContext) => async (
-    request: IncomingMessageType,
-    response: ServerResponseType,
+    request: Request,
     args,
   ) => {
-    const params = paramsParser(request, response, args);
+    const params = paramsParser(request, args);
 
     const result = await originalHandler.apply(controllerContext, params);
-    return sendResponse(request, response, result[0], result[1], headers);
+    return sendResponse(request, result[0], result[1], headers);
   };
 }
 
 function syncHandlerWithParams(originalHandler: OriginalHandlerSyncType, paramsParser: Function, headers: any): AsyncHandlerType {
   return (controllerContext) => (
-    request: IncomingMessageType,
-    response: ServerResponseType,
+    request: Request,
     args,
   ) => {
-    const params = paramsParser(request, response, args);
+    const params = paramsParser(request, args);
 
     const result = originalHandler.apply(controllerContext, params);
-    return sendResponse(request, response, result[0], result[1], headers);
+    return sendResponse(request, result[0], result[1], headers);
   };
 }
 

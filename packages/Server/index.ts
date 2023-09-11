@@ -1,72 +1,102 @@
-import http from 'http';
+import {Errorlike, Server as BunServer, TLSOptions, TLSServeOptions} from 'bun';
 import Router from '../Routing';
 import Logger from '../utils/Logger';
 import MetaStore, { MetaStoreKeys } from '../utils/metaStore';
-import type { IncomingMessageType, ParamsType, ServerResponseType } from '../Routing/types';
+import type { ParamsType } from '../Routing/types';
+import { TLSOptionsGenericServeOptions } from '@/types';
 
+/**
+ * Internal Class that configure and start server
+ *
+ * @param {TLSOptionsGenericServeOptions} config - Configure the server.
+ *
+ * @example
+ * ```ts
+ * new Server({
+ *   lowMemoryMode: false,
+ *   development: true,
+ *   id: 123,
+ * })
+ * ```
+ */
 class Server {
-  private readonly server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>;
+  private server: BunServer;
   private readonly router: Router;
   private readonly host: string;
   private readonly port: number;
+  private readonly config?: TLSOptionsGenericServeOptions;
 
-  constructor() {
+  constructor(config?: TLSOptionsGenericServeOptions) {
     this.requestListener = this.requestListener.bind(this);
+    this.errorHandler = this.errorHandler.bind(this);
     this.router = new Router();
-
-    this.server = http.createServer(this.requestListener);
+    this.config = config;
 
     this.host = process.env.HOST || 'localhost';
     this.port = Number(process.env.PORT) || 3000;
   }
 
   run(): void {
-    this.server.on('error', (error: any) => {
-      switch(error.code) {
-        case 'EACCES': {
-          Logger.error(`No access to port: ${this.port}`, 'EACCES');
-          break;
-        }
-        case 'ELIFECYCLE': {
-          Logger.error(error.message, 'ELIFECYCLE');
-          break;
-        }
-        default: {
-          Logger.error(error.message, 'EACCES');
-        }
-      }
+    this.server = Bun.serve({
+      port: this.port,
+      hostname: this.host,
+      fetch: this.requestListener,
+      error: this.errorHandler,
+      ...this.config,
     });
 
-    this.server.listen(this.port, () => {
-      Logger.success(`Server is running at http://${this.host}:${this.port}`);
-    });
+    // this.server.on('error', (error: any) => {
+    //   switch(error.code) {
+    //     case 'EACCES': {
+    //       Logger.error(`No access to port: ${this.port}`, 'EACCES');
+    //       break;
+    //     }
+    //     case 'ELIFECYCLE': {
+    //       Logger.error(error.message, 'ELIFECYCLE');
+    //       break;
+    //     }
+    //     default: {
+    //       Logger.error(error.message, 'EACCES');
+    //     }
+    //   }
+    // });
 
-    this.server.on('close', this.onServerClose);
+    Logger.success(`Server is running at http://${this.host}:${this.port}`);
 
     process.on('SIGINT', this.onServerClose);
   }
 
   private requestListener(
-    request: IncomingMessageType,
-    response: ServerResponseType,
-  ): void {
-    try {
-      const route = this.router.getRequestHandler(request);
-      route.handler(request, response, route.params as ParamsType)?.
-        catch((error: any) => {
-          const exceptionHandler: Function | undefined = MetaStore.getByKey(route.handler, MetaStoreKeys.catch);
+    request: Request,
+  ): Response | Promise<Response> {
+    const route = this.router.getRequestHandler(request);
 
-          if (typeof exceptionHandler === 'function') {
-            exceptionHandler(request, response, route.params)?.catch((err: any) => {
-              throw new Error(err);
-            })
-          } else {
-            Router.errorHandlers.ServerError(request, response, error);
-          }
-        });
-    } catch (error: any) {
-      Router.errorHandlers.ServerError(request, response, error);
-    }
+    return route.handler(request, route.params as ParamsType);
+
+    // try {
+    //   const route = this.router.getRequestHandler(request);
+    //   const handlerTask = route.handler(request, route.params as ParamsType);
+    //
+    //   if (handlerTask) {
+    //     handlerTask.catch((error: any) => {
+    //       const exceptionHandler: Function | undefined = MetaStore.getByKey(route.handler, MetaStoreKeys.catch);
+    //
+    //       if (typeof exceptionHandler === 'function') {
+    //         exceptionHandler(request, response, route.params)?.catch((err: any) => {
+    //           throw new Error(err);
+    //         })
+    //       } else {
+    //         Router.errorHandlers.ServerError(request, response, error);
+    //       }
+    //     });
+    //   }
+    // } catch (error: any) {
+    //   Router.errorHandlers.ServerError(request, response, error);
+    // }
+  }
+
+  private errorHandler(error: Errorlike) {
+
   }
 
   private onServerClose() {

@@ -5,7 +5,7 @@ import { isAsyncFunction } from './utils/helpers';
 import MetaStore, { MetaStoreKeys } from './utils/metaStore';
 
 import type { RequestHandlerType } from './Routing/types';
-import type { IncomingMessageType, ParamsType, ResponseHandlerType, ServerResponseType } from './Routing/types';
+import type { ParamsType, ResponseHandlerType } from './Routing/types';
 import type { ActionHandlerType } from './Decorators/ActionFilters/types';
 import type { PipelineDescriptorType, ErrorValueType } from './types';
 import type { StatusCodes } from './Response/enums';
@@ -74,26 +74,25 @@ export default class Pipeline {
     };
 
     return async (
-      request: IncomingMessageType,
-      response: ServerResponseType,
+      request: Request,
       args?: ParamsType,
-    ): Promise<void> => {
+    ): Promise<Response> => {
       let counter = methods.length;
 
       while (counter > 1 && errorValue === null) {
         counter--;
 
         if (methodStatuses[counter] === true) {
-          await methods[counter](request, response, breakLoop);
+          await methods[counter](request, breakLoop);
         } else {
-          methods[counter](request, response, breakLoop);
+          methods[counter](request, breakLoop);
         }
       }
 
       if (errorValue === null) {
-        methods[0](request, response, args);
+        return methods[0](request, args);
       } else {
-        CustomErrorHandler(request, response, errorValue);
+        return CustomErrorHandler(request, errorValue);
       }
     }
   }

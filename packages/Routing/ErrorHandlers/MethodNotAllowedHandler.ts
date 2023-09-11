@@ -1,15 +1,15 @@
 import { StatusCodes } from '../../Response/enums';
-import { IncomingMessageType, ServerResponseType } from '../../Routing/types';
 
-function MethodNotAllowedHandler (
-  request: IncomingMessageType,
-  response: ServerResponseType,
-) {
+function MethodNotAllowedHandler (request: Request) {
   const message = `The request ${request.method} ${request.url} is not allowed`;
 
-  response.statusCode = StatusCodes.MethodNotAllowed;
-  response.statusMessage = message;
-  response.end();
+  return new Response(message, {
+    headers: new Headers({
+      'Content-Type': 'text/html; charset=UTF-8',
+    }),
+    status: StatusCodes.MethodNotAllowed,
+    statusText: message,
+  });
 }
 
 export default MethodNotAllowedHandler;

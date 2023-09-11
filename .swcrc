@@ -7,8 +7,6 @@
       "dynamicImport": false,
       "privateMethod": true,
       "functionBind": false,
-      "exportDefaultFrom": false,
-      "exportNamespaceFrom": false,
       "decorators": true,
       "decoratorsBeforeExport": true,
       "topLevelAwait": false,

@@ -1,14 +1,14 @@
-import { IncomingMessageType, ServerResponseType } from '../../Routing/types';
 import { ErrorValueType } from '../../types';
 
 function CustomErrorHandler (
-  request: IncomingMessageType,
-  response: ServerResponseType,
+  request: Request,
   errorValue: ErrorValueType,
 ) {
-  response.statusCode = errorValue.statusCode;
-  response.statusMessage = errorValue.message;
-  response.end();
+
+  return new Response(null, {
+    status: errorValue.statusCode,
+    statusText: errorValue.message,
+  });
 }
 
 export default CustomErrorHandler;

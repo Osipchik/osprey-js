@@ -1,4 +1,5 @@
 import { RoadRunner } from '@parisholley/road-runner';
+import Url from 'fast-url-parser';
 import NotImplementedHandler from '../Routing/ErrorHandlers/NotImplementedHandler';
 import ServerErrorHandler from '../Routing/ErrorHandlers/ServerErrorHandler';
 import MethodNotAllowedHandler from '../Routing/ErrorHandlers/MethodNotAllowedHandler';
@@ -6,7 +7,6 @@ import NotFoundHandler from '../Routing/ErrorHandlers/NotFoundHandler';
 import {
   RequestHandlerType,
   HandlerMetaType,
-  IncomingMessageType,
   RouteValueType,
   IErrorRouter,
 } from '../Routing/types';
@@ -14,6 +14,9 @@ import { getPath } from '../utils/helpers';
 import Logger from '../utils/Logger';
 import { Methods } from '../Routing/methods';
 
+/**
+ * Internal Class that maintain app routes
+ */
 class Router {
   static readonly router = new RoadRunner();
 
@@ -24,6 +27,13 @@ class Router {
     NotImplemented: NotImplementedHandler,
   };
 
+  /**
+   * Register route
+   *
+   * @param {RequestHandlerType} handler - route handler.
+   * @param {HandlerMetaType} { method, prefix, path } - handler meta for internal use.
+   *
+   */
   static addRoute(handler: RequestHandlerType, { method, prefix, path }: HandlerMetaType): void {
     const { pathName } = getPath(prefix, path);
 
@@ -39,10 +49,17 @@ class Router {
     Router.router.addRoute(method, pathName, handler);
   }
 
-  getRequestHandler(request: IncomingMessageType): RouteValueType {
+
+  /**
+   * Find handler by it url or handle error
+   *
+   * @param {Request} request - obtained request.
+   *
+   */
+  getRequestHandler(request: Request): RouteValueType {
     if (request.method !== undefined) {
-      const [url, searchParams] = (request.url as string).split('?', 2);
-      const route = Router.router.findRoute(request.method, url);
+      const path = Url.parse(request.url).path;
+      const route = Router.router.findRoute(request.method, path);
 
       if (route !== null) {
         const payload = {

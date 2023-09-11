@@ -30,20 +30,20 @@ export function Controller(prefix?: string): ClassDecorator {
 /**
  * Apply Authorisation filter for all route handlers in the controllers
  *
- * @param {function} handler - Function that implements logic of the decorator
+ * @param {ActionHandlerType} handler - Function that implements logic of the decorator
  */
 export const ControllerAuthorisationFilter = ControllerActionFilterDecoratorFabric(ActionFilterKeys.AUTHORISATION);
 
 /**
  * Apply Before filter for all route handlers in the controllers
  *
- * @param {function} handler - Function that implements logic of the decorator
+ * @param {ActionHandlerType} handler - Function that implements logic of the decorator
  */
 export const ControllerBeforeFilter = ControllerActionFilterDecoratorFabric(ActionFilterKeys.ACTION_BEFORE);
 
 /**
  * Apply After filter for all route handlers in the controllers
  *
- * @param {function} handler - Function that implements logic of the decorator
+ * @param {ActionHandlerType} handler - Function that implements logic of the decorator
  */
 export const ControllerAfterFilter = ControllerActionFilterDecoratorFabric(ActionFilterKeys.ACTION_AFTER);

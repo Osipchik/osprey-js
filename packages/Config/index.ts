@@ -13,6 +13,7 @@ export default class Config {
     bodyParser: JSON.parse,
     serializer: (data: unknown) => serialize(data, { isJSON: true }),
     stringify: (data: any) => data.toString(),
+    origin: '',
   };
 
   static getValue<T>(key: string) {
