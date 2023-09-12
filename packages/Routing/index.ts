@@ -1,5 +1,4 @@
 import { RoadRunner } from '@parisholley/road-runner';
-import Url from 'fast-url-parser';
 import NotImplementedHandler from '../Routing/ErrorHandlers/NotImplementedHandler';
 import ServerErrorHandler from '../Routing/ErrorHandlers/ServerErrorHandler';
 import MethodNotAllowedHandler from '../Routing/ErrorHandlers/MethodNotAllowedHandler';
@@ -58,8 +57,8 @@ class Router {
    */
   getRequestHandler(request: Request): RouteValueType {
     if (request.method !== undefined) {
-      const path = Url.parse(request.url).path;
-      const route = Router.router.findRoute(request.method, path);
+      const url = new URL(request.url);
+      const route = Router.router.findRoute(request.method, url.pathname);
 
       if (route !== null) {
         const payload = {

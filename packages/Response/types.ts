@@ -1,13 +1,17 @@
 import type { StatusCodes, ContentTypes } from './enums';
+import {BunFile} from 'bun';
 
 export interface IOptions {
   statusCode?: StatusCodes,
   contentType?: ContentTypes,
   isJSON?: boolean,
+  isFile?: boolean,
 }
 
+export type ResultType = string | Buffer | BunFile | undefined;
+
 export type ResultResponseType = [
-  result: string,
+  result: ResultType,
   options: any,
 ]
 

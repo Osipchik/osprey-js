@@ -1,5 +1,5 @@
 import MetaStore, { MetaStoreKeys } from '../../utils/metaStore';
-import { bodyParser, getParams, getQuery, getRequest, paramsParser } from '../../Decorators/Parameter/utils';
+import { bodyParser, getFormData, getParams, getQuery, getRequest, paramsParser } from '../../Decorators/Parameter/utils';
 import type { ParamsType } from '../../Routing/types';
 
 export type ParameterDecoratorHandlerType = (request: Request, params: ParamsType) => unknown;
@@ -42,6 +42,12 @@ export const Params = CreateParamDecorator(getParams);
  * Get query parameters as object
  */
 export const Query = CreateParamDecorator(getQuery);
+
+/**
+ * Get formData
+ */
+export const FormData = CreateParamDecorator(getFormData);
+
 
 /**
  * Get request parameter

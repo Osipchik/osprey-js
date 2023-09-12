@@ -102,7 +102,7 @@ const defaultParsers = () => Object.values(ContentTypes).reduce((acc, key) => {
   return { ...acc, [key]: (content: any) => content };
 }, {} as any)();
 
-export const ResponseStringify: temp = {
+export const ResponseEncode: temp = {
   ...defaultParsers,
   [ContentTypes.Application_Serialize]: (Config.getValue<Function>('serializer')),
   [ContentTypes.Text_Plain]: Config.getValue<Function>('stringify'),

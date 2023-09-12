@@ -22,3 +22,7 @@ export function getQuery(request: Request, _: ParamsType) {
 export function getRequest(request: Request, _: ParamsType) {
   return request;
 }
+
+export function getFormData(request: Request, _: ParamsType) {
+  return request.formData();
+}
