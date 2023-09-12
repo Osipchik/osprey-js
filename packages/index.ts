@@ -5,14 +5,11 @@ import MetaStore from './utils/metaStore';
 import Pipeline from './pipeline';
 import { AsyncHandlerType } from './Routing/types';
 import { ActionFilterKeys } from './Decorators/ActionFilters/utils';
+import { AppPropsType, WrappedMethodMta } from '@/types';
 
 dotenv.config();
 
 const availableLogicalCors = OS.cpus().length;
-
-type AppPropsType = {
-  threadPoolSize?: number;
-}
 
 /**
  * Root class to start the project
@@ -27,12 +24,14 @@ type AppPropsType = {
 class App {
   private readonly pipeline: Pipeline;
   private readonly middlewares: any[];
+  private readonly props?: AppPropsType;
 
   constructor(props: AppPropsType = {}) {
     setThreadPoolSize(props.threadPoolSize || availableLogicalCors);
     this.pipeline = new Pipeline();
 
     this.middlewares = [];
+    this.props = props;
   }
 
   /**
@@ -49,7 +48,7 @@ class App {
 
       meta.methods.forEach((handler: AsyncHandlerType) => {
         const handlerMeta = MetaStore.getMeta(handler);
-        const filters = { ...meta.filters, [ActionFilterKeys.MIDDLEWARE]: this.middlewares };
+        const filters: WrappedMethodMta = { ...meta.filters, [ActionFilterKeys.MIDDLEWARE]: this.middlewares };
 
         this.pipeline.registerMethod(handler(controllerInstance), handlerMeta, filters);
       });
@@ -58,6 +57,7 @@ class App {
 
   /**
    * Register middlewares
+   * This method should be called before useControllers
    *
    * @param {any[]} middlewares - middlewares list.
    *
@@ -71,7 +71,7 @@ class App {
    *
    */
   run(): void {
-    const server = new Server();
+    const server = new Server(this.props);
     server.run();
   }
 }

@@ -12,6 +12,7 @@ import {
 import { getPath } from '../utils/helpers';
 import Logger from '../utils/Logger';
 import { Methods } from '../Routing/methods';
+import CustomErrorHandler from '@/Routing/ErrorHandlers/CustomErrorHandler';
 
 /**
  * Internal Class that maintain app routes
@@ -24,6 +25,7 @@ class Router {
     NotFound: NotFoundHandler,
     MethodNotAllowed: MethodNotAllowedHandler,
     NotImplemented: NotImplementedHandler,
+    CustomError: CustomErrorHandler,
   };
 
   /**

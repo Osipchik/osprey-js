@@ -1,10 +1,8 @@
+import { Errorlike } from 'bun';
 import Logger from '../../utils/Logger';
 import { StatusCodes } from '../../Response/enums';
 
-function ServerErrorHandler (
-  request: Request,
-  error: Error,
-) {
+function ServerErrorHandler (error: Errorlike) {
   Logger.error(error.message, `Error ${StatusCodes.InternalServerError}`);
   Logger.data(error.stack || '');
 

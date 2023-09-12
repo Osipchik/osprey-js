@@ -2,6 +2,7 @@ import ServerErrorHandler from '../Routing/ErrorHandlers/ServerErrorHandler';
 import NotFoundHandler from '../Routing/ErrorHandlers/NotFoundHandler';
 import MethodNotAllowedHandler from '../Routing/ErrorHandlers/MethodNotAllowedHandler';
 import NotImplementedHandler from '../Routing/ErrorHandlers/NotImplementedHandler';
+import CustomErrorHandler from '@/Routing/ErrorHandlers/CustomErrorHandler';
 import { Methods } from '../Routing/methods';
 
 export type AsyncHandlerType = (controllerContext: any) => ResponseHandlerType;
@@ -49,6 +50,7 @@ export interface IErrorRouter {
   NotFound: typeof NotFoundHandler,
   MethodNotAllowed: typeof MethodNotAllowedHandler,
   NotImplemented: typeof NotImplementedHandler,
+  CustomError: typeof CustomErrorHandler,
 }
 
 export interface ICommonRouter {

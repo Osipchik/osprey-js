@@ -1,5 +1,10 @@
 import { StatusCodes } from './Response/enums';
-import {GenericServeOptions, TLSOptions} from 'bun';
+import {
+  WebSocketServeOptions,
+  GenericServeOptions,
+  TLSOptions,
+} from 'bun';
+import { ActionFilterKeys } from '@/Decorators/ActionFilters/utils';
 
 export type PipelineDescriptorType = {
   type: string;
@@ -16,6 +21,11 @@ export type ErrorValueType = {
 
 export type TLSOptionsGenericServeOptions = TLSOptions & Pick<GenericServeOptions, 'maxRequestBodySize'| 'development' | 'id'>
 
+export type ServerConfigType = {
+  websocket?: WebSocketServeOptions,
+  tlsOptions?: TLSOptionsGenericServeOptions,
+};
+
 export type RouteHandlerPathParametersType = {
   pathName: string,
   prefix: string,
@@ -28,3 +38,13 @@ export type HandlersOrderType = {
   syncValues: Function[],
   syncIndexes: number[],
 }
+
+export type WrappedMethodMta = ActionFilterKeys & {
+  meta: any,
+};
+
+export type AppPropsType = {
+  tlsOptions?: TLSOptionsGenericServeOptions,
+  websocket?: WebSocketServeOptions,
+  threadPoolSize?: number;
+};

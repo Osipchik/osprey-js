@@ -1,13 +1,11 @@
 import Router from './Routing';
 import { ActionFilterKeys } from './Decorators/ActionFilters/utils';
-import CustomErrorHandler from './Routing/ErrorHandlers/CustomErrorHandler';
 import { isAsyncFunction } from './utils/helpers';
 import MetaStore, { MetaStoreKeys } from './utils/metaStore';
-
 import type { RequestHandlerType } from './Routing/types';
 import type { ParamsType, ResponseHandlerType } from './Routing/types';
 import type { ActionHandlerType } from './Decorators/ActionFilters/types';
-import type { PipelineDescriptorType, ErrorValueType } from './types';
+import type { PipelineDescriptorType, ErrorValueType, WrappedMethodMta } from './types';
 import type { StatusCodes } from './Response/enums';
 
 const filterTypes = [
@@ -18,23 +16,39 @@ const filterTypes = [
   ActionFilterKeys.EXCEPTION,
 ];
 
+/**
+ * Internal Class for combine decorators and methods into one method
+ *
+ */
 export default class Pipeline {
-  registerMethod(method: ResponseHandlerType, filters: any, controllerFilters: any): void {
+  /**
+   * Wrap API method, method decorators and controller decorators into one method
+   *
+   * @param {ResponseHandlerType} method - API method.
+   * @param {any} methodMeta - Decorators that wrapped API method.
+   * @param {WrappedMethodMta} controllerFilters - Common Controller decorator that applied API method.
+   *
+   */
+  registerMethod(
+    method: ResponseHandlerType,
+    methodMeta: any,
+    controllerFilters: WrappedMethodMta,
+  ): void {
     let counter = 0;
     while (counter < filterTypes.length) {
-      const filter = filters[filterTypes[counter]] || [];
+      const filter = methodMeta[filterTypes[counter]] || [];
       const controllerFilter = controllerFilters ? controllerFilters[filterTypes[counter]] || [] : [];
-      filters[filterTypes[counter]] = [ ...controllerFilter, ...filter ];
+      methodMeta[filterTypes[counter]] = [ ...controllerFilter, ...filter ];
 
       counter++;
     }
 
-    this.setExceptionHandler(filters, method);
-    const handlers = this.concatHandlers(filters, method);
+    this.setExceptionHandler(methodMeta, method);
+    const handlers = this.concatHandlers(methodMeta, method);
 
     const routeHandler: RequestHandlerType = this.createMethodHandler(handlers);
 
-    Router.addRoute(routeHandler, filters.meta);
+    Router.addRoute(routeHandler, methodMeta.meta);
   }
 
   private setExceptionHandler(filters: any, method: ResponseHandlerType) {
@@ -92,7 +106,7 @@ export default class Pipeline {
       if (errorValue === null) {
         return methods[0](request, args);
       } else {
-        return CustomErrorHandler(request, errorValue);
+        return Router.errorHandlers.CustomError(request, errorValue);
       }
     }
   }
@@ -124,9 +138,5 @@ export default class Pipeline {
 
       return acc;
     }, [] as PipelineDescriptorType[]).reverse();
-  }
-
-  private handleError() {
-    throw new Error('some error');
   }
 }

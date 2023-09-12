@@ -1,9 +1,8 @@
-import {Errorlike, Server as BunServer, TLSOptions, TLSServeOptions} from 'bun';
+import {Errorlike, Server as BunServer, WebSocketServeOptions} from 'bun';
 import Router from '../Routing';
 import Logger from '../utils/Logger';
-import MetaStore, { MetaStoreKeys } from '../utils/metaStore';
 import type { ParamsType } from '../Routing/types';
-import { TLSOptionsGenericServeOptions } from '@/types';
+import {ServerConfigType, TLSOptionsGenericServeOptions} from '@/types';
 
 /**
  * Internal Class that configure and start server
@@ -24,28 +23,35 @@ class Server {
   private readonly router: Router;
   private readonly host: string;
   private readonly port: number;
-  private readonly config?: TLSOptionsGenericServeOptions;
+  private readonly tlsOptions?: TLSOptionsGenericServeOptions;
+  private readonly websocket?: WebSocketServeOptions;
 
-  constructor(config?: TLSOptionsGenericServeOptions) {
+  constructor({ tlsOptions, websocket }: ServerConfigType = {}) {
     this.requestListener = this.requestListener.bind(this);
     this.errorHandler = this.errorHandler.bind(this);
     this.router = new Router();
-    this.config = config;
+    this.websocket = websocket;
+    this.tlsOptions = tlsOptions;
 
     this.host = process.env.HOST || 'localhost';
     this.port = Number(process.env.PORT) || 3000;
   }
 
-  run(): void {
-    this.server = Bun.serve({
+  run<WebSocketDataType = undefined>(): void {
+    this.server = Bun.serve<WebSocketDataType>({
       port: this.port,
       hostname: this.host,
       fetch: this.requestListener,
       error: this.errorHandler,
-      ...this.config,
+      ...this.tlsOptions,
+      ...this.websocket,
     });
 
-    Logger.success(`Server is running at http://${this.host}:${this.port}`);
+    const origin = this.tlsOptions.certFile || this.tlsOptions.caFile || this.tlsOptions.keyFile
+      ? 'https://'
+      : 'http://';
+
+    Logger.success(`Server is running at ${origin}${this.host}:${this.port}`);
 
     process.on('SIGINT', this.onServerClose);
   }
@@ -56,31 +62,10 @@ class Server {
     const route = this.router.getRequestHandler(request);
 
     return route.handler(request, route.params as ParamsType);
-
-    // try {
-    //   const route = this.router.getRequestHandler(request);
-    //   const handlerTask = route.handler(request, route.params as ParamsType);
-    //
-    //   if (handlerTask) {
-    //     handlerTask.catch((error: any) => {
-    //       const exceptionHandler: Function | undefined = MetaStore.getByKey(route.handler, MetaStoreKeys.catch);
-    //
-    //       if (typeof exceptionHandler === 'function') {
-    //         exceptionHandler(request, response, route.params)?.catch((err: any) => {
-    //           throw new Error(err);
-    //         })
-    //       } else {
-    //         Router.errorHandlers.ServerError(request, response, error);
-    //       }
-    //     });
-    //   }
-    // } catch (error: any) {
-    //   Router.errorHandlers.ServerError(request, response, error);
-    // }
   }
 
   private errorHandler(error: Errorlike) {
-
+    return Router.errorHandlers.ServerError(error);
   }
 
   private onServerClose() {
