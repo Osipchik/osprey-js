@@ -1,5 +1,5 @@
 import zlib from 'zlib';
-
+import { BunFile } from 'bun';
 import {
   ACCEPT_HEADERS,
   COMPRESSION_TYPES,
@@ -11,8 +11,6 @@ import {
   StatusCodes,
 } from '../Response/enums';
 import type { IOptions, ResultResponseType } from '../Response/types';
-import {ResultType} from '../Response/types';
-import {BunFile} from 'bun';
 
 interface IDefaultOptions {
   statusCode: StatusCodes,
@@ -23,6 +21,12 @@ interface IDefaultOptions {
 export function resultResponseFabric(defaultOptions: IDefaultOptions) {
   return (result: unknown, currentOptions?: IOptions): ResultResponseType => {
     const options = { ...defaultOptions, ...currentOptions, };
+
+    if (typeof (result as any).stream === 'function') {
+      options.isFile = true;
+
+      return [result as any, options];
+    }
 
     const encode = ResponseEncode[options.contentType];
     const encodeResult = encode(result);
@@ -39,6 +43,17 @@ export function sendResponse(
 ): Response {
   let resultBuffer: Buffer | BunFile;
   let header: ResponseInit;
+
+  if (options.isFile) {
+    header = {
+      headers: new Headers({
+        ...headers,
+      }),
+      status: options.statusCode,
+    };
+
+    return new Response(result, header);
+  }
 
   const encodingType = request.headers.get(ACCEPT_HEADERS.ENCODING);
 

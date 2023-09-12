@@ -6,21 +6,21 @@ import {
 import { ActionHandlerType } from './types';
 
 /**
- * Add function that runs before all decorators and methods route handler
+ * First methods that called when getting request
  *
  * @param {ActionHandlerType} handler - Function that implements logic of the decorator
  */
 export const CreateAuthorisationFilter = ActionFilterDecoratorFabric<ActionHandlerType>(ActionFilterKeys.AUTHORISATION);
 
 /**
- * Add function that runs after Authorisation filter and before BeforeFilter
+ * Second methods that called when getting request
  *
  * @param {ActionHandlerType} handler - Function that implements logic of the decorator
  */
 export const CreateResourceFilter = ActionFilterDecoratorFabric<ActionHandlerType>(ActionFilterKeys.RESOURCE);
 
 /**
- * Add function that runs after Resource filter and before main handler
+ * Methods that called before main route handler
  *
  * @param {ActionHandlerType} handler - Function that implements logic of the decorator
  */

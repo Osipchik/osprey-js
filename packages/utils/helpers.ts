@@ -1,35 +1,11 @@
-type PathArgsType = {
-  path: string,
-  prefix?: string,
-  property?: string,
-  query?: string,
-};
+import { HandlersOrderType, RouteHandlerPathParametersType } from '@/types';
 
-export function normalizePath({ prefix, path, property, query}: PathArgsType): string {
-  const pathname = [
-    addSlash(prefix),
-    addSlash(path),
-  ].join('');
+/**
+ * Internal methods ALL RUNS BEFORE SERVER START
+ */
 
-  return pathname;
-}
-
-export function addSlash(param?: string): string {
-  if (param) {
-    const cleanParam = param.replace('/', '');
-
-    return cleanParam.length ? '/' + cleanParam : '';
-  }
-
-  return '';
-}
-
-export function isPrimitive(value: any) {
-  return !(value instanceof Object);
-}
-
-export function isPromise(value: any) {
-  return typeof value === 'object' && typeof value.then === 'function';
+export function isPromise(value: unknown): boolean {
+  return typeof value === 'object' && typeof value['then'] === 'function';
 }
 
 export function isAsyncFunction(value?: Function): boolean {
@@ -46,7 +22,7 @@ export function isAsyncFunction(value?: Function): boolean {
   return value.constructor.name === 'AsyncFunction' || isPromise(value);
 }
 
-export function normalizeSlash(value: string) {
+export function normalizeSlash(value: string): string {
   let val = value;
 
   while (val.startsWith('/')) {
@@ -60,11 +36,7 @@ export function normalizeSlash(value: string) {
   return '/' + val;
 }
 
-export function getPath(prefix?: string, pathName?: string): {
-  pathName: string,
-  prefix: string,
-  props: string[],
-} {
+export function getPath(prefix?: string, pathName?: string): RouteHandlerPathParametersType {
   const routePrefix = prefix ?? '';
   const routePathName = pathName ?? '';
 
@@ -102,7 +74,7 @@ export function getPath(prefix?: string, pathName?: string): {
   };
 }
 
-export function isVarName(name: string) {
+export function isVarName(name: string): boolean {
   if (name.trim() !== name) {
     return false;
   }
@@ -116,10 +88,10 @@ export function isVarName(name: string) {
   return true;
 }
 
-export function getSyncAndAsyncLists(list: any[] | object) {
-  const syncValues = [];
+export function getSyncAndAsyncLists(list: unknown[] | object): HandlersOrderType {
+  const syncValues: Function[] = [];
   const syncIndexes: number[] = [];
-  const asyncValues = [];
+  const asyncValues: Function[] = [];
   const asyncIndexes: number[] = [];
 
   const entries = Array.isArray(list) ? list.entries() : Object.entries(list);

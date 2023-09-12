@@ -3,21 +3,21 @@ import type { ResultResponseType } from '../../Response/types';
 import type { AsyncHandlerType } from '../../Routing/types';
 import type { OriginalHandlerAsyncType, OriginalHandlerSyncType } from '../../Decorators/Method/types';
 
-function syncHandler(originalHandler: OriginalHandlerSyncType, headers: any): AsyncHandlerType {
+function syncHandler(originalHandler: OriginalHandlerSyncType, headers: HeadersInit): AsyncHandlerType {
   return (controllerContext) => (request: Request) => {
     const result = originalHandler.call(controllerContext);
     return sendResponse(request, result[0], result[1], headers);
   };
 }
 
-function asyncHandler(originalHandler: OriginalHandlerAsyncType, headers: any): AsyncHandlerType {
+function asyncHandler(originalHandler: OriginalHandlerAsyncType, headers: HeadersInit): AsyncHandlerType {
   return (controllerContext) => async (request: Request) => {
     const result = await originalHandler.call(controllerContext);
     return sendResponse(request, result[0], result[1], headers);
   };
 }
 
-function asyncHandlerWithAsyncParams(originalHandler: OriginalHandlerAsyncType, paramsParser: Function, headers: any): AsyncHandlerType {
+function asyncHandlerWithAsyncParams(originalHandler: OriginalHandlerAsyncType, paramsParser: Function, headers: HeadersInit): AsyncHandlerType {
   return (controllerContext) => async (
     request: Request,
     args,
@@ -29,7 +29,7 @@ function asyncHandlerWithAsyncParams(originalHandler: OriginalHandlerAsyncType, 
   };
 }
 
-function syncHandlerWithAsyncParams(originalHandler: OriginalHandlerSyncType, paramsParser: Function, headers: any): AsyncHandlerType {
+function syncHandlerWithAsyncParams(originalHandler: OriginalHandlerSyncType, paramsParser: Function, headers: HeadersInit): AsyncHandlerType {
   return (controllerContext) => async (
     request: Request,
     args,
@@ -41,7 +41,7 @@ function syncHandlerWithAsyncParams(originalHandler: OriginalHandlerSyncType, pa
   };
 }
 
-function asyncHandlerWithParams(originalHandler: OriginalHandlerAsyncType, paramsParser: Function, headers: any): AsyncHandlerType {
+function asyncHandlerWithParams(originalHandler: OriginalHandlerAsyncType, paramsParser: Function, headers: HeadersInit): AsyncHandlerType {
   return (controllerContext) => async (
     request: Request,
     args,
@@ -53,7 +53,7 @@ function asyncHandlerWithParams(originalHandler: OriginalHandlerAsyncType, param
   };
 }
 
-function syncHandlerWithParams(originalHandler: OriginalHandlerSyncType, paramsParser: Function, headers: any): AsyncHandlerType {
+function syncHandlerWithParams(originalHandler: OriginalHandlerSyncType, paramsParser: Function, headers: HeadersInit): AsyncHandlerType {
   return (controllerContext) => (
     request: Request,
     args,

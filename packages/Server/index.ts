@@ -45,22 +45,6 @@ class Server {
       ...this.config,
     });
 
-    // this.server.on('error', (error: any) => {
-    //   switch(error.code) {
-    //     case 'EACCES': {
-    //       Logger.error(`No access to port: ${this.port}`, 'EACCES');
-    //       break;
-    //     }
-    //     case 'ELIFECYCLE': {
-    //       Logger.error(error.message, 'ELIFECYCLE');
-    //       break;
-    //     }
-    //     default: {
-    //       Logger.error(error.message, 'EACCES');
-    //     }
-    //   }
-    // });
-
     Logger.success(`Server is running at http://${this.host}:${this.port}`);
 
     process.on('SIGINT', this.onServerClose);

@@ -15,3 +15,16 @@ export type ErrorValueType = {
 };
 
 export type TLSOptionsGenericServeOptions = TLSOptions & Pick<GenericServeOptions, 'maxRequestBodySize'| 'development' | 'id'>
+
+export type RouteHandlerPathParametersType = {
+  pathName: string,
+  prefix: string,
+  props: string[],
+};
+
+export type HandlersOrderType = {
+  asyncValues: Function[],
+  asyncIndexes: number[],
+  syncValues: Function[],
+  syncIndexes: number[],
+}

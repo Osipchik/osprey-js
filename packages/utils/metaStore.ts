@@ -1,3 +1,8 @@
+
+/**
+ * Internal Class, ALL METHODS RUNS BEFORE SERVER START
+ */
+
 class MetaStore {
   private static meta = new WeakMap();
   private static values = new WeakMap();

@@ -3,7 +3,7 @@ import serialize from 'serialize-javascript';
 type configType = {
   bodyParser: (text: string) => any;
   serializer: (data: unknown) => string;
-  stringify: (data: any) => string;
+  stringify: (data: unknown) => string;
 } & {
   [key in string]: unknown;
 }
@@ -12,7 +12,7 @@ export default class Config {
   private static config: configType = {
     bodyParser: JSON.parse,
     serializer: (data: unknown) => serialize(data, { isJSON: true }),
-    stringify: (data: any) => data.toString(),
+    stringify: (data: unknown) => data.toString(),
     origin: '',
   };
 

@@ -80,6 +80,8 @@ export enum COMPRESSION_TYPES {
 export enum CONTENT_HEADERS {
   TYPE = 'Content-Type',
   ENCODING = 'Content-Encoding',
+  DISPOSITION = 'Content-Disposition',
+  SIZE = 'Content-Length',
   BR = 'br',
   GZIP = 'gzip',
 }
@@ -100,7 +102,7 @@ export const BROTLI_OPTIONS = {
 
 const defaultParsers = () => Object.values(ContentTypes).reduce((acc, key) => {
   return { ...acc, [key]: (content: any) => content };
-}, {} as any)();
+}, {} as any)()();
 
 export const ResponseEncode: temp = {
   ...defaultParsers,
