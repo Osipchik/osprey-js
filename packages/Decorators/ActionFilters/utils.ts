@@ -1,4 +1,5 @@
 import MetaStore from '../../utils/metaStore';
+import { ActionFilterFabricType } from '@/types';
 
 export enum ActionFilterKeys {
   AUTHORISATION = 'actionFilter',
@@ -9,8 +10,6 @@ export enum ActionFilterKeys {
   RESULT = 'resultFilter',
   MIDDLEWARE = 'middleware',
 }
-
-type ActionFilterFabricType = <T>(actionKey: ActionFilterKeys) => (handler: T) => MethodDecorator;
 
 export const ActionFilterDecoratorFabric: ActionFilterFabricType =
   (actionKey: ActionFilterKeys) =>

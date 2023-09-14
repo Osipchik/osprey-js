@@ -48,3 +48,5 @@ export type AppPropsType = {
   websocket?: WebSocketServeOptions,
   threadPoolSize?: number;
 };
+
+export type ActionFilterFabricType = <T>(actionKey: ActionFilterKeys) => (handler: T) => MethodDecorator;
